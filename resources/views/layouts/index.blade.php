@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
@@ -10,14 +10,59 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
     <!-- Core Css -->
-    <link rel="stylesheet" href="./assets/css/theme.css" />
+    <link rel="stylesheet" href="{{ asset('/assets/css/theme.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @yield('csslink')
 </head>
 
+<body class=" bg-white">
+    <main>
+        <!--start the project-->
+        <div id="main-wrapper" class=" flex">
+            @include('components.aside')
+            <div class=" w-full page-wrapper overflow-hidden">
 
-@yield('content')
+                <!--  Header Start -->
+                @include('components.header')
+                <!--  Header End -->
 
-@yield('jslink')
+                @yield('content')
+                <!-- Main Content End -->
+            </div>
+        </div>
+        <!--end of project-->
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="./assets/libs/simplebar/dist/simplebar.min.js"></script>
+    <script src="./assets/libs/iconify-icon/dist/iconify-icon.min.js"></script>
+    <script src="./assets/libs/@preline/dropdown/index.js"></script>
+    <script src="./assets/libs/@preline/overlay/index.js"></script>
+    <script src="./assets/js/sidebarmenu.js"></script>
+    <script src="./assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="./assets/js/dashboard.js"></script>
+    <script>
+        window.onload = function() {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: "{{ session('success') }}",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            @elseif(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erreur!',
+                    text: "{{ session('error') }}",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            @endif
+        };
+    </script>
+    @yield('jslink')
 </body>
 
 </html>

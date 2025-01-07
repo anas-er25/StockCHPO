@@ -1,10 +1,13 @@
-{{-- @can('view', 'admin-permission') --}}
-@extends('layouts.index')
-@section('title', 'Se connecter')
-@section('csslink')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.tailwindcss.com"></script>
-@endsection
-@section('content')
+    <title>Login</title>
+</head>
+
 <body class="font-sans antialiased">
     <div class="font-sans antialiased">
         <div class="bg-gray-100 flex items-center justify-center min-h-screen">
@@ -67,12 +70,11 @@
         </div>
     </main>
     <footer class="py-16 text-center text-sm text-gray-700">
-                        Gestion de stock v0.0.1
-                    </footer>
+        Gestion de stock v0.0.1
+    </footer>
                 </div>
             </div>
         </div>
     </div>
-
-@endsection
-{{-- @endcan --}}
+</body>
+</html>

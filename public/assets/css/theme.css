@@ -1299,10 +1299,6 @@ select {
   background-color: rgb(83 155 255 / var(--tw-bg-opacity));
 }
 
-.bg-blue-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(236 242 255 / var(--tw-bg-opacity));
-}
 
 .bg-blue-600 {
   --tw-bg-opacity: 1;
@@ -1346,9 +1342,13 @@ select {
 
 .bg-red-500 {
   --tw-bg-opacity: 1;
-  background-color: rgb(250 137 107 / var(--tw-bg-opacity));
+  background-color: rgb(248 113 113 / var(--tw-bg-opacity)); /* Rouge plus clair */
 }
 
+.bg-red-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(185 28 28 / var(--tw-bg-opacity)); /* Rouge plus foncé */
+}
 .bg-teal-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(230 255 250 / var(--tw-bg-opacity));
@@ -1605,7 +1605,11 @@ select {
 
 .text-red-500 {
   --tw-text-opacity: 1;
-  color: rgb(250 137 107 / var(--tw-text-opacity));
+  color: #ce3b3b;
+}
+.text-red-700 {
+  --tw-text-opacity: 1;
+  color: #A31D1D;
 }
 
 .text-teal-500 {
@@ -1947,7 +1951,7 @@ select {
     align-content: flex-start;
     align-items: flex-start;
   }
-  
+
   .simplebar-wrapper {
     overflow: hidden;
     width: inherit;
@@ -1955,7 +1959,7 @@ select {
     max-width: inherit;
     max-height: inherit;
   }
-  
+
   .simplebar-mask {
     direction: inherit;
     position: absolute;
@@ -1970,7 +1974,7 @@ select {
     height: auto !important;
     z-index: 0;
   }
-  
+
   .simplebar-offset {
     direction: inherit !important;
     box-sizing: inherit !important;
@@ -1984,7 +1988,7 @@ select {
     margin: 0;
     -webkit-overflow-scrolling: touch;
   }
-  
+
   .simplebar-content-wrapper {
     direction: inherit;
     box-sizing: border-box !important;
@@ -1998,27 +2002,27 @@ select {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
-  
+
   .simplebar-content-wrapper::-webkit-scrollbar,
   .simplebar-hide-scrollbar::-webkit-scrollbar {
     display: none;
     width: 0;
     height: 0;
   }
-  
+
   .simplebar-content:before,
   .simplebar-content:after {
     content: ' ';
     display: table;
   }
-  
+
   .simplebar-placeholder {
     max-height: 100%;
     max-width: 100%;
     width: 100%;
     pointer-events: none;
   }
-  
+
   .simplebar-height-auto-observer-wrapper {
     box-sizing: inherit !important;
     height: 100%;
@@ -2036,7 +2040,7 @@ select {
     flex-shrink: 0;
     flex-basis: 0;
   }
-  
+
   .simplebar-height-auto-observer {
     box-sizing: inherit;
     display: block;
@@ -2052,7 +2056,7 @@ select {
     pointer-events: none;
     z-index: -1;
   }
-  
+
   .simplebar-track {
     z-index: 1;
     position: absolute;
@@ -2061,7 +2065,7 @@ select {
     pointer-events: none;
     overflow: hidden;
   }
-  
+
   [data-simplebar].simplebar-dragging {
     pointer-events: none;
     -webkit-touch-callout: none;
@@ -2069,7 +2073,7 @@ select {
     -moz-user-select: none;
     user-select: none;
   }
-  
+
   [data-simplebar].simplebar-dragging .simplebar-content {
     pointer-events: none;
     -webkit-touch-callout: none;
@@ -2077,18 +2081,18 @@ select {
     -moz-user-select: none;
     user-select: none;
   }
-  
+
   [data-simplebar].simplebar-dragging .simplebar-track {
     pointer-events: all;
   }
-  
+
   .simplebar-scrollbar {
     position: absolute;
     left: 0;
     right: 0;
     min-height: 10px;
   }
-  
+
   .simplebar-scrollbar:before {
     position: absolute;
     content: '';
@@ -2099,30 +2103,30 @@ select {
     opacity: 0;
     transition: opacity 0.2s 0.5s linear;
   }
-  
+
   .simplebar-scrollbar.simplebar-visible:before {
     opacity: 0.5;
     transition-delay: 0s;
     transition-duration: 0s;
   }
-  
+
   .simplebar-track.simplebar-vertical {
     top: 0;
     width: 11px;
   }
-  
+
   .simplebar-scrollbar:before {
     top: 2px;
     bottom: 2px;
     left: 2px;
     right: 2px;
   }
-  
+
   .simplebar-track.simplebar-horizontal {
     left: 0;
     height: 11px;
   }
-  
+
   .simplebar-track.simplebar-horizontal .simplebar-scrollbar {
     right: auto;
     left: 0;
@@ -2132,8 +2136,8 @@ select {
     min-width: 10px;
     width: auto;
   }
-  
-  
+
+
   .simplebar-dummy-scrollbar-size {
     direction: rtl;
     position: fixed;
@@ -2145,13 +2149,13 @@ select {
     overflow-x: scroll;
     -ms-overflow-style: scrollbar !important;
   }
-  
+
   .simplebar-dummy-scrollbar-size > div {
     width: 200%;
     height: 200%;
     margin: 10px 0;
   }
-  
+
   .simplebar-hide-scrollbar {
     position: fixed;
     left: 0;
@@ -2160,7 +2164,7 @@ select {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
-  
+
 
 .icon-nav li a:hover.icon-hover{
     color:#5D87FF ;
