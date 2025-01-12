@@ -16,16 +16,16 @@ return new class extends Migration
             $table->string('num_inventaire')->unique();
             $table->string('designation');
             $table->integer('qte');
-            $table->enum('type', ['type1', 'type2', 'type3']); // Remplacez par les types réels
-            $table->enum('origin', ['origin1', 'origin2']); // Remplacez par les origines réelles
+            $table->enum('type', ['hospitalier', 'bureau', 'biomédical']); // Remplacez par les types
+            $table->enum('origin', ['achat', 'don']); // Remplacez par les origines
             $table->string('marque');
             $table->string('modele');
             $table->string('num_serie')->nullable();
             $table->date('date_inscription');
             $table->date('date_affectation')->nullable();
-            $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->foreignId('service_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('observation')->nullable();
-            $table->enum('etat', ['etat1', 'etat2', 'etat3']); // Remplacez par les états réels
+            $table->enum('etat', ['réceptionné', 'affecté', 'en mouvement', 'réformé']); // Remplacez par les états
             $table->string('numero_marche')->nullable();
             $table->string('numero_bl')->nullable();
             $table->string('nom_societe')->nullable();

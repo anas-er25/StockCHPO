@@ -1,5 +1,5 @@
 @extends('layouts.index')
-@section('title', 'Services')
+@section('title', 'Liste des Matériels')
 
 @section('content')
     <main class="h-full overflow-y-auto max-w-full pt-4">
@@ -9,10 +9,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="flex justify-between items-center">
-                            <h2 class="text-xl font-semibold">Liste des services</h2>
-                            <a href="{{ route('services.create') }}"
+                            <h2 class="text-xl font-semibold">Liste des matériel</h2>
+                            <a href="{{ route('materiels.create') }}"
                                 class="btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 px-4 py-2 rounded-md">
-                                Ajouter un service
+                                Ajouter un matériel
                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20"
                                     viewBox="0 0 50 50">
                                     <path fill="white"
@@ -26,52 +26,68 @@
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                 <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                     <tr>
-                                        <th scope="col" class="text-base px-6 py-3">
-                                            Nom du service
-                                        </th>
-                                        <th scope="col" class="text-base px-6 py-3">
-                                            Date de création
-                                        </th>
-                                        <th scope="col" class="text-base px-6 py-3">
-                                            Action
-                                        </th>
+                                        <th scope="col" class="text-base px-6 py-3">Numéro d'inventaire</th>
+                                        <th scope="col" class="text-base px-6 py-3">Désignation</th>
+                                        <th scope="col" class="text-base px-6 py-3">Quantité</th>
+                                        <th scope="col" class="text-base px-6 py-3">Type</th>
+                                        <th scope="col" class="text-base px-6 py-3">Origine</th>
+                                        <th scope="col" class="text-base px-6 py-3">Marque</th>
+                                        <th scope="col" class="text-base px-6 py-3">Modèle</th>
+                                        <th scope="col" class="text-base px-6 py-3">Numéro de série</th>
+                                        <th scope="col" class="text-base px-6 py-3">Date d'inscription</th>
+                                        <th scope="col" class="text-base px-6 py-3">Date d'affectation</th>
+                                        <th scope="col" class="text-base px-6 py-3">Service</th>
+                                        <th scope="col" class="text-base px-6 py-3">Observation</th>
+                                        <th scope="col" class="text-base px-6 py-3">État</th>
+                                        <th scope="col" class="text-base px-6 py-3">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($services as $service)
+                                    @forelse ($materiels as $material)
                                         <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                            <td scope="row"
-                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                {{ $service->nom }}
-                                            </td>
+                                            <td class="px-6 py-4">{{ $material->num_inventaire }}</td>
+                                            <td class="px-6 py-4">{{ $material->designation }}</td>
+                                            <td class="px-6 py-4">{{ $material->qte }}</td>
+                                            <td class="px-6 py-4">{{ $material->type }}</td>
+                                            <td class="px-6 py-4">{{ $material->origin }}</td>
+                                            <td class="px-6 py-4">{{ $material->marque }}</td>
+                                            <td class="px-6 py-4">{{ $material->modele }}</td>
+                                            <td class="px-6 py-4">{{ $material->num_serie }}</td>
+                                            <td class="px-6 py-4">{{ $material->date_inscription }}</td>
+                                            <td class="px-6 py-4">{{ $material->date_affectation }}</td>
                                             <td class="px-6 py-4">
-                                                {{ $service->created_at }}
+                                                {{ $material->service ? $material->service->nom : 'N/A' }}
+                                                <!-- Assuming 'service' is a relationship -->
                                             </td>
+                                            <td class="px-6 py-4">{{ $material->observation }}</td>
+                                            <td class="px-6 py-4">{{ $material->etat }}</td>
                                             <td class="px-6 py-4 flex items-center">
-                                                <a href="{{ route('services.edit', $service->id) }}"
+                                                <a href="{{ route('materiels.edit', $material->id) }}"
                                                     class="cursor-pointer mr-4">
                                                     <i class="fa-solid fa-pen text-blue-600 hover:text-blue-700"></i>
                                                 </a>
 
                                                 <!-- Formulaire de suppression -->
-                                                <form action="{{ route('services.destroy', $service->id) }}" method="POST"
-                                                    class="inline" id="delete-form-{{ $service->id }}">
+                                                <form action="{{ route('materiels.destroy', $material->id) }}"
+                                                    method="POST" class="inline" id="delete-form-{{ $material->id }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <div class="cursor-pointer"
-                                                        onclick="confirmDelete({{ $service->id }})">
+                                                        onclick="confirmDelete({{ $material->id }})">
                                                         <i class="fa-solid fa-trash text-red-500 hover:text-red-700"></i>
                                                     </div>
                                                 </form>
                                             </td>
                                         </tr>
+
                                     @empty
                                         <tr>
-                                            <td colspan="14" class="text-center py-4">Aucun service trouvé</td>
+                                            <td colspan="14" class="text-center py-4">Aucun matériel trouvé</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
+
                         </div>
 
                     </div>
@@ -86,7 +102,7 @@
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
     <script>
         // Fonction de confirmation avant la suppression avec SweetAlert2
-        function confirmDelete(serviceId) {
+        function confirmDelete(materialId) {
             Swal.fire({
                 title: 'Êtes-vous sûr?',
                 text: "Cette action est irréversible!",
@@ -102,7 +118,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Soumettre le formulaire de suppression si confirmé
-                    document.getElementById('delete-form-' + serviceId).submit();
+                    document.getElementById('delete-form-' + materialId).submit();
                 }
             });
         }

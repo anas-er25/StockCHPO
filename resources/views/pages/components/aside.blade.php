@@ -28,21 +28,12 @@
 
                       <li class="sidebar-item">
                           <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="{{ route('materiels.index') }}">
-                              <i class="ti ti-tools text-xl"></i> <span>Matériels</span>
-
+                              href="./components/buttons.html">
+                              <i class="ti ti-article  text-xl"></i> <span>Buttons</span>
                           </a>
                       </li>
 
-                         <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="{{ route('services.index') }}">
-                              <i class="ti ti-briefcase text-xl"></i> <span>Services</span>
-
-                          </a>
-                      </li>
-
-                      {{-- <li class="sidebar-item">
+                      <li class="sidebar-item">
                           <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="./components/alerts.html">
                               <i class="ti ti-alert-circle  text-xl"></i> <span>Alerts</span>
@@ -106,7 +97,7 @@
                               href="./pages/sample-page.html">
                               <i class="ti ti-aperture  text-xl"></i> <span>Sample Page</span>
                           </a>
-                      </li> --}}
+                      </li>
 
                   </ul>
               </nav>
