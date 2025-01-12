@@ -36,9 +36,10 @@ Route::group(["middleware" => "auth"], function () {
         Route::post('/addmateriel', 'store')->name('store');
         Route::get('/materiels/{id}/edit', 'edit')->name('edit');
         Route::put('/materiels/{id}', 'update')->name('update');
+        Route::get('/materiels/export-pdf/{id}', 'exportPDF')->name('export_pdf');
         Route::delete('/materiels/{id}', 'destroy')->name('destroy');
     });
-    
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');

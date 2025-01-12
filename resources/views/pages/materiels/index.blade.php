@@ -27,40 +27,47 @@
                                 <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                     <tr>
                                         <th scope="col" class="text-base px-6 py-3">Numéro d'inventaire</th>
+                                        <th scope="col" class="text-base px-6 py-3">Date d'inscription</th>
                                         <th scope="col" class="text-base px-6 py-3">Désignation</th>
                                         <th scope="col" class="text-base px-6 py-3">Quantité</th>
-                                        <th scope="col" class="text-base px-6 py-3">Type</th>
-                                        <th scope="col" class="text-base px-6 py-3">Origine</th>
                                         <th scope="col" class="text-base px-6 py-3">Marque</th>
                                         <th scope="col" class="text-base px-6 py-3">Modèle</th>
-                                        <th scope="col" class="text-base px-6 py-3">Numéro de série</th>
-                                        <th scope="col" class="text-base px-6 py-3">Date d'inscription</th>
-                                        <th scope="col" class="text-base px-6 py-3">Date d'affectation</th>
                                         <th scope="col" class="text-base px-6 py-3">Service</th>
+                                        <th scope="col" class="text-base px-6 py-3">Date d'affectation</th>
+                                        <th scope="col" class="text-base px-6 py-3">Numéro de série</th>
+                                        <th scope="col" class="text-base px-6 py-3">Type</th>
+                                        <th scope="col" class="text-base px-6 py-3">Origine</th>
                                         <th scope="col" class="text-base px-6 py-3">Observation</th>
                                         <th scope="col" class="text-base px-6 py-3">État</th>
-                                        <th scope="col" class="text-base px-6 py-3">Action</th>
+                                        <th scope="col" class="text-base px-6 py-3">Numéro BL</th>
+                                        <th scope="col" class="text-base px-6 py-3">Numéro Marché</th>
+                                        <th scope="col" class="text-base px-6 py-3">Nom société</th>
+                                        <th scope="col" class="text-base px-6 py-3">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($materiels as $material)
                                         <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
                                             <td class="px-6 py-4">{{ $material->num_inventaire }}</td>
+                                            <td class="px-6 py-4">{{ $material->date_inscription }}</td>
                                             <td class="px-6 py-4">{{ $material->designation }}</td>
                                             <td class="px-6 py-4">{{ $material->qte }}</td>
-                                            <td class="px-6 py-4">{{ $material->type }}</td>
-                                            <td class="px-6 py-4">{{ $material->origin }}</td>
                                             <td class="px-6 py-4">{{ $material->marque }}</td>
                                             <td class="px-6 py-4">{{ $material->modele }}</td>
-                                            <td class="px-6 py-4">{{ $material->num_serie }}</td>
-                                            <td class="px-6 py-4">{{ $material->date_inscription }}</td>
-                                            <td class="px-6 py-4">{{ $material->date_affectation }}</td>
                                             <td class="px-6 py-4">
                                                 {{ $material->service ? $material->service->nom : 'N/A' }}
                                                 <!-- Assuming 'service' is a relationship -->
                                             </td>
+                                            <td class="px-6 py-4">{{ $material->date_affectation }}</td>
+                                            <td class="px-6 py-4">{{ $material->num_serie }}</td>
+                                            <td class="px-6 py-4">{{ $material->type }}</td>
+                                            <td class="px-6 py-4">{{ $material->origin }}</td>
+
                                             <td class="px-6 py-4">{{ $material->observation }}</td>
                                             <td class="px-6 py-4">{{ $material->etat }}</td>
+                                            <td class="px-6 py-4">{{ $material->numero_bl }}</td>
+                                            <td class="px-6 py-4">{{ $material->numero_marche }}</td>
+                                            <td class="px-6 py-4">{{ $material->nom_societe }}</td>
                                             <td class="px-6 py-4 flex items-center">
                                                 <a href="{{ route('materiels.edit', $material->id) }}"
                                                     class="cursor-pointer mr-4">
@@ -74,10 +81,18 @@
                                                     @method('DELETE')
                                                     <div class="cursor-pointer"
                                                         onclick="confirmDelete({{ $material->id }})">
-                                                        <i class="fa-solid fa-trash text-red-500 hover:text-red-700"></i>
+                                                        <i
+                                                            class="fa-solid fa-trash text-red-500 hover:text-red-700 mr-4"></i>
+                                                        <!-- Ajout de mr-4 pour espacer -->
                                                     </div>
                                                 </form>
+
+                                                <a href="{{ route('materiels.export_pdf', $material->id) }}"
+                                                    class="cursor-pointer">
+                                                    <i class="fa-solid fa-download text-blue-600 hover:text-blue-700"></i>
+                                                </a>
                                             </td>
+
                                         </tr>
 
                                     @empty
