@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use App\Models\Material;
 use App\Models\Service;
 use Illuminate\Http\Request;
@@ -25,7 +27,7 @@ class MaterialController extends Controller
     {
         // Validate the request...
         $request->validate([
-            'num_inventaire' => 'required',
+            'num_inventaire' => 'required|unique:materials,num_inventaire',
             'designation' => 'required',
             'qte' => 'required',
             'type' => 'required',
@@ -126,4 +128,25 @@ class MaterialController extends Controller
 
         return redirect(route('materiels.index'))->with('success', 'Matériele supprimé avec succès.');
     }
+
+
+    public function exportPDF($id)
+    {
+        // Fetch the specific material by ID
+        // Fetch the specific material by ID
+        $material = Material::findOrFail($id);
+
+        // Create PDF content
+        $pdf = Pdf::loadView('pages.pdfs.Bullteincession', compact('material'));
+
+        // Optionally, you can pass data such as the current date to the view
+        $pdf->setPaper('A4', 'portrait');
+
+        // Sanitize the filename to remove invalid characters
+        $filename = 'bulletin_de_cession_' . preg_replace('/[\/\\\\]/', '_', $material->num_inventaire) . '.pdf';
+
+        // Return the generated PDF as a download
+        return $pdf->download($filename);
+    }
+
 }

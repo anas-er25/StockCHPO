@@ -33,7 +33,7 @@
                                             Date de création
                                         </th>
                                         <th scope="col" class="text-base px-6 py-3">
-                                            Action
+                                            Actions
                                         </th>
                                     </tr>
                                 </thead>
