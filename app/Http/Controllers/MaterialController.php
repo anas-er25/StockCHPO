@@ -120,6 +120,12 @@ class MaterialController extends Controller
         return redirect(route('materiels.index'))->with('success', 'Matériele modifié avec succès.');
     }
 
+    public function show($id)
+    {
+        $material = Material::find($id);
+        return view('pages.materiels.show', ['material' => $material]);
+    }
+
 
     public function destroy($id)
     {

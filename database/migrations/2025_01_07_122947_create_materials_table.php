@@ -25,7 +25,7 @@ return new class extends Migration
             $table->date('date_affectation')->nullable();
             $table->foreignId('service_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('observation')->nullable();
-            $table->enum('etat', ['réceptionné', 'affecté', 'en mouvement', 'réformé']); // Remplacez par les états
+            $table->enum('etat', ['réceptionné', 'affecté', 'en mouvement', 'réformé', 'colis fermé']); // Remplacez par les états
             $table->string('numero_marche')->nullable();
             $table->string('numero_bl')->nullable();
             $table->string('nom_societe')->nullable();

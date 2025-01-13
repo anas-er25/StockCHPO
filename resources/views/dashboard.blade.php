@@ -4,7 +4,8 @@
 @section('content')
 
     <main class="h-full overflow-y-auto  max-w-full  pt-4">
-        <div class="container full-container py-5 flex flex-col gap-6">
+        {{-- <div class="container full-container py-5 flex flex-col gap-6"> --}}
+        <div class="p-5">
             <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
                 <div class="col-span-2">
                     <div class="card">
@@ -305,7 +306,7 @@
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-2 gap-6">
+            {{-- <div class="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-2 gap-6">
                 <div class="card overflow-hidden">
                     <div class="relative">
                         <a href="javascript:void(0)">
@@ -502,14 +503,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <footer>
-                <p class="text-base text-gray-500 font-normal p-3 text-center">
-                    Design and Developed by <a href="https://adminmart.com/" target="_blank"
-                        class="text-blue-600 underline hover:text-blue-700">AdminMart.com</a>
-                </p>
-            </footer>
+            </div> --}}
+            @include('pages.components.footer')
+
         </div>
+        {{-- </div> --}}
 
 
     </main>
