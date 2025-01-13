@@ -504,7 +504,7 @@
                     </div>
                 </div>
             </div> --}}
-            @include('pages.components.footer')
+            @include('components.footer')
 
         </div>
         {{-- </div> --}}

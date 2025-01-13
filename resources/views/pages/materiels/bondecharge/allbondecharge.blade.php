@@ -1,5 +1,5 @@
 @extends('layouts.index')
-@section('title', 'Services')
+@section('title', 'Liste des bons de décharge')
 
 @section('content')
     <main class="h-full overflow-y-auto max-w-full pt-4">
@@ -10,10 +10,10 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="flex justify-between items-center">
-                                <h2 class="text-xl font-semibold">Liste des services</h2>
-                                <a href="{{ route('services.create') }}"
+                                <h2 class="text-xl font-semibold">Liste des bons de décharge</h2>
+                                <a href="{{ route('materiels.bondecharge') }}"
                                     class="btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 px-4 py-2 rounded-md">
-                                    Ajouter un service
+                                    Ajouter un bon de décharge
                                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20"
                                         viewBox="0 0 50 50">
                                         <path fill="white"
@@ -27,53 +27,74 @@
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="text-sm px-6 py-3">
-                                                Nom du service
-                                            </th>
-                                            <th scope="col" class="text-sm px-6 py-3">
-                                                Date de création
-                                            </th>
-                                            <th scope="col" class="text-sm px-6 py-3">
-                                                Actions
-                                            </th>
+                                            <th scope="col" class="text-sm px-6 py-3">Numéro d'inventaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Quantité</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Numéro de série</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Motif</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Cédant</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Cessionnaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Fait le</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($services as $service)
+                                        @forelse ($bonDecharges as $bondecharge)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                                <td scope="row"
-                                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $service->nom }}
+                                                <td class="px-6 py-4">
+                                                    {{ $bondecharge->material_id ? $bondecharge->materiel->num_inventaire : 'N/A' }}
+                                                </td>
+                                                <td class="px-6 py-4">{{ $bondecharge->qte }}</td>
+                                                <td class="px-6 py-4">{{ $bondecharge->num_serie }}</td>
+                                                <td class="px-6 py-4 motif" title="{{ $bondecharge->motif }}">
+                                                    {{ Str::limit($bondecharge->motif, 28) }}
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    {{ $service->created_at }}
+                                                    {{ $bondecharge->cedant_id ? $bondecharge->cedant->nom : '' }}
                                                 </td>
+                                                <td class="px-6 py-4">{{ $bondecharge->cessionnaire }}</td>
+                                                <td class="px-6 py-4 motif" title="{{ $bondecharge->updated_at }}">
+                                                    {{ $bondecharge->updated_at->format('d/m/Y') }}
+                                                </td>
+
                                                 <td class="px-6 py-4 flex items-center">
-                                                    <a href="{{ route('services.edit', $service->id) }}"
+                                                    <!-- Icône de modification -->
+                                                    <a href="{{ route('materiels.bondechargeedit', $bondecharge->id) }}"
                                                         class="cursor-pointer mr-4">
                                                         <i class="fa-solid fa-pen text-blue-600 hover:text-blue-700"></i>
                                                     </a>
 
                                                     <!-- Formulaire de suppression -->
-                                                    <form action="{{ route('services.destroy', $service->id) }}"
-                                                        method="POST" class="inline" id="delete-form-{{ $service->id }}">
+                                                    <form
+                                                        action="{{ route('materiels.bondechargedestroy', $bondecharge->id) }}"
+                                                        method="POST" class="inline"
+                                                        id="delete-form-{{ $bondecharge->id }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <div class="cursor-pointer"
-                                                            onclick="confirmDelete({{ $service->id }})">
+                                                        <div class="cursor-pointer mr-4"
+                                                            onclick="confirmDelete({{ $bondecharge->id }})">
                                                             <i
                                                                 class="fa-solid fa-trash text-red-500 hover:text-red-700"></i>
                                                         </div>
                                                     </form>
+
+                                                    <!-- Icône de téléchargement PDF -->
+                                                    <a href="{{ route('materiels.bondechargePDF', $bondecharge->id) }}"
+                                                        class="cursor-pointer mr-4">
+                                                        <i
+                                                            class="fa-solid fa-download text-blue-600 hover:text-blue-700"></i>
+                                                    </a>
                                                 </td>
+
                                             </tr>
+
                                         @empty
                                             <tr>
-                                                <td colspan="14" class="text-center py-4">Aucun service trouvé</td>
+                                                <td colspan="14" class="text-center py-4">Aucun matériel trouvé</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
                                 </table>
+
                             </div>
 
                         </div>
@@ -88,10 +109,10 @@
 @endsection
 
 @section('jslink')
-    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+
     <script>
         // Fonction de confirmation avant la suppression avec SweetAlert2
-        function confirmDelete(serviceId) {
+        function confirmDelete(bondechargeId) {
             Swal.fire({
                 title: 'Êtes-vous sûr?',
                 text: "Cette action est irréversible!",
@@ -107,7 +128,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Soumettre le formulaire de suppression si confirmé
-                    document.getElementById('delete-form-' + serviceId).submit();
+                    document.getElementById('delete-form-' + bondechargeId).submit();
                 }
             });
         }

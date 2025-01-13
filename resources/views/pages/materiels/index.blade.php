@@ -24,26 +24,26 @@
                             </div>
 
                             <div class="relative overflow-x-auto mt-8">
-                                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                                <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="text-base px-6 py-3">Numéro d'inventaire</th>
-                                            <th scope="col" class="text-base px-6 py-3">Date d'inscription</th>
-                                            <th scope="col" class="text-base px-6 py-3">Désignation</th>
-                                            <th scope="col" class="text-base px-6 py-3">Quantité</th>
-                                            <th scope="col" class="text-base px-6 py-3">Marque</th>
-                                            <th scope="col" class="text-base px-6 py-3">Modèle</th>
-                                            <th scope="col" class="text-base px-6 py-3">Service</th>
-                                            <th scope="col" class="text-base px-6 py-3">Date d'affectation</th>
-                                            <th scope="col" class="text-base px-6 py-3">Numéro de série</th>
-                                            <th scope="col" class="text-base px-6 py-3">Type</th>
-                                            <th scope="col" class="text-base px-6 py-3">Origine</th>
-                                            <th scope="col" class="text-base px-6 py-3">Observation</th>
-                                            <th scope="col" class="text-base px-6 py-3">État</th>
-                                            <th scope="col" class="text-base px-6 py-3">Numéro BL</th>
-                                            <th scope="col" class="text-base px-6 py-3">Numéro Marché</th>
-                                            <th scope="col" class="text-base px-6 py-3">Nom société</th>
-                                            <th scope="col" class="text-base px-6 py-3">Actions</th>
+                                            <th scope="col" class="text-sm px-6 py-3">N d'inventaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Date d'inscription</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Désignation</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Quantité</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Marque</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Modèle</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Affectation</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Date d'affectation</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Série</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Type</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Origine</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Observation</th>
+                                            <th scope="col" class="text-sm px-6 py-3">État</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Numéro BL</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Numéro Marché</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Nom société</th>
+                                            <th scope="col" class="text-sm px-6 py-3">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -120,7 +120,7 @@
                     </div>
                 </div>
             </div>
-            @include('pages.components.footer')
+            @include('components.footer')
 
         </div>
         {{-- </div> --}}
@@ -128,7 +128,7 @@
 @endsection
 
 @section('jslink')
-    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+
     <script>
         // Fonction de confirmation avant la suppression avec SweetAlert2
         function confirmDelete(materialId) {

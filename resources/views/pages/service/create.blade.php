@@ -4,7 +4,7 @@
 @section('content')
     <main class="h-full overflow-y-auto max-w-full pt-4">
         {{-- <div class="container full-container py-5 flex flex-col gap-6"> --}}
-            <div class="p-5">
+        <div class="p-5">
             <div class="grid grid-cols-1 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
                 <div class="col-span-2">
                     <div class="card">
@@ -37,8 +37,8 @@
                     </div>
                 </div>
             </div>
-            @include('pages.components.footer')
-            </div>
+            @include('components.footer')
+        </div>
         {{-- </div> --}}
     </main>
 @endsection

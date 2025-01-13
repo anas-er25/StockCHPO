@@ -37,7 +37,15 @@ Route::group(["middleware" => "auth"], function () {
         Route::get('/materiels/{id}/edit', 'edit')->name('edit');
         Route::put('/materiels/{id}', 'update')->name('update');
         Route::get('/materiels/{id}', 'show')->name('show');
+        Route::get('/materials/{id}', 'getMaterial')->name('getMaterial');
+        Route::get('/bondecharge', 'bondecharge')->name('bondecharge');
+        Route::post('/addbondecharge', 'storebondecharge')->name('storebondecharge');
+        Route::get('/allbondecharge', 'allbondecharge')->name('allbondecharge');
+        Route::get('/bondecharge/{id}/edit', 'bondechargeedit')->name('bondechargeedit');
+        Route::put('/bondecharge/{id}', 'bondechargeupdate')->name('bondechargeupdate');
+        Route::delete('/bondecharge/{id}', 'bondechargedestroy')->name('bondechargedestroy');
         Route::get('/materiels/export-pdf/{id}', 'exportPDF')->name('export_pdf');
+        Route::get('/bondechargePDF/export-pdf/{id}', 'bondechargePDF')->name('bondechargePDF');
         Route::delete('/materiels/{id}', 'destroy')->name('destroy');
     });
 
