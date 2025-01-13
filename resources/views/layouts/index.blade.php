@@ -11,7 +11,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
     <!-- Core Css -->
     <link rel="stylesheet" href="{{ asset('/assets/css/theme.css') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+
     @yield('csslink')
 </head>
 
@@ -41,9 +45,23 @@
     <script src="./assets/js/sidebarmenu.js"></script>
     <script src="./assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="./assets/js/dashboard.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+
     <script>
+        $(document).ready(function() {
+            // Initialiser DataTables
+            $('#table').DataTable({
+                paging: true, // Activer la pagination
+                searching: true, // Activer la barre de recherche
+                info: true, // Afficher des informations sur les résultats
+                responsive: true, // Rendre la table responsive
+            });
+        });
         window.onload = function() {
-            @if(session('success'))
+            @if (session('success'))
                 Swal.fire({
                     icon: 'success',
                     title: 'Succès!',
@@ -51,7 +69,7 @@
                     showConfirmButton: false,
                     timer: 1500
                 });
-            @elseif(session('error'))
+            @elseif (session('error'))
                 Swal.fire({
                     icon: 'error',
                     title: 'Erreur!',

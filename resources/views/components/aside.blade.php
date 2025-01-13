@@ -1,7 +1,7 @@
   <aside id="application-sidebar-brand"
       class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full  transform hidden xl:block xl:translate-x-0 xl:end-auto xl:bottom-0 fixed top-0 with-vertical h-screen z-[999] flex-shrink-0 border-r-[1px] w-[270px] border-gray-400  bg-white left-sidebar   transition-all duration-300">
       <div class="p-5">
-          <a href="{{route('dashboard')}}" class="text-nowrap">
+          <a href="{{ route('dashboard') }}" class="text-nowrap">
               <b class="text-2xl">StockPro</b>
           </a>
       </div>
@@ -21,10 +21,11 @@
                           </a>
                       </li>
 
-                      {{-- <li class="text-xs font-bold mb-4 mt-8">
-                          <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
-                          <span>UI COMPONENTS</span>
-                      </li> --}}
+                      <li class="text-xs font-bold mb-4 mt-4">
+                          {{-- <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
+                          <span>UI COMPONENTS</span> --}}
+                          <hr>
+                      </li>
 
                       <li class="sidebar-item">
                           <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
@@ -34,79 +35,25 @@
                           </a>
                       </li>
 
-                         <li class="sidebar-item">
+                      <li class="sidebar-item">
                           <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('services.index') }}">
                               <i class="ti ti-briefcase text-xl"></i> <span>Services</span>
-
                           </a>
                       </li>
 
                       {{-- <li class="sidebar-item">
                           <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="./components/alerts.html">
-                              <i class="ti ti-alert-circle  text-xl"></i> <span>Alerts</span>
-                          </a>
-                      </li>
-
-                      <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="./components/cards.html">
-                              <i class="ti ti-cards  text-xl"></i> <span>Card</span>
-                          </a>
-                      </li>
-
-                      <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="./components/forms.html">
-                              <i class="ti ti-file-description  text-xl"></i> <span>Forms</span>
-                          </a>
-                      </li>
-
-                      <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="./components/typography.html">
-                              <i class="ti ti-typography text-xl"></i> <span>Typography</span>
-                          </a>
-                      </li>
-
-                      <li class="text-xs font-bold mb-4 mt-8">
-                          <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
-                          <span>AUTH</span>
-                      </li>
-
-                      <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="./pages/authentication-login.html">
-                              <i class="ti ti-login  text-xl"></i> <span>Login</span>
-                          </a>
-                      </li>
-
-                      <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="./pages/authentication-register.html">
-                              <i class="ti ti-user-plus  text-xl"></i> <span>Register</span>
-                          </a>
-                      </li>
-
-                      <li class="text-xs font-bold mb-4 mt-8">
-                          <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
-                          <span>EXTRA</span>
-                      </li>
-
-                      <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="./pages/icons.html">
-                              <i class="ti ti-mood-happy  text-xl"></i> <span>Icons</span>
-                          </a>
-                      </li>
-
-                      <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="./pages/sample-page.html">
-                              <i class="ti ti-aperture  text-xl"></i> <span>Sample Page</span>
+                              href="{{ route('materiels.bondecharge') }}">
+                              <i class="ti ti-briefcase text-xl"></i> <span>Bon Décharge</span>
                           </a>
                       </li> --}}
+                       <li class="sidebar-item">
+                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
+                              href="{{ route('materiels.allbondecharge') }}">
+                              <i class="ti ti-briefcase text-xl"></i> <span>Bon Décharge</span>
+                          </a>
+                      </li>
 
                   </ul>
               </nav>

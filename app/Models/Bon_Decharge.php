@@ -14,22 +14,20 @@ class Bon_Decharge extends Model
         'qte',
         'num_serie',
         'cedant_id',
-        'cessionnaire_id',
+        'cessionnaire',
         'motif'
     ];
 
     public function materiel()
     {
-        return $this->belongsTo(Material::class);
+        return $this->belongsTo(Material::class, 'id');
     }
+
+
 
     public function cedant()
     {
         return $this->belongsTo(Service::class, 'cedant_id');
     }
 
-    public function cessionnaire()
-    {
-        return $this->belongsTo(Service::class, 'cessionnaire_id');
-    }
 }

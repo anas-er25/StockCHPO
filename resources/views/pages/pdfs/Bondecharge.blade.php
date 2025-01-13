@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulletin de Cession</title>
+    <title>Bon Décharge</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,7 +95,7 @@
 <body>
 
     <div class="header">
-        <h2>Bulletin de Cession</h2>
+        <h2>Bon Décharge</h2>
     </div>
 
     <table class="table">
@@ -105,22 +105,21 @@
                 <th>Quantité</th>
                 <th>Numéro d'inventaire</th>
                 <th>Numéro de série</th>
-                <th>Marque</th>
-                <th>Modèle</th>
                 <th>Cédant</th>
                 <th>Cessionnaire</th>
+                <th>Motif de décharge</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>{{ $material->designation }}</td>
-                <td>{{ $material->qte }}</td>
-                <td>{{ explode('/', $material->num_inventaire)[0] }}</td>
-                <td>{{ $material->num_serie }}</td>
-                <td>{{ $material->marque }}</td>
-                <td>{{ $material->modele }}</td>
-                <td>CHPO <br> Bureau de matériel</td>
-                <td>{{ $material->service ? $material->service->nom : 'N/A' }}</td>
+                <td>{{ $bondecharge->material_id ? $bondecharge->materiel->designation : 'N/A' }}</td>
+                <td>{{ $bondecharge->qte }}</td>
+                <td>{{ $bondecharge->material_id ? explode('/', $bondecharge->materiel->num_inventaire)[0] : 'N/A' }}
+                </td>
+                <td>{{ $bondecharge->num_serie }}</td>
+                <td>{{ $bondecharge->service ? $bondecharge->service->nom : 'N/A' }}</td>
+                <td>CHPO</td>
+                <td>{{ $bondecharge->motif }}</td>
             </tr>
         </tbody>
     </table>
@@ -135,10 +134,10 @@
     <div class="signature">
         <div>
             <div><u>Bureau matériel </u></div>
-            <div><u>{{ $material->service ? $material->service->nom : 'N/A' }} </u></div>
+            <div><u>Chef PAA </u></div>
         </div>
         <div>
-            <div><u>Chef PAA </u></div>
+            <div><u>{{ $bondecharge->service ? $bondecharge->service->nom : 'N/A' }} </u></div>
             <div><u>Le Directeur du CHPO </u></div>
         </div>
     </div>
@@ -146,7 +145,10 @@
         <h4><u>Ampliations:</u></h4>
         <ul>
             <li>
-                {{ $material->service ? $material->service->nom : 'N/A' }}
+                Chef
+            </li>
+            <li>
+                {{ $bondecharge->service ? $bondecharge->service->nom : 'N/A' }}
             </li>
             <li>
                 Archives

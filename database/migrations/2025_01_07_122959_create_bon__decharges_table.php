@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('qte');
             $table->string('num_serie')->nullable();
             $table->foreignId('cedant_id')->constrained('services')->onDelete('cascade');
-            $table->foreignId('cessionnaire_id')->constrained('services')->onDelete('cascade');
+            $table->string('cessionnaire');
             $table->string('motif');
             $table->timestamps();
         });
