@@ -9,12 +9,13 @@ class Avis_Mvt extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['material_id', 'qte', 'cedant_id', 'cessionnaire_id'];
+    protected $fillable = ['material_id', 'qte', 'cedant_id', 'cessionnaire_id', 'motif'];
 
     public function materiel()
     {
-        return $this->belongsTo(Material::class);
+        return $this->belongsTo(Material::class, 'material_id');
     }
+
 
     public function cedant()
     {

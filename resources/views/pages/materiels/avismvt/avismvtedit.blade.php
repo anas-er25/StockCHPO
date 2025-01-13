@@ -1,7 +1,6 @@
-<!-- filepath: /c:/Users/Kival/Documents/Stages/Sidi Hssain Bennaceur/gestionstock/resources/views/pages/materiels/bondecharge.blade.php -->
 @extends('layouts.index')
 
-@section('title', 'Bon de Décharge')
+@section('title', 'Avis de mouvement')
 @section('csslink')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
@@ -20,7 +19,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('bondecharge.bondechargeupdate', $bondecharge->id) }}" method="POST" class="mt-6">
+                <form action="{{ route('avismvt.avismvtupdate', $avismvt->id) }}" method="POST" class="mt-6">
                     @csrf
                     @method('PUT')
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -29,53 +28,61 @@
                             <label for="material_id" class="block text-sm font-medium text-gray-700">Numéro
                                 d'inventaire:</label>
                             <input type="text" name="material" id="material"
-                                value="{{ old('material_id', $bondecharge->material_id ? $bondecharge->materiel->num_inventaire : 'N/A') }}"
+                                value="{{ old('material_id', $avismvt->material_id ? $avismvt->materiel->num_inventaire : 'N/A') }}"
                                 readonly
                                 class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             <x-input-error :messages="$errors->get('material_id')" class="mt-2" />
                         </div>
                         <input type="text" name="material_id" id="material_id"
-                            value="{{ old('material_id', $bondecharge->material_id) }}" class="hidden">
+                            value="{{ old('material_id', $avismvt->material_id) }}" class="hidden">
 
                         <div id="material-info">
                             <div>
                                 <label for="qte" class="block text-sm font-medium text-gray-700">Quantité:</label>
-                                <input type="number" name="qte" id="qte"
-                                    value="{{ old('qte', $bondecharge->qte) }}"
+                                <input type="number" name="qte" id="qte" value="{{ old('qte', $avismvt->qte) }}"
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 <x-input-error :messages="$errors->get('qte')" class="mt-2" />
                             </div>
+
                             <div>
-                                <label for="num_serie" class="block text-sm font-medium text-gray-700">Numéro de
-                                    série:</label>
-                                <input type="text" name="num_serie" id="num_serie"
-                                    value="{{ old('num_serie', $bondecharge->num_serie) }}"
-                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                <x-input-error :messages="$errors->get('num_serie')" class="mt-2" />
+                                <label for="cedant_id" class="block text-sm font-medium text-gray-700">Cédant:</label>
+                                <select name="cedant_id" id="cedant_id"
+                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                    aria-label="Sélectionner le Cédant">
+                                    <option value="">Sélectionner un Cédant</option>
+                                    @foreach ($services as $service)
+                                        <option value="{{ $service->id }}"
+                                            {{ old('cedant_id', $avismvt->cedant_id) == $service->id ? 'selected' : '' }}>
+                                            {{ $service->nom }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <x-input-error :messages="$errors->get('cedant_id')" class="mt-2" />
                             </div>
-                            <div>
-                                <label for="cedant" class="block text-sm font-medium text-gray-700">Cédant:</label>
-                                <input type="text" name="cedant" id="cedant"
-                                    value="{{ old('cedant', $bondecharge->cedant_id ? $bondecharge->cedant->nom : '') }}"
-                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                <x-input-error :messages="$errors->get('cedant')" class="mt-2" />
-                            </div>
-                            <!-- Champ caché pour envoyer l'ID du service -->
-                            <input type="hidden" name="cedant_id" id="cedant_id"
-                                value="{{ old('cedant_id', $bondecharge->cedant_id) }}">
+
                             <div>
                                 <label for="cessionnaire"
                                     class="block text-sm font-medium text-gray-700">Cessionnaire:</label>
-                                <input type="text" name="cessionnaire" id="cessionnaire"
-                                    value="{{ old('cessionnaire', $bondecharge->cessionnaire) }}"
-                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                <x-input-error :messages="$errors->get('cessionnaire')" class="mt-2" />
+                                <select name="cessionnaire_id" id="cessionnaire_id"
+                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                    aria-label="Sélectionner le Cessionnaire">
+                                    <option value="">Sélectionner un Cessionnaire</option>
+                                    @foreach ($services as $service)
+                                        <option value="{{ $service->id }}"
+                                            {{ old('cessionnaire_id', $avismvt->cessionnaire_id) == $service->id ? 'selected' : '' }}>
+                                            {{ $service->nom }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <x-input-error :messages="$errors->get('cessionnaire_id')" class="mt-2" />
                             </div>
+
+
                             <div>
                                 <label for="motif" class="block text-sm font-medium text-gray-700">Motif de
                                     décharge:</label>
                                 <textarea name="motif" id="motif" rows="3"
-                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ old('motif', $bondecharge->motif) }}</textarea>
+                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ old('motif', $avismvt->motif) }}</textarea>
                                 <x-input-error :messages="$errors->get('motif')" class="mt-2" />
                             </div>
                         </div>

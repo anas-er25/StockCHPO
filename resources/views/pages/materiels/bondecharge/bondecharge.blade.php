@@ -20,7 +20,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('materiels.storebondecharge') }}" method="POST" class="mt-6">
+                <form action="{{ route('bondecharge.storebondecharge') }}" method="POST" class="mt-6">
                     @csrf
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 

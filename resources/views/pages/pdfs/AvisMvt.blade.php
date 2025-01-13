@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bon Décharge</title>
+    <title>Avis de Mouvement</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,7 +95,7 @@
 <body>
 
     <div class="header">
-        <h2>Bon Décharge</h2>
+        <h2>Avis de Mouvement</h2>
     </div>
 
     <table class="table">
@@ -104,22 +104,20 @@
                 <th>Désignation</th>
                 <th>Quantité</th>
                 <th>Numéro d'inventaire</th>
-                <th>Numéro de série</th>
                 <th>Cédant</th>
                 <th>Cessionnaire</th>
-                <th>Motif de décharge</th>
+                <th>Motif de mouvement</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>{{ $bondecharge->material_id ? $bondecharge->materiel->designation : 'N/A' }}</td>
-                <td>{{ $bondecharge->qte }}</td>
-                <td>{{ $bondecharge->material_id ? explode('/', $bondecharge->materiel->num_inventaire)[0] : 'N/A' }}
+                <td>{{ $avismvt->material_id ? $avismvt->materiel->designation : 'N/A' }}</td>
+                <td>{{ $avismvt->qte }}</td>
+                <td>{{ $avismvt->material_id ? explode('/', $avismvt->materiel->num_inventaire)[0] : 'N/A' }}
                 </td>
-                <td>{{ $bondecharge->num_serie }}</td>
-                <td>{{ $bondecharge->service ? $bondecharge->service->nom : 'N/A' }}</td>
-                <td>CHPO</td>
-                <td>{{ $bondecharge->motif }}</td>
+                <td>{{ $avismvt->cedant_id ? $avismvt->cedant->nom : 'N/A' }}</td>
+                <td>{{ $avismvt->cessionnaire_id ? $avismvt->cessionnaire->nom : 'N/A' }}</td>
+                <td>{{ $avismvt->motif }}</td>
             </tr>
         </tbody>
     </table>
@@ -133,11 +131,11 @@
 
     <div class="signature">
         <div>
-            <div><u>Bureau matériel </u></div>
-            <div><u>Chef PAA </u></div>
+            <div><u>{{ $avismvt->cessionnaire_id ? $avismvt->cessionnaire->nom : 'N/A' }}</u></div>
+            <div><u>{{ $avismvt->cedant_id ? $avismvt->cedant->nom : 'N/A' }}</u></div>
         </div>
         <div>
-            <div><u>{{ $bondecharge->service ? $bondecharge->service->nom : 'N/A' }} </u></div>
+            <div><u>Chef PAA</u></div>
             <div><u>Le Directeur du CHPO </u></div>
         </div>
     </div>
@@ -145,10 +143,10 @@
         <h4><u>Ampliations:</u></h4>
         <ul>
             <li>
-                Chef
+                {{ $avismvt->cedant_id ? $avismvt->cedant->nom : 'N/A' }}
             </li>
             <li>
-                {{ $bondecharge->service ? $bondecharge->service->nom : 'N/A' }}
+                Bureau materiel
             </li>
             <li>
                 Archives
