@@ -32,7 +32,7 @@
         .table th,
         .table td {
             padding: 8px;
-            text-align: left;
+            text-align: center;
             border: 1px solid #000;
         }
 

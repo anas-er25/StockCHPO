@@ -20,14 +20,11 @@ class Bon_Decharge extends Model
 
     public function materiel()
     {
-        return $this->belongsTo(Material::class, 'id');
+        return $this->belongsTo(Material::class, 'material_id');
     }
-
-
 
     public function cedant()
     {
         return $this->belongsTo(Service::class, 'cedant_id');
     }
-
 }

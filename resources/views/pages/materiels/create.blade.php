@@ -117,6 +117,7 @@
                                         </select>
                                         <x-input-error :messages="$errors->get('service_id')" class="mt-2" />
                                     </div>
+
                                     <!-- Date d'affectation -->
                                     <div>
                                         <label for="date_affectation" class="block text-sm font-medium text-gray-700">Date

@@ -11,7 +11,7 @@
                         <div class="card-body">
                             <div class="flex justify-between items-center">
                                 <h2 class="text-xl font-semibold">Liste des bons de décharge</h2>
-                                <a href="{{ route('materiels.bondecharge') }}"
+                                <a href="{{ route('bondecharge.bondecharge') }}"
                                     class="btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 px-4 py-2 rounded-md">
                                     Ajouter un bon de décharge
                                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20"
@@ -27,45 +27,45 @@
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="text-sm px-6 py-3">Numéro d'inventaire</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Quantité</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Numéro de série</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Motif</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Cédant</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Cessionnaire</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Fait le</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Actions</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Numéro d'inventaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Quantité</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Numéro de série</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Motif</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Cédant</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Cessionnaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Fait le</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse ($bonDecharges as $bondecharge)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                                <td class="px-6 py-4">
+                                                <td class="px-6 py-4 text-center">
                                                     {{ $bondecharge->material_id ? $bondecharge->materiel->num_inventaire : 'N/A' }}
                                                 </td>
-                                                <td class="px-6 py-4">{{ $bondecharge->qte }}</td>
-                                                <td class="px-6 py-4">{{ $bondecharge->num_serie }}</td>
-                                                <td class="px-6 py-4 motif" title="{{ $bondecharge->motif }}">
+                                                <td class="px-6 py-4 text-center">{{ $bondecharge->qte }}</td>
+                                                <td class="px-6 py-4 text-center">{{ $bondecharge->num_serie }}</td>
+                                                <td class="px-6 py-4 text-center motif" title="{{ $bondecharge->motif }}">
                                                     {{ Str::limit($bondecharge->motif, 28) }}
                                                 </td>
-                                                <td class="px-6 py-4">
+                                                <td class="px-6 py-4 text-center">
                                                     {{ $bondecharge->cedant_id ? $bondecharge->cedant->nom : '' }}
                                                 </td>
-                                                <td class="px-6 py-4">{{ $bondecharge->cessionnaire }}</td>
-                                                <td class="px-6 py-4 motif" title="{{ $bondecharge->updated_at }}">
+                                                <td class="px-6 py-4 text-center">{{ $bondecharge->cessionnaire }}</td>
+                                                <td class="px-6 py-4 text-center motif" title="{{ $bondecharge->updated_at }}">
                                                     {{ $bondecharge->updated_at->format('d/m/Y') }}
                                                 </td>
 
-                                                <td class="px-6 py-4 flex items-center">
+                                                <td class="px-6 py-4 flex items-center justify-center">
                                                     <!-- Icône de modification -->
-                                                    <a href="{{ route('materiels.bondechargeedit', $bondecharge->id) }}"
+                                                    <a href="{{ route('bondecharge.bondechargeedit', $bondecharge->id) }}"
                                                         class="cursor-pointer mr-4">
                                                         <i class="fa-solid fa-pen text-blue-600 hover:text-blue-700"></i>
                                                     </a>
 
                                                     <!-- Formulaire de suppression -->
                                                     <form
-                                                        action="{{ route('materiels.bondechargedestroy', $bondecharge->id) }}"
+                                                        action="{{ route('bondecharge.bondechargedestroy', $bondecharge->id) }}"
                                                         method="POST" class="inline"
                                                         id="delete-form-{{ $bondecharge->id }}">
                                                         @csrf
@@ -78,7 +78,7 @@
                                                     </form>
 
                                                     <!-- Icône de téléchargement PDF -->
-                                                    <a href="{{ route('materiels.bondechargePDF', $bondecharge->id) }}"
+                                                    <a href="{{ route('bondecharge.bondechargePDF', $bondecharge->id) }}"
                                                         class="cursor-pointer mr-4">
                                                         <i
                                                             class="fa-solid fa-download text-blue-600 hover:text-blue-700"></i>

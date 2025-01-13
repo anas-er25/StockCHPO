@@ -306,7 +306,7 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-2 gap-6">
                 <div class="card overflow-hidden">
                     <div class="relative">
                         <a href="javascript:void(0)">
@@ -503,9 +503,13 @@
                         </div>
                     </div>
                 </div>
-            </div> --}}
-            @include('components.footer')
-
+            </div>
+            <footer>
+                <p class="text-base text-gray-500 font-normal p-3 text-center">
+                    Design and Developed by <a href="https://adminmart.com/" target="_blank"
+                        class="text-blue-600 underline hover:text-blue-700">AdminMart.com</a>
+                </p>
+            </footer>
         </div>
         {{-- </div> --}}
 
