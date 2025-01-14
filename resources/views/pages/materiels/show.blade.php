@@ -89,7 +89,7 @@
                                             value="{{ $material->service->nom ?? 'Non attribué' }}" readonly
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     </div>
-                                    
+
                                     <!-- Date d'affectation -->
                                     <div>
                                         <label for="date_affectation" class="block text-sm font-medium text-gray-700">Date
@@ -163,7 +163,7 @@
                     </div>
                 </div>
             </div>
-            @include('components.footer')
+            <x-footer />
 
         </div>
     </main>

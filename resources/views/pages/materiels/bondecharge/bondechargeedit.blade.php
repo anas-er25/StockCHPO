@@ -89,6 +89,7 @@
                     </div>
                 </form>
             </div>
+            <x-footer />
         </div>
     </main>
 

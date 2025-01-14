@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            @include('components.footer')
+            <x-footer />
         </div>
         {{-- </div> --}}
     </main>

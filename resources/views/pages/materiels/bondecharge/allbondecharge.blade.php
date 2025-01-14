@@ -27,7 +27,8 @@
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Numéro d'inventaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Numéro d'inventaire
+                                            </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Quantité</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Numéro de série</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Motif</th>
@@ -52,7 +53,8 @@
                                                     {{ $bondecharge->cedant_id ? $bondecharge->cedant->nom : '' }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center">{{ $bondecharge->cessionnaire }}</td>
-                                                <td class="px-6 py-4 text-center motif" title="{{ $bondecharge->updated_at }}">
+                                                <td class="px-6 py-4 text-center motif"
+                                                    title="{{ $bondecharge->updated_at }}">
                                                     {{ $bondecharge->updated_at->format('d/m/Y') }}
                                                 </td>
 
@@ -101,7 +103,7 @@
                     </div>
                 </div>
             </div>
-            @include('components.footer')
+            <x-footer />
 
         </div>
         {{-- </div> --}}

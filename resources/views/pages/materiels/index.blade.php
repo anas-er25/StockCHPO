@@ -61,7 +61,8 @@
                                                 </td>
                                                 <td class="px-6 py-4 text-center">{{ $material->date_affectation }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->num_serie }}</td>
-                                                <td class="px-6 py-4 text-center observation" title="{{ $material->observation }}">
+                                                <td class="px-6 py-4 text-center observation"
+                                                    title="{{ $material->observation }}">
                                                     {{ Str::limit($material->observation, 28) }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center">{{ $material->type }}</td>
@@ -120,7 +121,7 @@
                     </div>
                 </div>
             </div>
-            @include('components.footer')
+            <x-footer />
 
         </div>
         {{-- </div> --}}
