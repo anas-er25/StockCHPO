@@ -1,47 +1,80 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Login</title>
+</head>
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+<body class="font-sans antialiased">
+    <div class="font-sans antialiased">
+        <div class="bg-gray-100 flex items-center justify-center min-h-screen">
+            <div class="relative flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
+                <div class="relative w-full px-6 lg:px-8 max-w-full sm:max-w-md md:max-w-lg lg:max-w-7xl">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <main class="mt-6">
+        <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+            <div class="bg-white shadow-xl rounded-lg p-8 max-w-lg w-full">
+                <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+                    <img class="mx-auto h-10 w-auto"
+                        src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="Votre entreprise">
+                    <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
+                        Connectez-vous à votre compte
+                    </h2>
+                </div>
+
+                <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                    <form class="space-y-6" action="{{ route('login') }}" method="POST">
+                        @csrf
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-900">Adresse
+                                e-mail</label>
+                            <div class="mt-2">
+                                <input type="email" name="email" id="email" value="{{ old('email') }}" required
+                                    autofocus autocomplete="username"
+                                    class="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm">
+                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-900">Mot de
+                                passe</label>
+                            <div class="mt-2">
+                                <input type="password" name="password" id="password" required
+                                    autocomplete="current-password"
+                                    class="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm">
+                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <button type="submit"
+                                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                Se connecter
+                            </button>
+                        </div>
+                    </form>
+
+                    <p class="mt-10 text-center text-sm text-gray-500">
+                        @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}"
+                                class="font-semibold text-indigo-600 hover:text-indigo-500">Mot de passe
+                                oublié ?</a>
+                        @endif
+                    </p>
+                </div>
+            </div>
         </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+    </main>
+    <footer class="py-16 text-center text-sm text-gray-700">
+        Gestion de stock v0.0.1
+    </footer>
+                </div>
+            </div>
         </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    </div>
+</body>
+</html>

@@ -26,13 +26,13 @@
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                 <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                     <tr>
-                                        <th scope="col" class="text-base px-6 py-3 text-center">
+                                        <th scope="col" class="text-sm px-6 py-3 text-center">
                                             Nom du service
                                         </th>
-                                        <th scope="col" class="text-base px-6 py-3 text-center">
+                                        <th scope="col" class="text-sm px-6 py-3 text-center">
                                             Date de création
                                         </th>
-                                        <th scope="col" class="text-base px-6 py-3 text-center">
+                                        <th scope="col" class="text-sm px-6 py-3 text-center">
                                             Actions
                                         </th>
                                     </tr>
@@ -77,6 +77,7 @@
                     </div>
                 </div>
             </div>
+            <x-footer />
         </div>
         {{-- </div> --}}
     </main>
