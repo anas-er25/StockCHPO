@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bon_Decharge;
+use App\Models\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use App\Models\Material;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MaterialController extends Controller
 {
@@ -64,6 +66,14 @@ class MaterialController extends Controller
 
         $material->save();
 
+        // Créer le log
+        Log::create([
+            'action' => 'create',
+            'table_name' => 'materials',
+            'record_id' => $material->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
         return redirect(route('materiels.index'))->with('success', 'Matériele créé avec succès.');
     }
 
@@ -115,6 +125,14 @@ class MaterialController extends Controller
         $material->nom_societe = $request->nom_societe;
 
         $material->save();
+        // Créer le log
+        Log::create([
+            'action' => 'update',
+            'table_name' => 'materials',
+            'record_id' => $material->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
 
         return redirect(route('materiels.index'))->with('success', 'Matériele modifié avec succès.');
     }
@@ -130,7 +148,14 @@ class MaterialController extends Controller
     {
         $material = Material::find($id);
         $material->delete();
-
+        // Créer le log
+        Log::create([
+            'action' => 'delete',
+            'table_name' => 'materials',
+            'record_id' => $material->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
         return redirect(route('materiels.index'))->with('success', 'Matériele supprimé avec succès.');
     }
 
@@ -149,11 +174,18 @@ class MaterialController extends Controller
 
         // Sanitize the filename to remove invalid characters
         $filename = 'bulletin_de_cession_' . preg_replace('/[\/\\\\]/', '_', $material->num_inventaire) . '.pdf';
-
+        // Créer le log
+        Log::create([
+            'action' => 'export',
+            'table_name' => 'materials',
+            'record_id' => $material->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
         // Return the generated PDF as a download
         return $pdf->download($filename);
     }
 
     // ===================================================================================================================================
-   
+
 }

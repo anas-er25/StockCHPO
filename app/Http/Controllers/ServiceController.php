@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Service;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -24,9 +26,21 @@ class ServiceController extends Controller
             'nom' => 'required'
         ]);
 
-        Service::create($request->all());
+        // Créer le service
+        $service = Service::create($request->all());
+
+        // Créer le log
+        Log::create([
+            'action' => 'create',
+            'table_name' => 'services',
+            'record_id' => $service->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
+
         return redirect()->route('services.index')->with('success', 'Service créé avec succès.');
     }
+
 
     public function edit($id)
     {
@@ -42,6 +56,14 @@ class ServiceController extends Controller
 
         $service = Service::find($id);
         $service->update($request->all());
+        // Créer le log
+        Log::create([
+            'action' => 'update',
+            'table_name' => 'services',
+            'record_id' => $service->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
         return redirect()->route('services.index')->with('success', 'Service modifié avec succès.');
     }
 
@@ -50,6 +72,14 @@ class ServiceController extends Controller
         $service = Service::find($id);
         if ($service) {
             $service->delete();
+            // Créer le log
+            Log::create([
+                'action' => 'delete',
+                'table_name' => 'services',
+                'record_id' => $service->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
             return redirect()->route('services.index')->with('success', 'Service supprimé avec succès.');
         } else {
             return redirect()->route('services.index')->with('error', 'Service non trouvé.');
