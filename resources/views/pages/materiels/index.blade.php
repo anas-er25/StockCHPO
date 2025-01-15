@@ -1,5 +1,5 @@
 @extends('layouts.index')
-@section('title', 'Liste des Matériels')
+@section('title', 'Liste de Matériels')
 
 @section('content')
     <main class="h-full overflow-y-auto max-w-full pt-4">
@@ -27,11 +27,11 @@
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="text-sm px-6 py-3">N d'inventaire</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Date d'inscription</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Désignation</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Quantité</th>
-                                            <th scope="col" class="text-sm px-6 py-3">Marque</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N d'inventaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Désignation</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Quantité</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Marque</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Modèle</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Affectation</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Date d'affectation</th>
@@ -152,5 +152,6 @@
                 }
             });
         }
+
     </script>
 @endsection

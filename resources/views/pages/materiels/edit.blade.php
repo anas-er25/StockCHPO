@@ -10,7 +10,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="flex justify-between items-center">
-                                <h2 class="text-xl font-semibold">Créer un materiel</h2>
+                                <h2 class="text-xl font-semibold">Modifier un materiel</h2>
                                 <a href="{{ route('materiels.index') }}"
                                     class="btn bg-blue-600 text-white hover:bg-blue-700">Liste des materiels</a>
                             </div>

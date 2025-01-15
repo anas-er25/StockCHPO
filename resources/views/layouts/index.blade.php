@@ -11,8 +11,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
     <!-- Core Css -->
     <link rel="stylesheet" href="{{ asset('/assets/css/theme.css') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    @yield('csslink')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        @yield('csslink')
 </head>
 
 <body class=" bg-white">
@@ -33,7 +36,8 @@
         <!--end of project-->
     </main>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="./assets/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="./assets/libs/iconify-icon/dist/iconify-icon.min.js"></script>
     <script src="./assets/libs/@preline/dropdown/index.js"></script>
@@ -43,7 +47,7 @@
     <script src="./assets/js/dashboard.js"></script>
     <script>
         window.onload = function() {
-            @if(session('success'))
+            @if (session('success'))
                 Swal.fire({
                     icon: 'success',
                     title: 'Succès!',
@@ -51,7 +55,7 @@
                     showConfirmButton: false,
                     timer: 1500
                 });
-            @elseif(session('error'))
+            @elseif (session('error'))
                 Swal.fire({
                     icon: 'error',
                     title: 'Erreur!',
@@ -61,6 +65,11 @@
                 });
             @endif
         };
+        // Add datatable to the table with the id 'table'
+        $(document).ready(function() {
+            $('#table').DataTable();
+            
+        });
     </script>
     @yield('jslink')
 </body>

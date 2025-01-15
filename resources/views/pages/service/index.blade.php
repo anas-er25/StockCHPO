@@ -1,5 +1,5 @@
 @extends('layouts.index')
-@section('title', 'Services')
+@section('title', 'Liste de Services')
 
 @section('content')
     <main class="h-full overflow-y-auto max-w-full pt-4">
@@ -23,7 +23,7 @@
                         </div>
 
                         <div class="relative overflow-x-auto mt-8">
-                            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                 <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                     <tr>
                                         <th scope="col" class="text-sm px-6 py-3 text-center">
