@@ -1412,6 +1412,26 @@ select {
         185 28 28 / var(--tw-bg-opacity)
     ); /* Rouge plus foncé */
 }
+
+
+.bg-green-400 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(134 239 172 / var(--tw-bg-opacity)); /* Vert clair */
+}
+
+
+.bg-green-500 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(34 197 94 / var(--tw-bg-opacity)); /* Vert moyen */
+}
+
+
+.bg-green-700 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(22 163 74 / var(--tw-bg-opacity)); /* Vert foncé */
+}
+
+
 .bg-teal-400 {
     --tw-bg-opacity: 1;
     background-color: rgb(230 255 250 / var(--tw-bg-opacity));

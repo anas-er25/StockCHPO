@@ -35,6 +35,7 @@ Route::group(["middleware" => "auth"], function () {
     Route::group(['controller' => MaterialController::class, 'as' => 'materiels.'], function () {
         // Materiel CRUD
         Route::get('/materiels', 'index')->name('index');
+        Route::get('/stock', 'stock')->name('stock');
         Route::get('/addmateriel', 'create')->name('create');
         Route::post('/addmateriel', 'store')->name('store');
         Route::get('/materiels/{id}/edit', 'edit')->name('edit');
@@ -92,6 +93,12 @@ Route::group(["middleware" => "auth"], function () {
     /* -------------------------------------------------------------------------- */
     Route::group(['controller' => FeuilleReformeController::class, 'as' => 'reforme.'], function () {
         // Reforme
+        Route::get('/allreforme', 'reformelist')->name('allreforme');
+        Route::get('/reforme', 'addreforme')->name('addreforme');
+        Route::post('/addreforme', 'storereforme')->name('storereforme');
+        Route::get('/reforme/{id}/edit', 'reformeedit')->name('reformeedit');
+        Route::put('/reforme/{id}', 'reformeupdate')->name('reformeupdate');
+        Route::delete('/reforme/{id}', 'reformedelete')->name('reformedestroy');
 
         // Export PDF
         Route::get('/reformePDF/export-pdf', 'reformePDF')->name('reformePDF');
