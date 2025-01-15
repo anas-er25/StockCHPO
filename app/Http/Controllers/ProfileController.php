@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Log;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -76,8 +77,17 @@ class ProfileController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role'=>'subadmin',
+            'role' => 'subadmin',
             'password' => Hash::make($request->password),
+        ]);
+
+        // Créer le log
+        Log::create([
+            'action' => 'create',
+            'table_name' => 'users',
+            'record_id' => $user->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
         ]);
 
         return Redirect::route('profile.edit')->with('status', 'Utilisateur créé avec le rôle de subadmin');

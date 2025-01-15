@@ -9,10 +9,10 @@ class FeuilleReforme extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['material_id', 'motif', 'date_reforme'];
+    protected $fillable = ['material_id', 'motif', 'date_reforme', 'qte', 'designation'];
 
     public function materiel()
     {
-        return $this->belongsTo(Material::class);
+        return $this->belongsTo(Material::class, 'material_id');
     }
 }

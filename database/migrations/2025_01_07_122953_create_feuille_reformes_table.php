@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('feuille_reformes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('material_id')->constrained()->onDelete('cascade');
+            $table->integer('qte');
+            $table->string('designation');
             $table->string('motif');
             $table->date('date_reforme');
             $table->timestamps();

@@ -58,8 +58,15 @@
                       </li>
                       <li class="sidebar-item">
                           <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
-                              href="{{ route('reforme.reformePDF') }}">
-                              <i class="fas fa-file-pdf"></i> <span>Feuille de réforme</span>
+                              href="{{ route('reforme.allreforme') }}">
+                              <i class="fas fa-recycle"></i> <span>Matériel réformé</span>
+                          </a>
+                      </li>
+                      <li class="sidebar-item">
+                          <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
+                              href="{{ route('materiels.stock') }}">
+                              <i class="fas fa-shopping-cart"></i> <span>Consulter stock</span>
+
                           </a>
                       </li>
 

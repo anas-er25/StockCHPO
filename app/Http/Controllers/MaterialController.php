@@ -186,6 +186,13 @@ class MaterialController extends Controller
         return $pdf->download($filename);
     }
 
+    public function stock()
+    {
+
+        $materiels = Material::whereNull('service_id')->get();
+        return view('pages.materiels.stock', ['materiels' => $materiels]);
+    }
+
     // ===================================================================================================================================
 
 }

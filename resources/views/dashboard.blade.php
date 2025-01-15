@@ -7,7 +7,7 @@
         {{-- <div class="container full-container py-5 flex flex-col gap-6"> --}}
         <div class="p-5">
             <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-                {{-- <div class="col-span-2">
+                <div class="col-span-2">
                     <div class="card">
                         <div class="card-body">
                             <div class="sm:flex block justify-between mb-5">
@@ -24,7 +24,7 @@
                             <div id="chart"></div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
                 <div class="flex flex-col gap-6">
                     <div class="card">
