@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Log extends Model
 {
     use HasFactory;
@@ -20,5 +21,10 @@ class Log extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'performed_by');
+    }
+
+    public function materiel()
+    {
+        return $this->belongsTo(Material::class, 'record_id');
     }
 }

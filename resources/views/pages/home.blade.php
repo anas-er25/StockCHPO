@@ -15,8 +15,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center">
-                    {{-- <img class="h-8 w-8 text-blue-600" src="path_to_building_icon.svg" alt="Icône de bâtiment"> --}}
-                    <span class="ml-2 text-xl font-bold text-gray-900">StockPro</span>
+                    <div class="p-5 justify-center flex items-center">
+                        <a href="{{ route('dashboard') }}" class="text-nowrap">
+                            <b class="text-2xl text-center">Stock<span class="text-green-500">Pro</span></b>
+                        </a>
+                    </div>
+
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#features" class="text-gray-600 hover:text-gray-900">Fonctionnalités</a>
