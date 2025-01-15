@@ -46,4 +46,9 @@ class Material extends Model
     {
         return $this->hasMany(Avis_Mvt::class);
     }
+
+    public function logs()
+    {
+        return $this->hasMany(Log::class, 'record_id');
+    }
 }

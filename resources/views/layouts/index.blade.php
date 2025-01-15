@@ -4,6 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="Gestion de stock CHPO">
+    <meta name="author" content="Anas ER-RAKIBI">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <meta name="bingbot" content="noindex, nofollow">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="shortcut icon" href="{{asset('/assets/images/logos/favicon.png')}}" type="image/x-icon">
 
     <title>@yield('title', 'app.name')</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
@@ -68,7 +78,7 @@
         // Add datatable to the table with the id 'table'
         $(document).ready(function() {
             $('#table').DataTable();
-            
+
         });
     </script>
     @yield('jslink')

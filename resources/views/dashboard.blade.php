@@ -6,7 +6,7 @@
     <main class="h-full overflow-y-auto  max-w-full  pt-4">
         {{-- <div class="container full-container py-5 flex flex-col gap-6"> --}}
         <div class="p-5">
-            <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+            {{-- <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
                 <div class="col-span-2">
                     <div class="card">
                         <div class="card-body">
@@ -87,9 +87,9 @@
                 </div>
 
 
-            </div>
+            </div> --}}
             <div class="mt-2 grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-body">
                         <h4 class="text-gray-600 text-lg font-semibold mb-6">Recent Transactions</h4>
                         <ul class="timeline-widget relative">
@@ -193,112 +193,74 @@
 
                         </ul>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col-span-2">
                     <div class="card h-full">
                         <div class="card-body">
-                            <h4 class="text-gray-600 text-lg font-semibold mb-6">Recent Transaction</h4>
+                            <h4 class="text-gray-600 text-lg font-semibold mb-6">Journal des Activités</h4>
                             <div class="relative overflow-x-auto">
-                                <!-- table -->
-                                <table class="text-left w-full whitespace-nowrap text-sm">
+
+                                <table id="table" class="text-left w-full whitespace-nowrap text-sm">
                                     <thead class="text-gray-700">
                                         <tr class="font-semibold text-gray-600">
-                                            <th scope="col" class="p-4">Id</th>
-                                            <th scope="col" class="p-4">Assigned</th>
-                                            <th scope="col" class="p-4">Name</th>
-                                            <th scope="col" class="p-4">Priority</th>
-                                            <th scope="col" class="p-4">Budget</th>
+                                            <th scope="col" class="p-4 text-center">Id</th>
+                                            <th scope="col" class="p-4 text-center">Fait par</th>
+                                            <th scope="col" class="p-4 text-center">Action</th>
+                                            <th scope="col" class="p-4 text-center">Table</th>
+                                            <th scope="col" class="p-4 text-center">Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="p-4 font-semibold text-gray-600 ">1</td>
-                                            <td class="p-4">
-                                                <div class="flex flex-col gap-1">
-                                                    <h3 class=" font-semibold text-gray-600">Sunil Joshi
-                                                    </h3>
-                                                    <span class="font-normal text-gray-500">Web
-                                                        Designer</span>
-                                                </div>
-                                            </td>
-                                            <td class="p-4">
-                                                <span class="font-normal  text-gray-500">Elite Admin</span>
-                                            </td>
-                                            <td class="p-4">
-                                                <span
-                                                    class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold bg-blue-600 text-white">Low</span>
-                                            </td>
-                                            <td class="p-4">
-                                                <span class="font-semibold text-base text-gray-600">$3.9</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="p-4 font-semibold text-gray-600 ">2</td>
-                                            <td class="p-4">
-                                                <div class="flex flex-col gap-1">
-                                                    <h3 class="font-semibold text-gray-600">Andrew
-                                                        McDownland</h3>
-                                                    <span class="font-normal text-gray-500">Project
-                                                        Manager</span>
-                                                </div>
-                                            </td>
-                                            <td class="p-4">
-                                                <span class="font-normal text-gray-500">Real Homes WP
-                                                    Theme</span>
-                                            </td>
-                                            <td class="p-4">
-                                                <span
-                                                    class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-cyan-500">Medium</span>
-                                            </td>
-                                            <td class="p-4">
-                                                <span class="font-semibold text-base text-gray-600">$24.5k</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="p-4 font-semibold text-gray-600 ">3</td>
-                                            <td class="p-4">
-                                                <div class="flex flex-col gap-1">
-                                                    <h3 class="font-semibold text-gray-600">Christopher
-                                                        Jamil</h3>
-                                                    <span class="font-normal text-sm text-gray-500">Project
-                                                        Manager</span>
-                                                </div>
-                                            </td>
-                                            <td class="p-4">
-                                                <span class="font-normal text-gray-500">MedicalPro WP
-                                                    Theme</span>
-                                            </td>
-                                            <td class="p-4 ">
-                                                <span
-                                                    class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">High</span>
-                                            </td>
-                                            <td class="p-4">
-                                                <span class="font-semibold text-base text-gray-600">$12.8k</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="p-4 font-semibold text-gray-600 ">4</td>
-                                            <td class="p-4">
-                                                <div class="flex flex-col gap-1">
-                                                    <h3 class="font-semibold text-gray-600">Nirav Joshi
-                                                    </h3>
-                                                    <span class="font-normal text-sm text-gray-500">Frontend
-                                                        Engineer</span>
-                                                </div>
-                                            </td>
-                                            <td class="p-4">
-                                                <span class="font-normal text-sm text-gray-500">Hosting
-                                                    Press HTML</span>
-                                            </td>
-                                            <td class="p-4">
-                                                <span
-                                                    class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-teal-500">Critical</span>
-                                            </td>
-                                            <td class="p-4">
-                                                <span class="font-semibold text-base text-gray-600">$2.4k</span>
-                                            </td>
-                                        </tr>
+                                        @foreach ($logs as $log)
+                                            <tr>
+                                                <td class="p-4 font-semibold text-gray-600 text-center">
+                                                    {{ $log['numero_inventaire'] ?? $log['id'] }}
+                                                </td>
+                                                <td class="p-4 text-center">
+                                                    <div class="flex flex-col gap-1">
+                                                        <h3 class="font-semibold text-gray-600">{{ $log['user'] }}</h3>
+                                                    </div>
+                                                </td>
 
+
+                                                <td class="p-4 text-center">
+                                                    @if ($log['action'] == 'create')
+                                                        <span
+                                                            class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold bg-cyan-500 text-white">Ajouter</span>
+                                                    @elseif ($log['action'] == 'update')
+                                                        <span
+                                                            class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-blue-600">Modifier</span>
+                                                    @elseif ($log['action'] == 'delete')
+                                                        <span
+                                                            class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">Supprimer</span>
+                                                    @else
+                                                        <span
+                                                            class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-teal-500">Exporter</span>
+                                                    @endif
+                                                </td>
+                                                <td class="p-4 text-center">
+                                                    <span class="font-normal text-gray-500">
+                                                        @if ($log['table_name'] == 'services')
+                                                            Service
+                                                        @elseif ($log['table_name'] == 'users')
+                                                            Utilisateur
+                                                        @elseif ($log['table_name'] == 'materials')
+                                                            Matériel
+                                                        @elseif ($log['table_name'] == 'feuille_reformes')
+                                                            Feuille de réforme
+                                                        @elseif ($log['table_name'] == 'avis__mvts')
+                                                            Avis de mouvement
+                                                        @elseif ($log['table_name'] == 'bon_decharges')
+                                                            Bon de décharge
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td class="p-4 text-center">
+                                                    <span
+                                                        class="font-semibold text-base text-gray-600">{{ $log['performed_at'] }}</span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

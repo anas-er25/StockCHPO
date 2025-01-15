@@ -1,10 +1,6 @@
   <aside id="application-sidebar-brand"
       class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full  transform hidden xl:block xl:translate-x-0 xl:end-auto xl:bottom-0 fixed top-0 with-vertical h-screen z-[999] flex-shrink-0 border-r-[1px] w-[270px] border-gray-400  bg-white left-sidebar   transition-all duration-300">
-      <div class="p-5">
-          <a href="{{ route('dashboard') }}" class="text-nowrap">
-              <b class="text-2xl">StockPro</b>
-          </a>
-      </div>
+      <x-logo />
       <div class="scroll-sidebar" data-simplebar="">
           <div class="px-6 mt-8">
               <nav class=" w-full flex flex-col sidebar-nav">
