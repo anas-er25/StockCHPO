@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Avis_Mvt;
+use App\Models\Log;
 use App\Models\Material;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AvisMvtController extends Controller
 {
@@ -57,6 +59,14 @@ class AvisMvtController extends Controller
 
         // Sauvegarder les données
         $avismvt->save();
+        // Créer le log
+        Log::create([
+            'action' => 'create',
+            'table_name' => 'avis__mvts',
+            'record_id' => $avismvt->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
 
         // Retourner à la page de Avis de mouvement avec un message de succès
         return redirect(route('avismvt.allavismvt'))->with('success', 'Avis de mouvement créé avec succès.');
@@ -94,7 +104,14 @@ class AvisMvtController extends Controller
 
         // Sauvegarder les données
         $avismvt->save();
-
+        // Créer le log
+        Log::create([
+            'action' => 'update',
+            'table_name' => 'avis__mvts',
+            'record_id' => $avismvt->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
         // Retourner à la page de Avis de mouvement avec un message de succès
         return redirect(route('avismvt.allavismvt'))->with('success', 'Avis de mouvement modifié avec succès.');
     }
@@ -103,7 +120,14 @@ class AvisMvtController extends Controller
     {
         $avismvt = Avis_Mvt::find($id);
         $avismvt->delete();
-
+        // Créer le log
+        Log::create([
+            'action' => 'delete',
+            'table_name' => 'avis__mvts',
+            'record_id' => $avismvt->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
         return redirect(route('avismvt.allavismvt'))->with('success', 'Avis de mouvement supprimé avec succès.');
     }
 
@@ -113,7 +137,14 @@ class AvisMvtController extends Controller
 
         // Ensuite, vous passez la variable à la vue pour la génération du PDF
         $pdf = PDF::loadView('pages.pdfs.avismvt', compact('avismvt'));
-
+        // Créer le log
+        Log::create([
+            'action' => 'export',
+            'table_name' => 'avis__mvts',
+            'record_id' => $avismvt->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
         return $pdf->download('Avis_Mouvement' . preg_replace('/[\/\\\\]/', '_', $avismvt->materiel->num_inventaire) . '.pdf');
     }
 }

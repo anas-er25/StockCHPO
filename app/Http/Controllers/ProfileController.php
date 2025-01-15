@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -34,7 +36,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with('status', 'profil mis à jour');
     }
 
     /**
@@ -56,5 +58,28 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Add a new user with default 'subadmin' role.
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        // Validation des données d'entrée
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // Création d'un nouvel utilisateur
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role'=>'subadmin',
+            'password' => Hash::make($request->password),
+        ]);
+
+        return Redirect::route('profile.edit')->with('status', 'Utilisateur créé avec le rôle de subadmin');
     }
 }

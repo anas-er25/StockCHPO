@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Models\Bon_Decharge;
+use App\Models\Log;
 use App\Models\Material;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BonDechargeController extends Controller
 {
@@ -52,6 +54,14 @@ class BonDechargeController extends Controller
 
         // Sauvegarder les données
         $bonDecharge->save();
+        // Créer le log
+        Log::create([
+            'action' => 'create',
+            'table_name' => 'bon__decharges',
+            'record_id' => $bonDecharge->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
 
         // Retourner à la page de bon de décharge avec un message de succès
         return redirect(route('bondecharge.allbondecharge'))->with('success', 'Bon de décharge créé avec succès.');
@@ -95,6 +105,14 @@ class BonDechargeController extends Controller
 
         // Sauvegarder les données
         $bonDecharge->save();
+        // Créer le log
+        Log::create([
+            'action' => 'update',
+            'table_name' => 'bon__decharges',
+            'record_id' => $bonDecharge->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
 
         // Retourner à la page de bon de décharge avec un message de succès
         return redirect(route('bondecharge.allbondecharge'))->with('success', 'Bon de décharge modifié avec succès.');
@@ -104,7 +122,14 @@ class BonDechargeController extends Controller
     {
         $bonDecharge = Bon_Decharge::find($id);
         $bonDecharge->delete();
-
+        // Créer le log
+        Log::create([
+            'action' => 'delete',
+            'table_name' => 'bon__decharges',
+            'record_id' => $bonDecharge->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
         return redirect(route('bondecharge.allbondecharge'))->with('success', 'Bon de décharge supprimé avec succès.');
     }
 
@@ -114,7 +139,14 @@ class BonDechargeController extends Controller
 
         // Ensuite, vous passez la variable à la vue pour la génération du PDF
         $pdf = PDF::loadView('pages.pdfs.Bondecharge', compact('bondecharge'));
-
+        // Créer le log
+        Log::create([
+            'action' => 'export',
+            'table_name' => 'bon__decharges',
+            'record_id' => $bondecharge->id,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
         return $pdf->download('bon_decharge' . preg_replace('/[\/\\\\]/', '_', $bondecharge->materiel->num_inventaire) . '.pdf');
     }
 }

@@ -18,7 +18,7 @@
             <label for="name" class="text-sm font-medium text-gray-700">{{ __('Nom') }}</label>
             <input id="name" name="name" type="text"
                 class="block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                value="{{old('name', $user->name)}}" required autocomplete="name" />
+                value="{{ old('name', $user->name) }}" required autocomplete="name" />
             <x-input-error class="text-sm text-red-500" :messages="$errors->get('name')" />
         </div>
 
@@ -26,7 +26,7 @@
             <label for="email" class="text-sm font-medium text-gray-700">{{ __('Email') }}</label>
             <input id="email" name="email" type="email"
                 class="block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                value="{{old('email', $user->email)}}" required autocomplete="username" />
+                value="{{ old('email', $user->email) }}" required autocomplete="username" />
             <x-input-error class="text-sm text-red-500" :messages="$errors->get('email')" />
         </div>
 
@@ -53,7 +53,7 @@
                 {{ __('Sauvegarder') }}
             </button>
 
-            @if (session('status') === 'profile-updated')
+            @if (session('status') === 'profil mis à jour')
                 <p class="text-sm text-gray-600">{{ __('Enregistré.') }}</p>
             @endif
         </div>
