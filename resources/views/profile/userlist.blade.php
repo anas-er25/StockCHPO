@@ -59,11 +59,19 @@
                                                          method="POST" class="inline" id="delete-form-{{ $profile->id }}">
                                                          @csrf
                                                          @method('DELETE')
+                                                         @if ($profile->id != auth()->user()->id)
                                                          <div class="cursor-pointer mr-4"
                                                              onclick="confirmDelete({{ $profile->id }})">
                                                              <i
                                                                  class="fa-solid fa-trash text-red-500 hover:text-red-700"></i>
                                                          </div>
+                                                         @else
+                                                             <!-- Si c'est le propre profil de l'utilisateur, ne pas afficher le bouton ou supprimer le bouton -->
+                                                             <button type="button" class="cursor-pointer mr-4" disabled>
+                                                                 <i class="fa-solid fa-trash text-gray-500"
+                                                                     title="Vous ne pouvez pas supprimer votre propre compte"></i>
+                                                             </button>
+                                                         @endif
                                                      </form>
 
                                                      <!-- Icône de active ou desactive -->
