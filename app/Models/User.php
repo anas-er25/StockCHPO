@@ -8,6 +8,7 @@ use App\Notifications\NewResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -19,6 +20,19 @@ class User extends Authenticatable
         $this->notify(new NewResetPasswordNotification($token));
     }
 
+    // la fonction qui permet de rediger l'utilisateur conecter selon son role
+    static function getRedirectRoute()
+    {
+
+        return match (Auth::user()->role) {
+            User::ROLE_ADMIN => "dashboard",
+            User::ROLE_SUBADMIN => "dashboard",
+        };
+    }
+
+    public const ROLE_ADMIN = "admin";
+    public const ROLE_SUBADMIN = "subadmin";
+
     /**
      * The attributes that are mass assignable.
      *
@@ -28,6 +42,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'status',
     ];
 
     /**

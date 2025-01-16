@@ -65,6 +65,15 @@
 
                           </a>
                       </li>
+                      @can('manage-users')
+                          <li class="sidebar-item">
+                              <a href="{{ route('profile.userlist') }}"
+                                  class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500">
+                                  <i class="ti ti-users"></i>
+                                  <span>Gestion des utilisateurs</span>
+                              </a>
+                          </li>
+                      @endcan
 
 
                   </ul>

@@ -113,10 +113,16 @@ Route::group(["middleware" => "auth"], function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/adduser', [ProfileController::class, 'adduser'])->name('profile.adduser');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/users', [ProfileController::class, 'userlist'])->name('profile.userlist');
+    Route::get('/profile/{id}', [ProfileController::class, 'edituser'])->name('profile.edituser');
     Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profileuser/{id}', [ProfileController::class, 'updateuser'])->name('profile.updateuser');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('/profile/{id}', [ProfileController::class, 'destroyuser'])->name('profile.destroyuser');
+    Route::post('/profile/{id}', [ProfileController::class, 'status'])->name('profile.status');
 });
 
 require __DIR__ . '/auth.php';
