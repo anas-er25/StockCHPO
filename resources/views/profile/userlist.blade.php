@@ -70,14 +70,25 @@
                                                      <form action="{{ route('profile.status', $profile->id) }}"
                                                          method="POST">
                                                          @csrf
-                                                         <button class="cursor-pointer mr-4">
-                                                             @if ($profile->status == '1')
-                                                                 <i class="fa fa-lock text-red-500" title="Active"></i>
-                                                             @elseif($profile->status == '0')
-                                                                 <i class="fa fa-unlock text-teal-500" title="Inactif"></i>
-                                                             @endif
-                                                         </button>
+                                                         @if ($profile->id != auth()->user()->id)
+                                                             <!-- Vérifier si ce n'est pas le propre profil de l'utilisateur -->
+                                                             <button class="cursor-pointer mr-4">
+                                                                 @if ($profile->status == '1')
+                                                                     <i class="fa fa-lock text-red-500" title="Active"></i>
+                                                                 @elseif($profile->status == '0')
+                                                                     <i class="fa fa-unlock text-teal-500"
+                                                                         title="Inactif"></i>
+                                                                 @endif
+                                                             </button>
+                                                         @else
+                                                             <!-- Si c'est le propre profil de l'utilisateur, ne pas afficher le bouton ou désactiver le bouton -->
+                                                             <button type="button" class="cursor-pointer mr-4" disabled>
+                                                                 <i class="fa fa-lock text-gray-500"
+                                                                     title="Vous ne pouvez pas désactiver votre propre statut"></i>
+                                                             </button>
+                                                         @endif
                                                      </form>
+
                                                  </td>
 
                                              </tr>

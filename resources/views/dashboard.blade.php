@@ -1,4 +1,3 @@
-{{-- @can('view', 'admin-permission') --}}
 @extends('layouts.index')
 @section('title', 'Tableau de bord')
 @section('content')
@@ -91,184 +90,142 @@
             <div class="mt-2 grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="text-gray-600 text-lg font-semibold mb-6">Recent Transactions</h4>
+                        <h4 class="text-gray-600 text-lg font-semibold mb-6 flex justify-between items-center">
+                            <span>Derniers Mouvements</span>
+                            <a href="{{ route('dashboard.Movements') }}" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-eye ml-2"></i>
+                            </a>
+                        </h4>
                         <ul class="timeline-widget relative">
-                            <li class="timeline-item flex relative overflow-hidden min-h-[70px]">
-                                <div class="timeline-time text-gray-600 text-sm min-w-[90px] py-[6px] pr-4 text-end">
-                                    9:30 am
-                                </div>
-                                <div class="timeline-badge-wrap flex flex-col items-center ">
-                                    <div
-                                        class="timeline-badge w-3 h-3 rounded-full shrink-0 bg-transparent border-2 border-blue-600 my-[10px]">
+                            <!-- Entries (Réceptionné) -->
+                            <h5 class="text-sm font-semibold text-gray-800 py-2">Réceptionné, Colis fermé</h5>
+                            @forelse($recentMovements['entries'] as $entry)
+                                <li class="timeline-item flex relative overflow-hidden min-h-[70px]">
+                                    <div class="timeline-time text-gray-600 text-sm min-w-[90px] py-[6px] pr-4 text-end">
+                                        {{ \Carbon\Carbon::parse($entry->date_inscription)->format('d/m/Y') }}
                                     </div>
-                                    <div class="timeline-badge-border block h-full w-[1px] bg-gray-100">
+                                    <div class="timeline-badge-wrap flex flex-col items-center">
+                                        <div
+                                            class="timeline-badge w-3 h-3 rounded-full shrink-0 bg-transparent border-2 border-blue-600 my-[10px]">
+                                        </div>
+                                        <div class="timeline-badge-border block h-full w-[1px] bg-gray-100"></div>
                                     </div>
-                                </div>
-                                <div class="timeline-desc py-[6px] px-4">
-                                    <p class="text-gray-600 text-sm font-normal">Payment received from John
-                                        Doe of $385.90</p>
-                                </div>
-                            </li>
-                            <li class="timeline-item flex relative overflow-hidden min-h-[70px]">
-                                <div class="timeline-time text-gray-600 min-w-[90px] py-[6px] text-sm pr-4 text-end">
-                                    10:00 am
-                                </div>
-                                <div class="timeline-badge-wrap flex flex-col items-center ">
-                                    <div
-                                        class="timeline-badge w-3 h-3 rounded-full shrink-0 bg-transparent border-2 border-blue-300 my-[10px]">
+                                    <div class="timeline-desc py-[6px] px-4">
+                                        <p class="text-gray-600 text-sm font-normal">
+                                            <a href="{{ route('materiels.show', $entry->id) }}">{{ $entry->num_inventaire }}
+                                                | {{ $entry->designation }}</a>
+                                        </p>
                                     </div>
-                                    <div class="timeline-badge-border block h-full w-[1px] bg-gray-100">
-                                    </div>
-                                </div>
-                                <div class="timeline-desc py-[6px] px-4 text-sm">
-                                    <p class="text-gray-600  font-semibold">New sale recorded</p>
-                                    <a href="javascript:void('')" class="text-blue-600">#ML-3467</a>
-                                </div>
-                            </li>
+                                </li>
+                            @empty
+                                <p>Aucune donnée trouvée</p>
+                            @endforelse
+                            <hr>
+                            <!-- Outputs (Affecté, En mouvement, Réformé) -->
+                            <h5 class="text-sm font-semibold text-gray-800 py-2">Affecté, En mouvement, Réformé</h5>
+                            @forelse($recentMovements['outputs'] as $output)
+                                <li class="timeline-item flex relative overflow-hidden min-h-[70px]">
+                                    <div class="timeline-time text-gray-600 text-sm min-w-[90px] py-[6px] pr-4 text-end">
+                                        {{ \Carbon\Carbon::parse($output->date_inscription)->format('d/m/Y') }}
 
-                            <li class="timeline-item flex relative overflow-hidden min-h-[70px]">
-                                <div class="timeline-time text-gray-600 min-w-[90px] text-sm py-[6px] pr-4 text-end">
-                                    12:00 am
-                                </div>
-                                <div class="timeline-badge-wrap flex flex-col items-center ">
-                                    <div
-                                        class="timeline-badge w-3 h-3 rounded-full shrink-0 bg-transparent border-2 border-teal-500 my-[10px]">
                                     </div>
-                                    <div class="timeline-badge-border block h-full w-[1px] bg-gray-100">
+                                    <div class="timeline-badge-wrap flex flex-col items-center">
+                                        <div
+                                            class="timeline-badge w-3 h-3 rounded-full shrink-0 bg-transparent border-2 border-blue-600 my-[10px]">
+                                        </div>
+                                        <div class="timeline-badge-border block h-full w-[1px] bg-gray-100"></div>
                                     </div>
-                                </div>
-                                <div class="timeline-desc py-[6px] px-4">
-                                    <p class="text-gray-600 text-sm font-normal">Payment was made of $64.95
-                                        to Michael</p>
-                                </div>
-                            </li>
-
-                            <li class="timeline-item flex relative overflow-hidden min-h-[70px]">
-                                <div class="timeline-time text-gray-600 min-w-[90px] text-sm py-[6px] pr-4 text-end">
-                                    9:30 am
-                                </div>
-                                <div class="timeline-badge-wrap flex flex-col items-center ">
-                                    <div
-                                        class="timeline-badge w-3 h-3 rounded-full shrink-0 bg-transparent border-2 border-yellow-500 my-[10px]">
+                                    <div class="timeline-desc py-[6px] px-4">
+                                        <p class="text-gray-600 text-sm font-normal">
+                                            <a href="{{ route('materiels.show', $output->id) }}">{{ $output->num_inventaire }}
+                                                | {{ $output->designation }}</a>
+                                        </p>
                                     </div>
-                                    <div class="timeline-badge-border block h-full w-[1px] bg-gray-100">
-                                    </div>
-                                </div>
-                                <div class="timeline-desc py-[6px] px-4 text-sm">
-                                    <p class="text-gray-600 font-semibold">New sale recorded</p>
-                                    <a href="javascript:void('')" class="text-blue-600">#ML-3467</a>
-                                </div>
-                            </li>
-
-                            <li class="timeline-item flex relative overflow-hidden min-h-[70px]">
-                                <div class="timeline-time text-gray-600 text-sm min-w-[90px] py-[6px] pr-4 text-end">
-                                    9:30 am
-                                </div>
-                                <div class="timeline-badge-wrap flex flex-col items-center ">
-                                    <div
-                                        class="timeline-badge w-3 h-3 rounded-full shrink-0 bg-transparent border-2 border-red-500 my-[10px]">
-                                    </div>
-                                    <div class="timeline-badge-border block h-full w-[1px] bg-gray-100">
-                                    </div>
-                                </div>
-                                <div class="timeline-desc py-[6px] px-4">
-                                    <p class="text-gray-600 text-sm font-semibold">New arrival recorded</p>
-                                </div>
-                            </li>
-                            <li class="timeline-item flex relative overflow-hidden">
-                                <div class="timeline-time text-gray-600 text-sm min-w-[90px] py-[6px] pr-4 text-end">
-                                    12:00 am
-                                </div>
-                                <div class="timeline-badge-wrap flex flex-col items-center ">
-                                    <div
-                                        class="timeline-badge w-3 h-3 rounded-full shrink-0 bg-transparent border-2 border-teal-500 my-[10px]">
-                                    </div>
-                                    <div class="timeline-badge-border block h-full w-[1px] bg-gray-100">
-                                    </div>
-                                </div>
-                                <div class="timeline-desc py-[6px] px-4">
-                                    <p class="text-gray-600 text-sm font-normal">Payment Done</p>
-                                </div>
-                            </li>
+                                </li>
+                            @empty
+                                <p>Aucune donnée trouvée</p>
+                            @endforelse
+                            <hr>
 
                         </ul>
                     </div>
                 </div>
-                 @can('viewAny', App\Models\User::class)
-                <div class="col-span-2">
-                    <div class="card h-full">
-                        <div class="card-body">
-                            <h4 class="text-gray-600 text-lg font-semibold mb-6">Journal des Activités</h4>
-                            <div class="relative overflow-x-auto">
+                @can('view-activity-logs')
+                    <div class="col-span-2">
+                        <div class="card h-full">
+                            <div class="card-body">
+                                <h4 class="text-gray-600 text-lg font-semibold mb-6">Journal des Activités</h4>
+                                <div class="relative overflow-x-auto">
 
-                                <table id="table" class="text-left w-full whitespace-nowrap text-sm">
-                                    <thead class="text-gray-700">
-                                        <tr class="font-semibold text-gray-600">
-                                            <th scope="col" class="p-4 text-center">Id</th>
-                                            <th scope="col" class="p-4 text-center">Fait par</th>
-                                            <th scope="col" class="p-4 text-center">Action</th>
-                                            <th scope="col" class="p-4 text-center">Table</th>
-                                            <th scope="col" class="p-4 text-center">Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($logs as $log)
-                                            <tr>
-                                                <td class="p-4 font-semibold text-gray-600 text-center">
-                                                    {{ $log['numero_inventaire'] ?? $log['id'] }}
-                                                </td>
-                                                <td class="p-4 text-center">
-                                                    <div class="flex flex-col gap-1">
-                                                        <h3 class="font-semibold text-gray-600">{{ $log['user'] }}</h3>
-                                                    </div>
-                                                </td>
-
-
-                                                <td class="p-4 text-center">
-                                                    @if ($log['action'] == 'create')
-                                                        <span
-                                                            class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold bg-cyan-500 text-white">Ajouter</span>
-                                                    @elseif ($log['action'] == 'update')
-                                                        <span
-                                                            class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-blue-600">Modifier</span>
-                                                    @elseif ($log['action'] == 'delete')
-                                                        <span
-                                                            class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">Supprimer</span>
-                                                    @else
-                                                        <span
-                                                            class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-teal-500">Exporter</span>
-                                                    @endif
-                                                </td>
-                                                <td class="p-4 text-center">
-                                                    <span class="font-normal text-gray-500">
-                                                        @if ($log['table_name'] == 'services')
-                                                            Service
-                                                        @elseif ($log['table_name'] == 'users')
-                                                            Utilisateur
-                                                        @elseif ($log['table_name'] == 'materials')
-                                                            Matériel
-                                                        @elseif ($log['table_name'] == 'feuille_reformes')
-                                                            Feuille de réforme
-                                                        @elseif ($log['table_name'] == 'avis__mvts')
-                                                            Avis de mouvement
-                                                        @elseif ($log['table_name'] == 'bon_decharges')
-                                                            Bon de décharge
-                                                        @endif
-                                                    </span>
-                                                </td>
-                                                <td class="p-4 text-center">
-                                                    <span
-                                                        class="font-semibold text-base text-gray-600">{{ $log['performed_at'] }}</span>
-                                                </td>
+                                    <table id="table" class="text-left w-full whitespace-nowrap text-sm">
+                                        <thead class="text-gray-700">
+                                            <tr class="font-semibold text-gray-600">
+                                                <th scope="col" class="p-4 text-center">Id</th>
+                                                <th scope="col" class="p-4 text-center">Fait par</th>
+                                                <th scope="col" class="p-4 text-center">Action</th>
+                                                <th scope="col" class="p-4 text-center">Table</th>
+                                                <th scope="col" class="p-4 text-center">Date</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($logs as $log)
+                                                <tr>
+                                                    <td class="p-4 font-semibold text-gray-600 text-center">
+                                                        {{ $log['numero_inventaire'] ?? $log['id'] }}
+                                                    </td>
+                                                    <td class="p-4 text-center">
+                                                        <div class="flex flex-col gap-1">
+                                                            <h3 class="font-semibold text-gray-600">{{ $log['user'] }}</h3>
+                                                        </div>
+                                                    </td>
+
+
+                                                    <td class="p-4 text-center">
+                                                        @if ($log['action'] == 'create')
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold bg-cyan-500 text-white">Ajouter</span>
+                                                        @elseif ($log['action'] == 'update')
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-blue-600">Modifier</span>
+                                                        @elseif ($log['action'] == 'delete')
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">Supprimer</span>
+                                                        @else
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-teal-500">Exporter</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="p-4 text-center">
+                                                        <span class="font-normal text-gray-500">
+                                                            @if ($log['table_name'] == 'services')
+                                                                Service
+                                                            @elseif ($log['table_name'] == 'users')
+                                                                Utilisateur
+                                                            @elseif ($log['table_name'] == 'materials')
+                                                                Matériel
+                                                            @elseif ($log['table_name'] == 'feuille_reformes')
+                                                                Feuille de réforme
+                                                            @elseif ($log['table_name'] == 'avis__mvts')
+                                                                Avis de mouvement
+                                                            @elseif ($log['table_name'] == 'bon_decharges')
+                                                                Bon de décharge
+                                                            @endif
+                                                        </span>
+                                                    </td>
+                                                    <td class="p-4 text-center">
+                                                        <span
+                                                            class="font-semibold text-base text-gray-600">{{ $log['performed_at'] }}</span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 @endcan
+
             </div>
             <x-footer />
         </div>
@@ -277,4 +234,3 @@
 
     </main>
 @endsection
-{{-- @endcan --}}
