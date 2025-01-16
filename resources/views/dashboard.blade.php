@@ -1,12 +1,41 @@
+@php
+    // Prepare data for the chart
+    $labels = [];
+    $series = [];
+    foreach ($materielstype as $item) {
+        $labels[] = $item->type;
+        $series[] = $item->count;
+    }
+
+    // If no data is available, provide default values to avoid errors
+    if (empty($labels)) {
+        $labels = ['No Data'];
+        $series = [1]; // Provide a single value to prevent chart render errors
+    }
+
+    // Prepare data for the chart
+    $labelsetat = [];
+    $seriesetat = [];
+    foreach ($materielsetat as $item) {
+        $labelsetat[] = $item->etat;
+        $seriesetat[] = $item->count;
+    }
+
+    // If no data is available, provide default values to avoid errors
+    if (empty($labelsetat)) {
+        $labelsetat = ['No Data'];
+        $seriesetat = [1]; // Provide a single value to prevent chart render errors
+    }
+
+@endphp
 @extends('layouts.index')
 @section('title', 'Tableau de bord')
 @section('content')
-
     <main class="h-full overflow-y-auto  max-w-full  pt-4">
         {{-- <div class="container full-container py-5 flex flex-col gap-6"> --}}
         <div class="p-5">
-            {{-- <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-                <div class="col-span-2">
+            <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+                {{-- <div class="col-span-2">
                     <div class="card">
                         <div class="card-body">
                             <div class="sm:flex block justify-between mb-5">
@@ -23,41 +52,37 @@
                             <div id="chart"></div>
                         </div>
                     </div>
-                </div>
-
+                </div> --}}
                 <div class="flex flex-col gap-6">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="text-gray-600 text-lg font-semibold mb-5">Yearly Breakup</h4>
+                            <h4 class="text-gray-600 text-lg font-semibold mb-5">Matériaux par type</h4>
                             <div class="flex gap-6 items-center justify-between">
                                 <div class="flex flex-col gap-4">
-                                    <h3 class="text-[21px] font-semibold text-gray-600">$36,358</h3>
-                                    <div class="flex items-center gap-1">
-                                        <span class="flex items-center justify-center w-5 h-5 rounded-full bg-teal-400">
-                                            <i class="ti ti-arrow-up-left text-teal-500"></i>
-                                        </span>
-                                        <p class="text-gray-600 text-sm font-normal ">+9%</p>
-                                        <p class="text-gray-500 text-sm font-normal text-nowrap">last year
-                                        </p>
-                                    </div>
-                                    <div class="flex">
-                                        <div class="flex gap-2 items-center">
-                                            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
-                                            <p class="text-gray-500 font-normal text-xs">2023</p>
-                                        </div>
-                                        <div class="flex gap-2 items-center">
-                                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                                            <p class="text-gray-500 font-normal text-xs">2023</p>
-                                        </div>
-                                    </div>
+                                    <h5 class="text-base font-semibold text-gray-600">Matériaux totaux :
+                                        <?= array_sum($series) ?></h5>
                                 </div>
-                                <div class="flex  items-center">
-                                    <div id="breakup"></div>
+                                <div class="flex items-center">
+                                    <div id="materieltype"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card">
+                        <div class="card-body">
+                            <h4 class="text-gray-600 text-lg font-semibold mb-5">Matériaux par état</h4>
+                            <div class="flex gap-6 items-center justify-between">
+                                <div class="flex flex-col gap-4">
+                                    <h5 class="text-base font-semibold text-gray-600">Matériaux totaux :
+                                        <?= array_sum($seriesetat) ?></h5>
+                                </div>
+                                <div class="flex items-center">
+                                    <div id="materieletat"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div class="card">
                         <div class="card-body">
                             <div class="flex gap-6 items-center justify-between">
                                 <div class="flex flex-col gap-5">
@@ -82,11 +107,10 @@
                             </div>
                         </div>
                         <div id="earning"></div>
-                    </div>
+                    </div> --}}
                 </div>
 
-
-            </div> --}}
+            </div>
             <div class="mt-2 grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
                 <div class="card">
                     <div class="card-body">
@@ -233,4 +257,207 @@
 
 
     </main>
+@endsection
+
+@section('jslink')
+    <script>
+        var materieltype = {
+            color: "#adb5bd",
+            series: <?= json_encode($series) ?>, // Use PHP to pass data to JS
+            labels: <?= json_encode($labels) ?>, // Use PHP to pass data to JS
+            chart: {
+                width: 200,
+                type: "donut",
+                fontFamily: "Plus Jakarta Sans', sans-serif",
+                foreColor: "#adb0bb",
+            },
+            plotOptions: {
+                pie: {
+                    startAngle: 0,
+                    endAngle: 360,
+                    donut: {
+                        size: '75%',
+                    },
+                },
+            },
+            stroke: {
+                show: false,
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            legend: {
+                show: true, // Show the legend
+                position: 'bottom' // Position the legend
+            },
+            // Use more distinct colors or a color palette
+            colors: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#fd7e14'],
+            responsive: [{
+                breakpoint: 991,
+                options: {
+                    chart: {
+                        width: 150,
+                    },
+                },
+            }, ],
+            tooltip: {
+                theme: "dark",
+                fillSeriesColor: false,
+            },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#materieltype"), materieltype);
+        chart.render();
+
+        var materieletat = {
+            color: "#adb5bd",
+            series: <?= json_encode($seriesetat) ?>, // Use PHP to pass data to JS
+            labels: <?= json_encode($labelsetat) ?>, // Use PHP to pass data to JS
+            chart: {
+                width: 200,
+                type: "donut",
+                fontFamily: "Plus Jakarta Sans', sans-serif",
+                foreColor: "#adb0bb",
+            },
+            plotOptions: {
+                pie: {
+                    startAngle: 0,
+                    endAngle: 360,
+                    donut: {
+                        size: '75%',
+                    },
+                },
+            },
+            stroke: {
+                show: false,
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            legend: {
+                show: true, // Show the legend
+                position: 'bottom' // Position the legend
+            },
+            // Use more distinct colors or a color palette
+            colors: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#fd7e14'],
+            responsive: [{
+                breakpoint: 991,
+                options: {
+                    chart: {
+                        width: 150,
+                    },
+                },
+            }, ],
+            tooltip: {
+                theme: "dark",
+                fillSeriesColor: false,
+            },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#materieletat"), materieletat);
+        chart.render();
+
+
+        // var chart = {
+        //     series: [
+        //         { name: 'Etat', data: <?= json_encode($seriesetat) ?>}
+        //     ],
+        //     chart: {
+        //         type: "bar",
+        //         height: 352,
+        //         offsetX: -15,
+        //         toolbar: {
+        //             show: true
+        //         },
+        //         foreColor: "#adb0bb",
+        //         fontFamily: 'inherit',
+        //         sparkline: {
+        //             enabled: false
+        //         },
+        //     },
+        //     colors: ["#5D87FF"], // Use a single color since you have one series
+        //     plotOptions: {
+        //         bar: {
+        //             horizontal: false,
+        //             columnWidth: "35%",
+        //             borderRadius: [6],
+        //             borderRadiusApplication: 'end',
+        //             borderRadiusWhenStacked: 'all'
+        //         },
+        //     },
+        //     markers: {
+        //         size: 0
+        //     },
+        //     dataLabels: {
+        //         enabled: false,
+        //     },
+        //     legend: {
+        //         show: false,
+        //     },
+        //     grid: {
+        //         borderColor: "rgba(0,0,0,0.1)",
+        //         strokeDashArray: 3,
+        //         xaxis: {
+        //             lines: {
+        //                 show: false,
+        //             },
+        //         },
+        //     },
+        //     xaxis: {
+        //         type: "category",
+        //         categories: <?= json_encode($labelsetat) ?>, // Use the actual labels from $labelsetat
+        //         labels: {
+        //             style: {
+        //                 cssClass: "grey--text lighten-2--text fill-color"
+        //             },
+        //         },
+        //     },
+        //     yaxis: {
+        //         show: true,
+        //         min: 0,
+        //         //Removed fixed max value to let the chart scale dynamically
+        //         tickAmount: 4,
+        //         labels: {
+        //             style: {
+        //                 cssClass: "grey--text lighten-2--text fill-color",
+        //             },
+        //         },
+        //     },
+        //     stroke: {
+        //         show: true,
+        //         width: 3,
+        //         lineCap: "butt",
+        //         colors: ["transparent"],
+        //     },
+        //     tooltip: {
+        //         theme: "light"
+        //     },
+        //     responsive: [{
+        //             breakpoint: 1400,
+        //             options: {
+        //                 plotOptions: {
+        //                     bar: {
+        //                         borderRadius: [5],
+        //                     }
+        //                 },
+        //             }
+        //         },
+        //         {
+        //             breakpoint: 600,
+        //             options: {
+        //                 plotOptions: {
+        //                     bar: {
+        //                         borderRadius: [3],
+        //                     }
+        //                 },
+        //             }
+        //         },
+        //     ]
+        // };
+
+        // var chartElement = document.querySelector("#chart");
+
+        // var chart = new ApexCharts(chartElement, chart);
+        // chart.render();
+    </script>
 @endsection
