@@ -42,7 +42,7 @@ class DashboardController extends Controller
             ->groupBy('type')
             ->selectRaw('type, count(*) as count')
             ->get();
-        // Matériels par type
+        // Matériels par Etat
         $materielsetat = Material::select('etat')
             ->groupBy('etat')
             ->selectRaw('etat, count(*) as count')

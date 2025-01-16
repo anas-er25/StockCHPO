@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bon_Decharge;
 use App\Models\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
 use App\Models\Material;
 use App\Models\Service;
 use Illuminate\Http\Request;
@@ -185,6 +183,74 @@ class MaterialController extends Controller
         // Return the generated PDF as a download
         return $pdf->download($filename);
     }
+    // public function exportexcel()
+    // {
+    //     $materials = Material::all()->map(function ($material) {
+    //         return [
+    //             'Numero d\'inventaire' => $material->num_inventaire,
+    //             'Designation' => $material->designation,
+    //             'Qte' => $material->qte,
+    //             'Type' => $material->type,
+    //             'Origin' => $material->origin,
+    //             'Marque' => $material->marque,
+    //             'Modele' => $material->modele,
+    //             'Numero de serie' => $material->num_serie,
+    //             'Date d\'inscription' => $material->date_inscription,
+    //             'Date d\'affectation' => $material->date_affectation,
+    //             'Service' => $material->service ? $material->service->name : 'Non affecté',
+    //             'Observation' => $material->observation,
+    //             'Etat' => $material->etat,
+    //             'Numero marche' => $material->numero_marche,
+    //             'Numero BL' => $material->numero_bl,
+    //             'Nom societe' => $material->nom_societe,
+    //         ];
+    //     });
+
+    //     // Create log entry
+    //     Log::create([
+    //         'action' => 'export',
+    //         'table_name' => 'materials',
+    //         'record_id' => null,
+    //         'performed_by' => Auth::user()->id,
+    //         'performed_at' => now()
+    //     ]);
+
+    //     return response()->json($materials);
+    // }
+    public function exportexcel()
+    {
+        try {
+            $materials = Material::with('service')
+                ->get()
+                ->map(function ($material) {
+                    return [
+                        'Numero d\'inventaire' => $material->num_inventaire,
+                        'Designation' => $material->designation,
+                        'Qte' => $material->qte,
+                        'Type' => $material->type,
+                        'Origin' => $material->origin,
+                        'Marque' => $material->marque,
+                        'Modele' => $material->modele,
+                        'Numero de serie' => $material->num_serie,
+                        'Date d\'inscription' => $material->date_inscription,
+                        'Date d\'affectation' => $material->date_affectation,
+                        'Service' => $material->service_id ? $material->service->nom : 'Non affecté',
+                        'Observation' => $material->observation,
+                        'Etat' => $material->etat,
+                        'Numero marche' => $material->numero_marche,
+                        'Numero BL' => $material->numero_bl,
+                        'Nom societe' => $material->nom_societe,
+                    ];
+                });
+
+            return response()->json($materials);
+        } catch (\Exception $e) {
+            Log::error('Export error: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+
 
     public function stock()
     {

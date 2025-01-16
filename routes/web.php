@@ -44,8 +44,9 @@ Route::group(["middleware" => "auth"], function () {
         Route::delete('/materiels/{id}', 'destroy')->name('destroy');
 
 
-        // Export PDF
+        // Export
         Route::get('/materiels/export-pdf/{id}', 'exportPDF')->name('export_pdf');
+        Route::get('/export-excel', 'exportexcel')->name('exportexcel');
     });
 
     /* -------------------------------------------------------------------------- */
