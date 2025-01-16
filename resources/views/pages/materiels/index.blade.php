@@ -11,16 +11,22 @@
                         <div class="card-body">
                             <div class="flex justify-between items-center">
                                 <h2 class="text-xl font-semibold">Liste de matériels</h2>
-                                <a href="{{ route('materiels.create') }}"
-                                    class="btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 px-4 py-2 rounded-md">
-                                    Ajouter un matériel
-                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20"
-                                        viewBox="0 0 50 50">
-                                        <path fill="white"
-                                            d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z">
-                                        </path>
-                                    </svg>
-                                </a>
+                                <div class="flex items-center gap-4">
+                                    <button onclick="exportToExcel()" title="Télécharger Excel"
+                                        class="btn bg-green-500 text-white hover:bg-green-700 flex items-center gap-2 px-4 py-2 rounded-md">
+                                        <i class="fa-solid fa-file-excel"></i>
+                                    </button>
+                                    <a href="{{ route('materiels.create') }}"
+                                        class="btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 px-4 py-2 rounded-md">
+                                        Ajouter un matériel
+                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20"
+                                            height="20" viewBox="0 0 50 50">
+                                            <path fill="white"
+                                                d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
 
                             <div class="relative overflow-x-auto mt-8">
@@ -28,13 +34,15 @@
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N d'inventaire</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription
+                                            </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Désignation</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Quantité</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Marque</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Modèle</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Affectation</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Date d'affectation</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Date d'affectation
+                                            </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Série</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Observation</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Type</th>
@@ -153,5 +161,36 @@
             });
         }
 
+function exportToExcel() {
+    const baseUrl = window.location.origin;
+    fetch(`${baseUrl}/export-excel`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data || data.length === 0) {
+                throw new Error('Aucune donnée disponible');
+            }
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(data);
+            ws['!cols'] = Object.keys(data[0]).map(() => ({ wch: 20 }));
+
+            XLSX.utils.book_append_sheet(wb, ws, "Materiels");
+            XLSX.writeFile(wb, `materiels_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.xlsx`);
+        })
+        .catch(error => {
+            console.error('Export error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur d\'exportation',
+                text: error.message || 'Une erreur est survenue lors de l\'exportation.',
+                confirmButtonColor: '#3085d6'
+            });
+        });
+}
     </script>
 @endsection
