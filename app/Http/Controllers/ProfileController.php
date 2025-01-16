@@ -14,6 +14,13 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    public function userlist(): View
+    {
+        $users = User::all();
+        return view('profile.userlist', [
+            'users' => $users
+        ]);
+    }
     /**
      * Display the user's profile form.
      */
@@ -23,6 +30,7 @@ class ProfileController extends Controller
             'user' => $request->user(),
         ]);
     }
+
 
     /**
      * Update the user's profile information.
@@ -40,6 +48,42 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profil mis à jour');
     }
 
+
+    public function edituser($id): View
+    {
+        $user = User::find($id);
+        return view('profile.edituser', [
+            'user' => $user
+        ]);
+    }
+
+    public function updateuser(Request $request, $id): RedirectResponse
+    {
+        // validation
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'role' => 'required|string',
+            'status' => 'required|string',
+        ]);
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->status = $request->status;
+        if ($user->save()) {
+            // Créer le log
+            Log::create([
+                'action' => 'update',
+                'table_name' => 'users',
+                'record_id' => $user->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
+
+        return Redirect::route('profile.userlist')->with('status', 'Utilisateur mis à jour');
+    }
     /**
      * Delete the user's account.
      */
@@ -64,6 +108,10 @@ class ProfileController extends Controller
     /**
      * Add a new user with default 'subadmin' role.
      */
+    public function adduser()
+    {
+        return view('profile.adduser');
+    }
     public function store(Request $request): RedirectResponse
     {
         // Validation des données d'entrée
@@ -71,13 +119,16 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|string',
+            'status' => 'required|string'
         ]);
 
         // Création d'un nouvel utilisateur
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => 'subadmin',
+            'role' => $request->role,
+            'status' => $request->status,
             'password' => Hash::make($request->password),
         ]);
 
@@ -90,6 +141,31 @@ class ProfileController extends Controller
             'performed_at' => now()
         ]);
 
-        return Redirect::route('profile.edit')->with('status', 'Utilisateur créé avec le rôle de subadmin');
+        return Redirect::route('profile.userlist')->with('status', 'Utilisateur créé avec le rôle de subadmin');
+    }
+
+    // delete user
+    public function destroyuser($id): RedirectResponse
+    {
+        $user = User::find($id);
+        $user->delete();
+
+        return Redirect::route('profile.userlist')->with('status', 'Utilisateur supprimé');
+    }
+
+    // update user status
+    public function status($id): RedirectResponse
+    {
+        $user = User::find($id);
+        // if user status is active, set to inactive
+        if ($user->status == '1') {
+            $user->status = '0';
+        } else {
+            // if user status is inactive, set to active
+            $user->status = '1';
+        }
+        $user->save();
+
+        return Redirect::route('profile.userlist')->with('status', 'Statut utilisateur mis à jour');
     }
 }

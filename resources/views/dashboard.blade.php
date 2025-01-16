@@ -89,7 +89,7 @@
 
             </div> --}}
             <div class="mt-2 grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-                {{-- <div class="card">
+                <div class="card">
                     <div class="card-body">
                         <h4 class="text-gray-600 text-lg font-semibold mb-6">Recent Transactions</h4>
                         <ul class="timeline-widget relative">
@@ -193,7 +193,8 @@
 
                         </ul>
                     </div>
-                </div> --}}
+                </div>
+                 @can('viewAny', App\Models\User::class)
                 <div class="col-span-2">
                     <div class="card h-full">
                         <div class="card-body">
@@ -267,6 +268,7 @@
                         </div>
                     </div>
                 </div>
+                @endcan
             </div>
             <x-footer />
         </div>
