@@ -10,7 +10,7 @@ use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('pages.home')->name('home');
+    return view('pages.home');
 });
 
 Route::group(["middleware" => "auth"], function () {
@@ -131,4 +131,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/{id}', [ProfileController::class, 'status'])->name('profile.status');
 });
 
+Route::fallback(function () {
+    return view('erreur.404');
+});
 require __DIR__ . '/auth.php';

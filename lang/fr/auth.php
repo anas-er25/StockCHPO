@@ -16,5 +16,6 @@ return [
     'failed' => 'Ces identifiants ne correspondent pas à nos registres.',
     'password' => 'Le mot de passe fourni est incorrect.',
     'throttle' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes.',
+    'activate' => 'Votre compte est désactivé par l\'administrateur, Merci de le contacter afin d\'activer votre compte'
 
 ];
