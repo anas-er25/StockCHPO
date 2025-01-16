@@ -37,7 +37,18 @@ class DashboardController extends Controller
                 ->get()
         ];
 
-        return view('dashboard', compact('logs', 'recentMovements'));
+        // Matériels par type
+        $materielstype = Material::select('type')
+            ->groupBy('type')
+            ->selectRaw('type, count(*) as count')
+            ->get();
+        // Matériels par type
+        $materielsetat = Material::select('etat')
+            ->groupBy('etat')
+            ->selectRaw('etat, count(*) as count')
+            ->get();
+
+        return view('dashboard', compact('logs', 'recentMovements', 'materielstype', 'materielsetat'));
     }
 
     public function Movements()
