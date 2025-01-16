@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Log;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -10,6 +11,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // Logs existants
         $logs = Log::with('user')->get()->map(function ($log) {
             $record = $this->getRecordInfo($log->table_name, $log->record_id);
             return [
@@ -22,13 +24,39 @@ class DashboardController extends Controller
                 'performed_at' => $log->performed_at,
             ];
         });
-        return view('dashboard', compact('logs'));
+
+        // Derniers mouvements de stock
+        $recentMovements = [
+            'entries' => Material::whereIn('etat', ['réceptionné', 'colis fermé'])
+                ->orderBy('date_inscription', 'desc')
+                ->take(4)
+                ->get(),
+            'outputs' => Material::whereIn('etat', ['affecté', 'en mouvement', 'réformé'])
+                ->orderBy('date_affectation', 'desc')
+                ->take(4)
+                ->get()
+        ];
+
+        return view('dashboard', compact('logs', 'recentMovements'));
+    }
+
+    public function Movements()
+    {
+        $Movements = [
+            'entries' => Material::whereIn('etat', ['réceptionné', 'colis fermé'])
+                ->orderBy('date_inscription', 'desc')
+                ->get(),
+            'outputs' => Material::whereIn('etat', ['affecté', 'en mouvement', 'réformé'])
+                ->orderBy('date_affectation', 'desc')
+                ->get()
+        ];
+
+        return view('movements', compact('Movements'));
     }
 
     public function getRecordInfo($tableName, $recordId)
     {
         $modelClass = 'App\\Models\\' . ucfirst(Str::singular($tableName));
-        // $modelClass = 'App\\Models\\' . ucfirst(str_singular($tableName));
         if (class_exists($modelClass)) {
             return $modelClass::find($recordId);
         }

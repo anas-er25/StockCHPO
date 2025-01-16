@@ -78,6 +78,8 @@
         // Add datatable to the table with the id 'table'
         $(document).ready(function() {
             $('#table').DataTable();
+            $('#table2').DataTable();
+
 
         });
     </script>

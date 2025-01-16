@@ -42,8 +42,18 @@ class ProfileController extends Controller
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-
-        $request->user()->save();
+        $user = $request->user()->save();
+        // dd($user);
+        // if ($user) {
+        //     // Créer le log
+        //     Log::create([
+        //         'action' => 'update',
+        //         'table_name' => 'users',
+        //         'record_id' => $user->id,
+        //         'performed_by' => Auth::user()->id,
+        //         'performed_at' => now()
+        //     ]);
+        // }
 
         return Redirect::route('profile.edit')->with('status', 'profil mis à jour');
     }
@@ -131,15 +141,16 @@ class ProfileController extends Controller
             'status' => $request->status,
             'password' => Hash::make($request->password),
         ]);
-
-        // Créer le log
-        Log::create([
-            'action' => 'create',
-            'table_name' => 'users',
-            'record_id' => $user->id,
-            'performed_by' => Auth::user()->id,
-            'performed_at' => now()
-        ]);
+        if ($user) {
+            // Créer le log
+            Log::create([
+                'action' => 'create',
+                'table_name' => 'users',
+                'record_id' => $user->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
 
         return Redirect::route('profile.userlist')->with('status', 'Utilisateur créé avec le rôle de subadmin');
     }
@@ -148,7 +159,18 @@ class ProfileController extends Controller
     public function destroyuser($id): RedirectResponse
     {
         $user = User::find($id);
-        $user->delete();
+
+
+        if ($user->delete()) {
+            // Créer le log
+            Log::create([
+                'action' => 'delete',
+                'table_name' => 'users',
+                'record_id' => $user->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
 
         return Redirect::route('profile.userlist')->with('status', 'Utilisateur supprimé');
     }
@@ -157,15 +179,32 @@ class ProfileController extends Controller
     public function status($id): RedirectResponse
     {
         $user = User::find($id);
-        // if user status is active, set to inactive
+
+        // Vérifier si l'utilisateur tente de modifier son propre profil
+        if ($user->id == Auth::user()->id) {
+            return redirect()->route('profile.userlist')->with('error', 'Vous ne pouvez pas modifier votre propre statut.');
+        }
+
+        // Si le statut de l'utilisateur est actif (1), on le change à inactif (0), sinon on le rend actif (1)
         if ($user->status == '1') {
             $user->status = '0';
         } else {
-            // if user status is inactive, set to active
             $user->status = '1';
         }
-        $user->save();
 
-        return Redirect::route('profile.userlist')->with('status', 'Statut utilisateur mis à jour');
+        // Sauvegarder les changements dans la base de données
+        if ($user->save()) {
+            // Créer le log
+            Log::create([
+                'action' => 'update',
+                'table_name' => 'users',
+                'record_id' => $user->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
+
+        // Rediriger vers la liste des utilisateurs avec un message de confirmation
+        return redirect()->route('profile.userlist')->with('status', 'Statut utilisateur mis à jour');
     }
 }

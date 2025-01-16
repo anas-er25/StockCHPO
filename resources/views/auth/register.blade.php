@@ -17,9 +17,10 @@
                             <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                                 <div class="bg-white shadow-xl rounded-lg p-8 w-96">
                                     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                                        <img class="mx-auto h-10 w-auto"
+                                        {{-- <img class="mx-auto h-10 w-auto"
                                             src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                                            alt="Votre entreprise">
+                                            alt="Votre entreprise"> --}}
+                                            <x-logo/>
                                         <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
                                             Inscrivez-vous
                                         </h2>

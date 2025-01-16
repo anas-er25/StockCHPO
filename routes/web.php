@@ -10,7 +10,7 @@ use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('pages.home');
+    return view('pages.home')->name('home');
 });
 
 Route::group(["middleware" => "auth"], function () {
@@ -105,7 +105,13 @@ Route::group(["middleware" => "auth"], function () {
     });
 
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    /* -------------------------------------------------------------------------- */
+    /*                            Dashboard routes - START                           */
+    /* -------------------------------------------------------------------------- */
+    Route::group(['controller' => DashboardController::class], function () {
+        Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/dashboard/Movements', 'Movements')->name('dashboard.Movements');
+    });
 });
 
 // Route::get('/dashboard', function () {
