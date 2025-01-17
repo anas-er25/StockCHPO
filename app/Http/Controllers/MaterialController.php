@@ -183,40 +183,8 @@ class MaterialController extends Controller
         // Return the generated PDF as a download
         return $pdf->download($filename);
     }
-    // public function exportexcel()
-    // {
-    //     $materials = Material::all()->map(function ($material) {
-    //         return [
-    //             'Numero d\'inventaire' => $material->num_inventaire,
-    //             'Designation' => $material->designation,
-    //             'Qte' => $material->qte,
-    //             'Type' => $material->type,
-    //             'Origin' => $material->origin,
-    //             'Marque' => $material->marque,
-    //             'Modele' => $material->modele,
-    //             'Numero de serie' => $material->num_serie,
-    //             'Date d\'inscription' => $material->date_inscription,
-    //             'Date d\'affectation' => $material->date_affectation,
-    //             'Service' => $material->service ? $material->service->name : 'Non affecté',
-    //             'Observation' => $material->observation,
-    //             'Etat' => $material->etat,
-    //             'Numero marche' => $material->numero_marche,
-    //             'Numero BL' => $material->numero_bl,
-    //             'Nom societe' => $material->nom_societe,
-    //         ];
-    //     });
 
-    //     // Create log entry
-    //     Log::create([
-    //         'action' => 'export',
-    //         'table_name' => 'materials',
-    //         'record_id' => null,
-    //         'performed_by' => Auth::user()->id,
-    //         'performed_at' => now()
-    //     ]);
 
-    //     return response()->json($materials);
-    // }
     public function exportexcel()
     {
         try {
@@ -224,24 +192,33 @@ class MaterialController extends Controller
                 ->get()
                 ->map(function ($material) {
                     return [
-                        'Numero d\'inventaire' => $material->num_inventaire,
-                        'Designation' => $material->designation,
-                        'Qte' => $material->qte,
-                        'Type' => $material->type,
-                        'Origin' => $material->origin,
-                        'Marque' => $material->marque,
-                        'Modele' => $material->modele,
-                        'Numero de serie' => $material->num_serie,
+                        'Numéro d\'inventaire' => $material->num_inventaire,
                         'Date d\'inscription' => $material->date_inscription,
-                        'Date d\'affectation' => $material->date_affectation,
+                        'Désignation de l\'objet' => $material->designation,
+                        'Qté' => $material->qte,
+                        'Marque' => $material->marque,
+                        'Modèle' => $material->modele,
                         'Service' => $material->service_id ? $material->service->nom : 'Non affecté',
+                        'Date d\'affectation' => $material->date_affectation,
+                        'Série' => $material->num_serie,
                         'Observation' => $material->observation,
+                        'Numéro BL' => $material->numero_bl,
+                        'Nom société' => $material->nom_societe,
+                        'Numéro de marché' => $material->numero_marche,
+                        'Type' => $material->type,
+                        'Origine' => $material->origin,
                         'Etat' => $material->etat,
-                        'Numero marche' => $material->numero_marche,
-                        'Numero BL' => $material->numero_bl,
-                        'Nom societe' => $material->nom_societe,
                     ];
                 });
+
+            // Create log export excel
+            Log::create([
+                'action' => 'export',
+                'table_name' => 'materials',
+                'record_id' => 0,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
 
             return response()->json($materials);
         } catch (\Exception $e) {

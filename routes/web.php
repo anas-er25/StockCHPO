@@ -17,7 +17,11 @@ Route::group(["middleware" => "auth"], function () {
     /* -------------------------------------------------------------------------- */
     /*                            Dashboard routes - START                        */
     /* -------------------------------------------------------------------------- */
-    Route::group(['controller' => DashboardController::class], function () {});
+    Route::group(['controller' => DashboardController::class], function () {
+        Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/dashboard/Movements', 'Movements')->name('dashboard.Movements');
+        Route::get('/dashboard/chart-data', 'getChartData');
+    });
     /* -------------------------------------------------------------------------- */
     /*                            Service routes - START                          */
     /* -------------------------------------------------------------------------- */
@@ -103,15 +107,6 @@ Route::group(["middleware" => "auth"], function () {
 
         // Export PDF
         Route::get('/reformePDF/export-pdf', 'reformePDF')->name('reformePDF');
-    });
-
-
-    /* -------------------------------------------------------------------------- */
-    /*                            Dashboard routes - START                           */
-    /* -------------------------------------------------------------------------- */
-    Route::group(['controller' => DashboardController::class], function () {
-        Route::get('/dashboard', 'index')->name('dashboard');
-        Route::get('/dashboard/Movements', 'Movements')->name('dashboard.Movements');
     });
 });
 

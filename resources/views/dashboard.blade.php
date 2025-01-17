@@ -35,24 +35,24 @@
         {{-- <div class="container full-container py-5 flex flex-col gap-6"> --}}
         <div class="p-5">
             <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-                {{-- <div class="col-span-2">
+                <div class="col-span-2">
                     <div class="card">
                         <div class="card-body">
                             <div class="sm:flex block justify-between mb-5">
-                                <h4 class="text-gray-600 text-lg font-semibold sm:mb-0 mb-2">Sales Overview
-                                </h4>
-                                <select name="cars" id="cars"
-                                    class=" border-gray-400 text-gray-500 rounded-md text-sm border-[1px] focus:ring-0 sm:w-auto w-full">
-                                    <option value="volvo">March2023</option>
-                                    <option value="saab">April2023</option>
-                                    <option value="mercedes">May2023</option>
-                                    <option value="audi">June2023</option>
+                                <h4 class="text-gray-600 text-lg font-semibold sm:mb-0 mb-2">Matériaux par état</h4>
+                                <select id="month-filter"
+                                    class="border-gray-400 text-gray-500 rounded-md text-sm border-[1px] focus:ring-0 sm:w-auto w-full">
+                                    @foreach (range(1, 12) as $month)
+                                        <option value="{{ $month }}" {{ date('n') == $month ? 'selected' : '' }}>
+                                            {{ \Carbon\Carbon::create()->month($month)->locale('fr')->monthName }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div id="chart"></div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
                 <div class="flex flex-col gap-6">
                     <div class="card">
                         <div class="card-body">
@@ -109,7 +109,6 @@
                         <div id="earning"></div>
                     </div> --}}
                 </div>
-
             </div>
             <div class="mt-2 grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
                 <div class="card">
@@ -202,8 +201,6 @@
                                                             <h3 class="font-semibold text-gray-600">{{ $log['user'] }}</h3>
                                                         </div>
                                                     </td>
-
-
                                                     <td class="p-4 text-center">
                                                         @if ($log['action'] == 'create')
                                                             <span
@@ -214,26 +211,50 @@
                                                         @elseif ($log['action'] == 'delete')
                                                             <span
                                                                 class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">Supprimer</span>
+                                                        @elseif ($log['action'] == 'export' && $log['record_id'] == '0')
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-teal-500">Exporter
+                                                                Excel</span>
+                                                        @elseif ($log['action'] == 'export' && $log['record'] == '1')
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-teal-500">Exporter
+                                                                PDF</span>
                                                         @else
                                                             <span
-                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-teal-500">Exporter</span>
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">Exporter
+                                                                PDF</span>
                                                         @endif
                                                     </td>
                                                     <td class="p-4 text-center">
                                                         <span class="font-normal text-gray-500">
-                                                            @if ($log['table_name'] == 'services')
-                                                                Service
-                                                            @elseif ($log['table_name'] == 'users')
-                                                                Utilisateur
-                                                            @elseif ($log['table_name'] == 'materials')
-                                                                Matériel
-                                                            @elseif ($log['table_name'] == 'feuille_reformes')
-                                                                Feuille de réforme
-                                                            @elseif ($log['table_name'] == 'avis__mvts')
-                                                                Avis de mouvement
-                                                            @elseif ($log['table_name'] == 'bon_decharges')
-                                                                Bon de décharge
-                                                            @endif
+                                                            @switch($log['table_name'])
+                                                                @case('services')
+                                                                    Service
+                                                                @break
+
+                                                                @case('users')
+                                                                    Utilisateur
+                                                                @break
+
+                                                                @case('materials')
+                                                                    Matériel
+                                                                @break
+
+                                                                @case('feuille_reformes')
+                                                                    Feuille de réforme
+                                                                @break
+
+                                                                @case('avis__mvts')
+                                                                    Avis de mouvement
+                                                                @break
+
+                                                                @case('bon_decharges')
+                                                                    Bon de décharge
+                                                                @break
+
+                                                                @default
+                                                                    {{ $log['table_name'] }}
+                                                            @endswitch
                                                         </span>
                                                     </td>
                                                     <td class="p-4 text-center">
@@ -249,13 +270,10 @@
                         </div>
                     </div>
                 @endcan
-
             </div>
             <x-footer />
         </div>
         {{-- </div> --}}
-
-
     </main>
 @endsection
 
@@ -291,7 +309,7 @@
                 position: 'bottom' // Position the legend
             },
             // Use more distinct colors or a color palette
-            colors: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#fd7e14'],
+            colors: ['#1e90ff', '#ffeb3b', '#32cd32', '#20b2aa', '#ff7f50'],
             responsive: [{
                 breakpoint: 991,
                 options: {
@@ -339,7 +357,7 @@
                 position: 'bottom' // Position the legend
             },
             // Use more distinct colors or a color palette
-            colors: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#fd7e14'],
+            colors: ['#1e90ff', '#ffeb3b', '#32cd32', '#20b2aa', '#ff7f50'],
             responsive: [{
                 breakpoint: 991,
                 options: {
@@ -358,106 +376,103 @@
         chart.render();
 
 
-        // var chart = {
-        //     series: [
-        //         { name: 'Etat', data: <?= json_encode($seriesetat) ?>}
-        //     ],
-        //     chart: {
-        //         type: "bar",
-        //         height: 352,
-        //         offsetX: -15,
-        //         toolbar: {
-        //             show: true
-        //         },
-        //         foreColor: "#adb0bb",
-        //         fontFamily: 'inherit',
-        //         sparkline: {
-        //             enabled: false
-        //         },
-        //     },
-        //     colors: ["#5D87FF"], // Use a single color since you have one series
-        //     plotOptions: {
-        //         bar: {
-        //             horizontal: false,
-        //             columnWidth: "35%",
-        //             borderRadius: [6],
-        //             borderRadiusApplication: 'end',
-        //             borderRadiusWhenStacked: 'all'
-        //         },
-        //     },
-        //     markers: {
-        //         size: 0
-        //     },
-        //     dataLabels: {
-        //         enabled: false,
-        //     },
-        //     legend: {
-        //         show: false,
-        //     },
-        //     grid: {
-        //         borderColor: "rgba(0,0,0,0.1)",
-        //         strokeDashArray: 3,
-        //         xaxis: {
-        //             lines: {
-        //                 show: false,
-        //             },
-        //         },
-        //     },
-        //     xaxis: {
-        //         type: "category",
-        //         categories: <?= json_encode($labelsetat) ?>, // Use the actual labels from $labelsetat
-        //         labels: {
-        //             style: {
-        //                 cssClass: "grey--text lighten-2--text fill-color"
-        //             },
-        //         },
-        //     },
-        //     yaxis: {
-        //         show: true,
-        //         min: 0,
-        //         //Removed fixed max value to let the chart scale dynamically
-        //         tickAmount: 4,
-        //         labels: {
-        //             style: {
-        //                 cssClass: "grey--text lighten-2--text fill-color",
-        //             },
-        //         },
-        //     },
-        //     stroke: {
-        //         show: true,
-        //         width: 3,
-        //         lineCap: "butt",
-        //         colors: ["transparent"],
-        //     },
-        //     tooltip: {
-        //         theme: "light"
-        //     },
-        //     responsive: [{
-        //             breakpoint: 1400,
-        //             options: {
-        //                 plotOptions: {
-        //                     bar: {
-        //                         borderRadius: [5],
-        //                     }
-        //                 },
-        //             }
-        //         },
-        //         {
-        //             breakpoint: 600,
-        //             options: {
-        //                 plotOptions: {
-        //                     bar: {
-        //                         borderRadius: [3],
-        //                     }
-        //                 },
-        //             }
-        //         },
-        //     ]
-        // };
+        document.getElementById('month-filter').addEventListener('change', function() {
+            const selectedMonth = this.value;
 
-        // var chartElement = document.querySelector("#chart");
+            fetch(`/dashboard/chart-data?month=${selectedMonth}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the chart with the new data
+                    chart.updateSeries([{
+                        data: data.series
+                    }]);
+                    chart.updateOptions({
+                        xaxis: {
+                            categories: data.labels
+                        }
+                    });
+                });
+        });
 
-        // var chart = new ApexCharts(chartElement, chart);
-        // chart.render();
+        var chartOptions = {
+
+            series: [{
+                data: <?= json_encode($seriesetat) ?>
+            }],
+            chart: {
+                type: "bar",
+                height: 352,
+                offsetX: -15,
+                toolbar: {
+                    show: true
+                },
+                foreColor: "#adb0bb",
+                fontFamily: 'inherit',
+                sparkline: {
+                    enabled: false
+                },
+            },
+            colors: ["#5D87FF"],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: "35%",
+                    borderRadius: [6],
+                    borderRadiusApplication: 'end',
+                    borderRadiusWhenStacked: 'all'
+                },
+            },
+            markers: {
+                size: 0
+            },
+            dataLabels: {
+                enabled: false
+            },
+            legend: {
+                show: false
+            },
+            grid: {
+                borderColor: "rgba(0,0,0,0.1)",
+                strokeDashArray: 3,
+                xaxis: {
+                    lines: {
+                        show: false
+                    }
+                },
+            },
+            xaxis: {
+                type: "category",
+                categories: <?= json_encode($labelsetat) ?>,
+                labels: {
+                    style: {
+                        cssClass: "grey--text lighten-2--text fill-color"
+                    }
+                },
+            },
+            yaxis: {
+                show: true,
+                min: 0,
+                tickAmount: 4,
+                labels: {
+                    style: {
+                        cssClass: "grey--text lighten-2--text fill-color"
+                    }
+                },
+            },
+            stroke: {
+                show: true,
+                width: 3,
+                lineCap: "butt",
+                colors: ["transparent"]
+            },
+            tooltip: {
+                theme: "light"
+            },
+            responsive: [],
+        };
+
+        var chartElement = document.querySelector("#chart");
+        var chart = new ApexCharts(chartElement, chartOptions); // Use the stored options
+        chart.render();
     </script>
 @endsection

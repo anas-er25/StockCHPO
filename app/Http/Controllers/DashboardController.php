@@ -12,18 +12,22 @@ class DashboardController extends Controller
     public function index()
     {
         // Logs existants
-        $logs = Log::with('user')->get()->map(function ($log) {
-            $record = $this->getRecordInfo($log->table_name, $log->record_id);
-            return [
-                'id' => $log->id,
-                'action' => $log->action,
-                'table_name' => $log->table_name,
-                'record' => $record,
-                'numero_inventaire' => $record ? $record->num_inventaire : null,
-                'user' => $log->user->name,
-                'performed_at' => $log->performed_at,
-            ];
-        });
+        $logs = Log::with('user')
+            ->orderBy('performed_at', 'DESC')
+            ->get()
+            ->map(function ($log) {
+                $record = $this->getRecordInfo($log->table_name, $log->record_id);
+                return [
+                    'id' => $log->id,
+                    'action' => $log->action,
+                    'table_name' => $log->table_name,
+                    'record' => $record,
+                    'record_id' => $log->record_id,
+                    'numero_inventaire' => $record ? $record->num_inventaire : null,
+                    'user' => $log->user->name,
+                    'performed_at' => $log->performed_at,
+                ];
+            });
 
         // Derniers mouvements de stock
         $recentMovements = [
@@ -49,6 +53,33 @@ class DashboardController extends Controller
             ->get();
 
         return view('dashboard', compact('logs', 'recentMovements', 'materielstype', 'materielsetat'));
+    }
+    public function getChartData(Request $request)
+    {
+        $month = $request->input('month');
+
+        $materielsetat = Material::select('etat')
+            ->whereMonth('date_inscription', $month) // Filter by month
+            ->groupBy('etat')
+            ->selectRaw('etat, count(*) as count')
+            ->get();
+
+        $labelsetat = [];
+        $seriesetat = [];
+        foreach ($materielsetat as $item) {
+            $labelsetat[] = $item->etat;
+            $seriesetat[] = $item->count;
+        }
+
+        if (empty($labelsetat)) {
+            $labelsetat = ['No Data'];
+            $seriesetat = [0]; // Important: Use 0 to avoid chart errors
+        }
+
+        return response()->json([
+            'labels' => $labelsetat,
+            'series' => $seriesetat,
+        ]);
     }
 
     public function Movements()
