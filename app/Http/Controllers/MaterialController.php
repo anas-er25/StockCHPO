@@ -262,13 +262,13 @@ class MaterialController extends Controller
             // Valider et insérer chaque ligne dans la base de données
             $material = new Material();
 
-            $material->num_inventaire = $row[0];  // Exemple: Colonne 1 = num_inventaire
-            $material->date_inscription = $row[1];  // Exemple: date actuelle
-            $material->designation = $row[2];     // Exemple: Colonne 2 = designation
-            $material->qte = $row[3];             // Exemple: Colonne 3 = qte
-            $material->marque = $row[4];          // Exemple: Colonne 6 = marque
-            $material->modele = $row[5];          // Exemple: Colonne 7 = modele
-            $material->service_id = $row[6];      // Exemple: Colonne 9 = service_id
+            $material->num_inventaire = $row[0];
+            $material->date_inscription = $row[1];
+            $material->designation = $row[2];
+            $material->qte = $row[3];
+            $material->marque = $row[4];
+            $material->modele = $row[5];
+            $material->service_id = $row[6];
             // Vérifier si row[6] est un nom de service
             if (!is_null($row[6])) {
                 $service = Service::where('nom', $row[6])->first();
@@ -281,19 +281,18 @@ class MaterialController extends Controller
             } else {
                 $material->service_id = null;
             }
-            $material->date_affectation = $row[7];  // Exemple: date actuelle
-            $material->num_serie = $row[8];       // Exemple: Colonne 8 = num_serie
-            $material->observation = $row[9];     // Exemple: Colonne 10 = observation
-            $material->numero_bl = $row[10];      // Exemple: Colonne 13 = numero_bl
-            $material->nom_societe = $row[11];    // Exemple: Colonne 14 = nom_societe
-            $material->numero_marche = $row[12];  // Exemple: Colonne 12 = numero_marche
-            $material->type = $row[13];            // Exemple: Colonne 4 = type
-            $material->origin = $row[14];          // Exemple: Colonne 5 = origin
-            $material->etat = $row[15];           // Exemple: Colonne 11 = etat
+            $material->date_affectation = $row[7];
+            $material->num_serie = $row[8];
+            $material->observation = $row[9];
+            $material->numero_bl = $row[10];
+            $material->nom_societe = $row[11];
+            $material->numero_marche = $row[12];
+            $material->type = $row[13];
+            $material->origin = $row[14];
+            $material->etat = $row[15];
 
             // Enregistrer dans la base de données
             $material->save();
-
         }
         // Créer le log pour chaque ajout
         Log::create([

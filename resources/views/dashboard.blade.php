@@ -169,7 +169,6 @@
                                 <p>Aucune donnée trouvée</p>
                             @endforelse
                             <hr>
-
                         </ul>
                     </div>
                 </div>
