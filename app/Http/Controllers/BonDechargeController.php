@@ -57,7 +57,7 @@ class BonDechargeController extends Controller
         // Créer le log
         Log::create([
             'action' => 'create',
-            'table_name' => 'bon__decharges',
+            'table_name' => 'bon_decharges',
             'record_id' => $bonDecharge->id,
             'performed_by' => Auth::user()->id,
             'performed_at' => now()
@@ -108,7 +108,7 @@ class BonDechargeController extends Controller
         // Créer le log
         Log::create([
             'action' => 'update',
-            'table_name' => 'bon__decharges',
+            'table_name' => 'bon_decharges',
             'record_id' => $bonDecharge->id,
             'performed_by' => Auth::user()->id,
             'performed_at' => now()
@@ -125,7 +125,7 @@ class BonDechargeController extends Controller
         // Créer le log
         Log::create([
             'action' => 'delete',
-            'table_name' => 'bon__decharges',
+            'table_name' => 'bon_decharges',
             'record_id' => $bonDecharge->id,
             'performed_by' => Auth::user()->id,
             'performed_at' => now()
@@ -142,7 +142,7 @@ class BonDechargeController extends Controller
         // Créer le log
         Log::create([
             'action' => 'export',
-            'table_name' => 'bon__decharges',
+            'table_name' => 'bon_decharges',
             'record_id' => $bondecharge->id,
             'performed_by' => Auth::user()->id,
             'performed_at' => now()
