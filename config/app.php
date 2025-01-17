@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -13,7 +14,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Gestion de stock'),
+    'name' => env('APP_NAME', 'Gestion de stock CHPO'),
 
     /*
     |--------------------------------------------------------------------------
@@ -123,5 +124,4 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    
 ];

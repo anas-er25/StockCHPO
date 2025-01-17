@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Material;
@@ -234,6 +235,77 @@ class MaterialController extends Controller
 
         $materiels = Material::whereNull('service_id')->get();
         return view('pages.materiels.stock', ['materiels' => $materiels]);
+    }
+
+    public function importExcel(Request $request)
+    {
+        // Validation du fichier
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        // Récupérer le fichier téléchargé
+        $file = $request->file('file');
+
+        // Charger le fichier Excel
+        $spreadsheet = IOFactory::load($file);
+
+        // Récupérer la première feuille du fichier
+        $sheet = $spreadsheet->getActiveSheet();
+        $data = $sheet->toArray();
+
+        // Parcourir les lignes de données et les insérer dans la base
+        foreach ($data as $key => $row) {
+            // Ignorer l'entête (première ligne)
+            if ($key == 0) continue;
+
+            // Valider et insérer chaque ligne dans la base de données
+            $material = new Material();
+
+            $material->num_inventaire = $row[0];  // Exemple: Colonne 1 = num_inventaire
+            $material->date_inscription = $row[1];  // Exemple: date actuelle
+            $material->designation = $row[2];     // Exemple: Colonne 2 = designation
+            $material->qte = $row[3];             // Exemple: Colonne 3 = qte
+            $material->marque = $row[4];          // Exemple: Colonne 6 = marque
+            $material->modele = $row[5];          // Exemple: Colonne 7 = modele
+            $material->service_id = $row[6];      // Exemple: Colonne 9 = service_id
+            // Vérifier si row[6] est un nom de service
+            if (!is_null($row[6])) {
+                $service = Service::where('nom', $row[6])->first();
+                if ($service) {
+                    $material->service_id = $service->id;
+                } else {
+                    // Si le service n'existe pas, on met null
+                    $material->service_id = null;
+                }
+            } else {
+                $material->service_id = null;
+            }
+            $material->date_affectation = $row[7];  // Exemple: date actuelle
+            $material->num_serie = $row[8];       // Exemple: Colonne 8 = num_serie
+            $material->observation = $row[9];     // Exemple: Colonne 10 = observation
+            $material->numero_bl = $row[10];      // Exemple: Colonne 13 = numero_bl
+            $material->nom_societe = $row[11];    // Exemple: Colonne 14 = nom_societe
+            $material->numero_marche = $row[12];  // Exemple: Colonne 12 = numero_marche
+            $material->type = $row[13];            // Exemple: Colonne 4 = type
+            $material->origin = $row[14];          // Exemple: Colonne 5 = origin
+            $material->etat = $row[15];           // Exemple: Colonne 11 = etat
+
+            // Enregistrer dans la base de données
+            $material->save();
+
+            // Créer le log pour chaque ajout
+            Log::create([
+                'action' => 'export',
+                'table_name' => 'materials',
+                'record_id' => $material->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
+
+        // Retourner une réponse de succès
+        return redirect(route('materiels.index'))->with('success', 'Les données ont été importées avec succès.');
     }
 
     // ===================================================================================================================================

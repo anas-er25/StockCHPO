@@ -47,6 +47,8 @@ Route::group(["middleware" => "auth"], function () {
         Route::get('/materiels/{id}', 'show')->name('show');
         Route::delete('/materiels/{id}', 'destroy')->name('destroy');
 
+        // Import
+        Route::post('/materiels/import', 'importExcel')->name('importExcel');
 
         // Export
         Route::get('/materiels/export-pdf/{id}', 'exportPDF')->name('export_pdf');
