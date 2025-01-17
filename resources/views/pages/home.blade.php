@@ -4,6 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gestion de stock CHPO">
+    <meta name="author" content="Anas ER-RAKIBI">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <meta name="bingbot" content="noindex, nofollow">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="shortcut icon" href="{{ asset('/assets/images/logos/favicon.png') }}" type="image/x-icon">
     <title>StockPro</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/heroicons@1.0.6/dist/heroicons.umd.js"></script>
@@ -84,9 +93,8 @@
                         <div class="text-blue-600 mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20"
                                 fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M10 2a8 8 0 110 16 8 8 0 010-16zm-1 4a1 1 0 112 0v4a1 1 0 11-2 0V6zm0 6a1 1 0 112 0v2a1 1 0 11-2 0v-2z"
-                                    clip-rule="evenodd" />
+                                <path
+                                    d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                             </svg>
                         </div>
                         <h3 class="text-lg font-medium text-gray-900">Analyse en temps réel</h3>
@@ -99,9 +107,8 @@
                         <div class="text-blue-600 mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20"
                                 fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M10 2a8 8 0 110 16 8 8 0 010-16zm-1 4a1 1 0 112 0v4a1 1 0 11-2 0V6zm0 6a1 1 0 112 0v2a1 1 0 11-2 0v-2z"
-                                    clip-rule="evenodd" />
+                                <path
+                                    d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
                             </svg>
                         </div>
                         <h3 class="text-lg font-medium text-gray-900">Suivi des stocks</h3>
@@ -114,14 +121,13 @@
                         <div class="text-blue-600 mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20"
                                 fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M10 2a8 8 0 110 16 8 8 0 010-16zm-1 4a1 1 0 112 0v4a1 1 0 11-2 0V6zm0 6a1 1 0 112 0v2a1 1 0 11-2 0v-2z"
-                                    clip-rule="evenodd" />
+                                <path
+                                    d="M8 5a1 1 0 100 2h5.586l-1.293 1.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L13.586 5H8zM12 15a1 1 0 100-2H6.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L6.414 15H12z" />
                             </svg>
                         </div>
-                        <h3 class="text-lg font-medium text-gray-900">Prévisions des ventes</h3>
-                        <p class="mt-2 text-base text-gray-500">Des prévisions basées sur l'IA pour optimiser vos
-                            niveaux de stock et prévenir les ruptures de stock.</p>
+                        <h3 class="text-lg font-medium text-gray-900">Gestion des mouvements</h3>
+                        <p class="mt-2 text-base text-gray-500">Suivez facilement les entrées, sorties et transferts de
+                            stock avec un historique détaillé des mouvements.</p>
                     </div>
 
                     <!-- Plus de fonctionnalités... -->
@@ -178,6 +184,17 @@
                                 d="M218.123 218.127h-37.931v-59.403c0-14.165-.253-32.4-19.728-32.4-19.756 0-22.779 15.434-22.779 31.369v60.43h-37.93V95.967h36.413v16.694h.51a39.907 39.907 0 0 1 35.928-19.733c38.445 0 45.533 25.288 45.533 58.186l-.016 67.013ZM56.955 79.27c-12.157.002-22.014-9.852-22.016-22.009-.002-12.157 9.851-22.014 22.008-22.016 12.157-.003 22.014 9.851 22.016 22.008A22.013 22.013 0 0 1 56.955 79.27m18.966 138.858H37.95V95.967h37.97v122.16ZM237.033.018H18.89C8.58-.098.125 8.161-.001 18.471v219.053c.122 10.315 8.576 18.582 18.89 18.474h218.144c10.336.128 18.823-8.139 18.966-18.474V18.454c-.147-10.33-8.635-18.588-18.966-18.453"
                                 fill="#0A66C2" />
                         </svg>
+
+                    </a>
+                    <a href="https://www.youtube.com/@AjiNcodew" class="text-gray-400 hover:text-white">
+                        <svg viewBox="0 0 256 180" width="22" height="22" xmlns="http://www.w3.org/2000/svg"
+                            preserveAspectRatio="xMidYMid">
+                            <path
+                                d="M250.346 28.075A32.18 32.18 0 0 0 227.69 5.418C207.824 0 127.87 0 127.87 0S47.912.164 28.046 5.582A32.18 32.18 0 0 0 5.39 28.24c-6.009 35.298-8.34 89.084.165 122.97a32.18 32.18 0 0 0 22.656 22.657c19.866 5.418 99.822 5.418 99.822 5.418s79.955 0 99.82-5.418a32.18 32.18 0 0 0 22.657-22.657c6.338-35.348 8.291-89.1-.164-123.134Z"
+                                fill="red" />
+                            <path fill="#FFF" d="m102.421 128.06 66.328-38.418-66.328-38.418z" />
+                        </svg>
+
                     </a>
                 </div>
             </div>
