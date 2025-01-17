@@ -39,67 +39,74 @@
                                      </thead>
                                      <tbody>
                                          @forelse ($users as $profile)
-                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                                 <td class="px-6 py-4 text-center">{{ $profile->name }}</td>
-                                                 <td class="px-6 py-4 text-center">{{ $profile->email }}</td>
-                                                 <td class="px-6 py-4 text-center">{{ $profile->role }}</td>
-                                                 <td class="px-6 py-4 text-center">
-                                                     {{ $profile->created_at->format('d/m/Y') }}
-                                                 </td>
+                                             @if ($profile->id != auth()->user()->id)
+                                                 <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
+                                                     <td class="px-6 py-4 text-center">{{ $profile->name }}</td>
+                                                     <td class="px-6 py-4 text-center">{{ $profile->email }}</td>
+                                                     <td class="px-6 py-4 text-center">{{ $profile->role }}</td>
+                                                     <td class="px-6 py-4 text-center">
+                                                         {{ $profile->created_at->format('d/m/Y') }}
+                                                     </td>
 
-                                                 <td class="px-6 py-4 flex items-center justify-center">
-                                                     <!-- Icône de modification -->
-                                                     <a href="{{ route('profile.edituser', $profile->id) }}"
-                                                         class="cursor-pointer mr-4">
-                                                         <i class="fa-solid fa-pen text-blue-600 hover:text-blue-700"></i>
-                                                     </a>
-
-                                                     <!-- Formulaire de suppression -->
-                                                     <form action="{{ route('profile.destroyuser', $profile->id) }}"
-                                                         method="POST" class="inline" id="delete-form-{{ $profile->id }}">
-                                                         @csrf
-                                                         @method('DELETE')
-                                                         @if ($profile->id != auth()->user()->id)
-                                                         <div class="cursor-pointer mr-4"
-                                                             onclick="confirmDelete({{ $profile->id }})">
+                                                     <td class="px-6 py-4 flex items-center justify-center">
+                                                         <!-- Icône de modification -->
+                                                         <a href="{{ route('profile.edituser', $profile->id) }}"
+                                                             class="cursor-pointer mr-4">
                                                              <i
-                                                                 class="fa-solid fa-trash text-red-500 hover:text-red-700"></i>
-                                                         </div>
-                                                         @else
-                                                             <!-- Si c'est le propre profil de l'utilisateur, ne pas afficher le bouton ou supprimer le bouton -->
-                                                             <button type="button" class="cursor-pointer mr-4" disabled>
-                                                                 <i class="fa-solid fa-trash text-gray-500"
-                                                                     title="Vous ne pouvez pas supprimer votre propre compte"></i>
-                                                             </button>
-                                                         @endif
-                                                     </form>
+                                                                 class="fa-solid fa-pen text-blue-600 hover:text-blue-700"></i>
+                                                         </a>
 
-                                                     <!-- Icône de active ou desactive -->
-                                                     <form action="{{ route('profile.status', $profile->id) }}"
-                                                         method="POST">
-                                                         @csrf
-                                                         @if ($profile->id != auth()->user()->id)
-                                                             <!-- Vérifier si ce n'est pas le propre profil de l'utilisateur -->
-                                                             <button class="cursor-pointer mr-4">
-                                                                 @if ($profile->status == '1')
-                                                                     <i class="fa fa-lock text-red-500" title="Active"></i>
-                                                                 @elseif($profile->status == '0')
-                                                                     <i class="fa fa-unlock text-teal-500"
-                                                                         title="Inactif"></i>
-                                                                 @endif
-                                                             </button>
-                                                         @else
-                                                             <!-- Si c'est le propre profil de l'utilisateur, ne pas afficher le bouton ou désactiver le bouton -->
-                                                             <button type="button" class="cursor-pointer mr-4" disabled>
-                                                                 <i class="fa fa-lock text-gray-500"
-                                                                     title="Vous ne pouvez pas désactiver votre propre statut"></i>
-                                                             </button>
-                                                         @endif
-                                                     </form>
+                                                         <!-- Formulaire de suppression -->
+                                                         <form action="{{ route('profile.destroyuser', $profile->id) }}"
+                                                             method="POST" class="inline"
+                                                             id="delete-form-{{ $profile->id }}">
+                                                             @csrf
+                                                             @method('DELETE')
+                                                             @if ($profile->id != auth()->user()->id)
+                                                                 <div class="cursor-pointer mr-4"
+                                                                     onclick="confirmDelete({{ $profile->id }})">
+                                                                     <i
+                                                                         class="fa-solid fa-trash text-red-500 hover:text-red-700"></i>
+                                                                 </div>
+                                                             @else
+                                                                 <!-- Si c'est le propre profil de l'utilisateur, ne pas afficher le bouton ou supprimer le bouton -->
+                                                                 <button type="button" class="cursor-pointer mr-4"
+                                                                     disabled>
+                                                                     <i class="fa-solid fa-trash text-gray-500"
+                                                                         title="Vous ne pouvez pas supprimer votre propre compte"></i>
+                                                                 </button>
+                                                             @endif
+                                                         </form>
 
-                                                 </td>
+                                                         <!-- Icône de active ou desactive -->
+                                                         <form action="{{ route('profile.status', $profile->id) }}"
+                                                             method="POST">
+                                                             @csrf
+                                                             @if ($profile->id != auth()->user()->id)
+                                                                 <!-- Vérifier si ce n'est pas le propre profil de l'utilisateur -->
+                                                                 <button class="cursor-pointer mr-4">
+                                                                     @if ($profile->status == '1')
+                                                                         <i class="fa fa-lock text-red-500"
+                                                                             title="Active"></i>
+                                                                     @elseif($profile->status == '0')
+                                                                         <i class="fa fa-unlock text-teal-500"
+                                                                             title="Inactif"></i>
+                                                                     @endif
+                                                                 </button>
+                                                             @else
+                                                                 <!-- Si c'est le propre profil de l'utilisateur, ne pas afficher le bouton ou désactiver le bouton -->
+                                                                 <button type="button" class="cursor-pointer mr-4"
+                                                                     disabled>
+                                                                     <i class="fa fa-lock text-gray-500"
+                                                                         title="Vous ne pouvez pas désactiver votre propre statut"></i>
+                                                                 </button>
+                                                             @endif
+                                                         </form>
 
-                                             </tr>
+                                                     </td>
+
+                                                 </tr>
+                                             @endif
 
                                          @empty
                                              <tr>
