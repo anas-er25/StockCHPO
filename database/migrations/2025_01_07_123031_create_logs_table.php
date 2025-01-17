@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->enum('action', ['create', 'update', 'delete', 'export']);
+            $table->enum('action', ['create', 'update', 'delete', 'export', 'import']);
             $table->string('table_name');
             $table->unsignedBigInteger('record_id');
             $table->foreignId('performed_by')->constrained('users')->onDelete('cascade');

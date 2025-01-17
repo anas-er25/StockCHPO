@@ -294,15 +294,15 @@ class MaterialController extends Controller
             // Enregistrer dans la base de données
             $material->save();
 
-            // Créer le log pour chaque ajout
-            Log::create([
-                'action' => 'export',
-                'table_name' => 'materials',
-                'record_id' => $material->id,
-                'performed_by' => Auth::user()->id,
-                'performed_at' => now()
-            ]);
         }
+        // Créer le log pour chaque ajout
+        Log::create([
+            'action' => 'import',
+            'table_name' => 'materials',
+            'record_id' => 0,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
 
         // Retourner une réponse de succès
         return redirect(route('materiels.index'))->with('success', 'Les données ont été importées avec succès.');
