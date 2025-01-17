@@ -45,32 +45,46 @@
                                      <!-- role -->
                                      <div>
                                          <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-                                         <select name="role" id="role" required
-                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                             <option value="admin"
-                                                 {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>
-                                                 Admin</option>
-                                             <option value="subadmin"
-                                                 {{ old('role', $user->role) == 'subadmin' ? 'selected' : '' }}>Sous
-                                                 Admin
-                                             </option>
-                                         </select>
+                                         @if ($user->id != auth()->user()->id)
+                                             <select name="role" id="role" required
+                                                 class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                 <option value="admin"
+                                                     {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>
+                                                     Admin</option>
+                                                 <option value="subadmin"
+                                                     {{ old('role', $user->role) == 'subadmin' ? 'selected' : '' }}>Sous
+                                                     Admin
+                                                 </option>
+                                             </select>
+                                         @else
+                                             <input type="text"
+                                                 class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                                 id="role" name="role" value="{{ old('role', $user->role) }}"
+                                                 readonly>
+                                         @endif
                                          <x-input-error :messages="$errors->get('role')" class="mt-2" />
                                      </div>
                                      <!-- Status -->
                                      <div>
                                          <label for="status" class="block text-sm font-medium text-gray-700">État</label>
-                                         <select name="status" id="status" required
-                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                             <option value="1"
-                                                 {{ old('status', $user->status) == '1' ? 'selected' : '' }}>
-                                                 Active</option>
-                                             <option value="0"
-                                                 {{ old('status', $user->status) == '0' ? 'selected' : '' }}>
-                                                 Inactif
-                                             </option>
-
-                                         </select>
+                                         @if ($user->id != auth()->user()->id)
+                                             <select name="status" id="status" required
+                                                 class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                 <option value="1"
+                                                     {{ old('status', $user->status) == '1' ? 'selected' : '' }}>
+                                                     Active</option>
+                                                 <option value="0"
+                                                     {{ old('status', $user->status) == '0' ? 'selected' : '' }}>
+                                                     Inactif
+                                                 </option>
+                                             </select>
+                                         @else
+                                             <input type="text"
+                                                 class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                                 id="status" name="status"
+                                                 value="{{ old('status', $user->status) == '0' ? 'Inactif' : 'Active' }}"
+                                                 readonly>
+                                         @endif
                                          <x-input-error :messages="$errors->get('status')" class="mt-2" />
                                      </div>
 
