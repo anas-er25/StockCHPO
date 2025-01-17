@@ -15,14 +15,14 @@
 
              <li class="relative">
 
-                 <div class="hs-dropdown relative inline-flex [--placement:bottom-left] sm:[--trigger:hover]">
+                 {{-- <div class="hs-dropdown relative inline-flex [--placement:bottom-left] sm:[--trigger:hover]">
                      <a class="relative hs-dropdown-toggle inline-flex  icon-hover text-gray-600" href="javscript:void(0)">
                          <i class="ti ti-bell-ringing text-xl relative z-[1]"></i>
                          <div
                              class="absolute inline-flex items-center justify-center  text-white text-[11px] font-medium  bg-blue-600 w-2 h-2 rounded-full -top-[1px] -right-[6px]">
                          </div>
                      </a>
-                     {{-- <div class="card hs-dropdown-menu transition-[opacity,margin] border border-gray-400 rounded-md duration hs-dropdown-open:opacity-100 opacity-0 mt-2 min-w-max  w-[300px] hidden z-[12]"
+                      <div class="card hs-dropdown-menu transition-[opacity,margin] border border-gray-400 rounded-md duration hs-dropdown-open:opacity-100 opacity-0 mt-2 min-w-max  w-[300px] hidden z-[12]"
                                             aria-labelledby="hs-dropdown-custom-icon-trigger">
                                             <div>
                                                 <h3 class="text-gray-600 font-semibold text-base px-6 py-3">Notification
@@ -70,8 +70,8 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                        </div> --}}
-                 </div>
+                                        </div>
+                 </div> --}}
 
              </li>
          </ul>
@@ -80,8 +80,8 @@
                                     aria-current="page">Download Free</a> --}}
              <div class="hs-dropdown relative inline-flex [--placement:bottom-right] sm:[--trigger:hover]">
                  <a class="relative hs-dropdown-toggle cursor-pointer align-middle rounded-full">
-                     <img class="object-cover w-9 h-9 rounded-full" src="{{asset('assets/images/profile/user-1.jpg')}}"
-                         alt="" aria-hidden="true">
+                     <img class="object-cover w-9 h-9 rounded-full"
+                         src="{{ asset('assets/images/profile/user-1.jpg') }}" alt="" aria-hidden="true">
                  </a>
                  <div class="card hs-dropdown-menu transition-[opacity,margin] border border-gray-400 rounded-[7px] duration hs-dropdown-open:opacity-100 opacity-0 mt-2 min-w-max  w-[200px] hidden z-[12]"
                      aria-labelledby="hs-dropdown-custom-icon-trigger">
@@ -91,11 +91,10 @@
                              <i class="ti ti-user text-gray-500 text-xl "></i>
                              <p class="text-sm text-gray-500">Mon Compte</p>
                          </a>
-                         {{-- <a href="javscript:void(0)"
-                                                class="flex gap-2 items-center px-4 py-[6px] hover:bg-blue-500">
-                                                <i class="ti ti-list-check text-gray-500 text-xl "></i>
-                                                <p class="text-sm text-gray-500">My Task</p>
-                                            </a> --}}
+                         {{-- <a href="javscript:void(0)" class="flex gap-2 items-center px-4 py-[6px] hover:bg-blue-500">
+                             <i class="ti ti-list-check text-gray-500 text-xl "></i>
+                             <p class="text-sm text-gray-500">My Task</p>
+                         </a> --}}
                          <div class="px-4 mt-[7px] grid">
                              <form method="POST" action="{{ route('logout') }}">
                                  @csrf
