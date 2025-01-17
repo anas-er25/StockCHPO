@@ -208,7 +208,11 @@
                                                         @elseif ($log['action'] == 'update')
                                                             <span
                                                                 class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-blue-600">Modifier</span>
-                                                        @elseif ($log['action'] == 'delete')
+                                                         @elseif ($log['action'] == 'import')
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-blue-600">Importer</span>
+
+                                                                @elseif ($log['action'] == 'delete')
                                                             <span
                                                                 class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">Supprimer</span>
                                                         @elseif ($log['action'] == 'export' && $log['record_id'] == '0')
