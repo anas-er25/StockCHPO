@@ -201,19 +201,13 @@
                                                         </div>
                                                     </td>
                                                     <td class="p-4 text-center">
-                                                        @if ($log['action'] == 'create')
+                                                        @if (
+                                                            $log['action'] == 'export' &&
+                                                                $log['record_id'] == '0' &&
+                                                                ($log['table_name'] == 'bon_decharges' || $log['table_name'] == 'avis__mvts'))
                                                             <span
-                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold bg-cyan-500 text-white">Ajouter</span>
-                                                        @elseif ($log['action'] == 'update')
-                                                            <span
-                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-blue-600">Modifier</span>
-                                                         @elseif ($log['action'] == 'import')
-                                                            <span
-                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-blue-600">Importer</span>
-
-                                                                @elseif ($log['action'] == 'delete')
-                                                            <span
-                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">Supprimer</span>
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">Exporter
+                                                                PDF</span>
                                                         @elseif ($log['action'] == 'export' && $log['record_id'] == '0')
                                                             <span
                                                                 class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-teal-500">Exporter
@@ -222,6 +216,18 @@
                                                             <span
                                                                 class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-teal-500">Exporter
                                                                 PDF</span>
+                                                        @elseif ($log['action'] == 'update')
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-blue-600">Modifier</span>
+                                                        @elseif ($log['action'] == 'create')
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold bg-cyan-500 text-white">Ajouter</span>
+                                                        @elseif ($log['action'] == 'import')
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-blue-600">Importer</span>
+                                                        @elseif ($log['action'] == 'delete')
+                                                            <span
+                                                                class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">Supprimer</span>
                                                         @else
                                                             <span
                                                                 class="inline-flex items-center py-[3px] px-[10px] rounded-2xl font-semibold text-white bg-red-500">Exporter

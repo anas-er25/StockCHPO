@@ -254,33 +254,41 @@ class MaterialController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
         $data = $sheet->toArray();
 
+        $skipped = 0;
+        $imported = 0;
+
         // Parcourir les lignes de données et les insérer dans la base
         foreach ($data as $key => $row) {
             // Ignorer l'entête (première ligne)
             if ($key == 0) continue;
 
+            // Vérifier si le produit existe déjà
+            if (Material::where('num_inventaire', $row[0])->exists()) {
+                $skipped++;
+                continue;
+            }
+
             // Valider et insérer chaque ligne dans la base de données
             $material = new Material();
-
             $material->num_inventaire = $row[0];
             $material->date_inscription = $row[1];
             $material->designation = $row[2];
             $material->qte = $row[3];
             $material->marque = $row[4];
             $material->modele = $row[5];
-            $material->service_id = $row[6];
+
             // Vérifier si row[6] est un nom de service
             if (!is_null($row[6])) {
                 $service = Service::where('nom', $row[6])->first();
                 if ($service) {
                     $material->service_id = $service->id;
                 } else {
-                    // Si le service n'existe pas, on met null
                     $material->service_id = null;
                 }
             } else {
                 $material->service_id = null;
             }
+
             $material->date_affectation = $row[7];
             $material->num_serie = $row[8];
             $material->observation = $row[9];
@@ -291,10 +299,11 @@ class MaterialController extends Controller
             $material->origin = $row[14];
             $material->etat = $row[15];
 
-            // Enregistrer dans la base de données
             $material->save();
+            $imported++;
         }
-        // Créer le log pour chaque ajout
+
+        // Créer le log pour l'import
         Log::create([
             'action' => 'import',
             'table_name' => 'materials',
@@ -303,8 +312,8 @@ class MaterialController extends Controller
             'performed_at' => now()
         ]);
 
-        // Retourner une réponse de succès
-        return redirect(route('materiels.index'))->with('success', 'Les données ont été importées avec succès.');
+        return redirect(route('materiels.index'))
+            ->with('success', "Import terminé. $imported produits importés, $skipped produits existants ignorés.");
     }
 
     // ===================================================================================================================================
