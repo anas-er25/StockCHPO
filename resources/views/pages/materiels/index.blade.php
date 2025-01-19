@@ -15,25 +15,22 @@
                                     <button onclick="exportToExcel()" title="Télécharger Excel"
                                         class="btn bg-green-500 text-white hover:bg-green-700 flex items-center gap-2 px-4 py-2 rounded-md">
                                         Exporter
-                                        <i class="fa-solid fa-file-excel"></i>
+                                        <i class="fa-solid fa-file-export"></i>
                                     </button>
 
                                     <form action="{{ route('materiels.importExcel') }}" method="POST"
                                         enctype="multipart/form-data" class="flex items-center gap-2">
                                         @csrf
                                         <div>
-                                            <!-- Le champ de fichier est caché -->
                                             <input type="file" name="file" id="file" class="hidden" required
                                                 accept=".xlsx">
                                         </div>
-                                        <!-- Le bouton personnalisé -->
                                         <button type="button"
                                             class="btn bg-green-700 text-white hover:bg-green-700 flex items-center gap-2 px-4 py-2 rounded-md"
                                             onclick="triggerFileInput()">
                                             Importer
-                                            <i class="fa-solid fa-file-excel"></i>
+                                            <i class="fa-solid fa-file-import"></i>
                                         </button>
-                                        <!-- Le bouton de soumission caché, qui sera déclenché automatiquement -->
                                         <button type="submit" id="submit-btn" class="hidden"></button>
                                     </form>
 

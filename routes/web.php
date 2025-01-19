@@ -72,6 +72,7 @@ Route::group(["middleware" => "auth"], function () {
 
         // Export PDF
         Route::get('/bondechargePDF/export-pdf/{id}', 'bondechargePDF')->name('bondechargePDF');
+        Route::get('/bondechargePDF/export-all', 'exportAllPDF')->name('exportAllPDF');
     });
 
 
@@ -92,6 +93,7 @@ Route::group(["middleware" => "auth"], function () {
         Route::delete('/avismvt/{id}', 'avismvtdestroy')->name('avismvtdestroy');
         // Export PDF
         Route::get('/avismvtPDF/export-pdf/{id}', 'avismvtPDF')->name('avismvtPDF');
+        Route::get('/avismvtPDF/export-all', 'exportAllPDF')->name('exportAllPDF');
     });
 
 
