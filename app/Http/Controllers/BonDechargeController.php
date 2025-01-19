@@ -15,7 +15,7 @@ class BonDechargeController extends Controller
 {
     public function bondecharge()
     {
-        $materiels = Material::all();
+        $materiels = Material::WhereNotNull('service_id')->get();
         $services = Service::all();
 
         return view('pages.materiels.bondecharge.bondecharge', ['materials' => $materiels, 'services' => $services]);
@@ -148,5 +148,21 @@ class BonDechargeController extends Controller
             'performed_at' => now()
         ]);
         return $pdf->download('bon_decharge' . preg_replace('/[\/\\\\]/', '_', $bondecharge->materiel->num_inventaire) . '.pdf');
+    }
+    public function exportAllPDF()
+    {
+        $bondecharges = Bon_Decharge::all();
+
+        $pdf = PDF::loadView('pages.pdfs.AllBondecharge', ['bondecharges' => $bondecharges]);
+
+        Log::create([
+            'action' => 'export',
+            'table_name' => 'bon_decharges',
+            'record_id' => 0,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
+
+        return $pdf->download('tous_bons_decharge.pdf');
     }
 }

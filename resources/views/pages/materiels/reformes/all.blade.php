@@ -14,8 +14,8 @@
                                 <div class="flex items-center gap-4">
                                     <a href="{{ route('reforme.reformePDF') }}"
                                     title="Télécharger Canevas PDF"
-                                        class="btn bg-green-500 text-white hover:bg-green-700 flex items-center gap-2 px-4 py-2 rounded-md">
-                                        <i class="fa-solid fa-file-pdf"></i>
+                                        class="btn bg-red-500 text-white hover:bg-red-700 flex items-center gap-2 px-4 py-2 rounded-md">
+                                        Canevas<i class="fa-solid fa-file-pdf"></i>
                                     </a>
                                     <a href="{{ route('reforme.addreforme') }}"
                                         class="btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 px-4 py-2 rounded-md">

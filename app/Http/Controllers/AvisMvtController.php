@@ -19,12 +19,12 @@ class AvisMvtController extends Controller
         return view('pages.materiels.avismvt.all', ['avis' => $avis]);
     }
 
-    public function avismvt(){
+    public function avismvt()
+    {
         $materiels = Material::all();
         $services = Service::all();
 
         return view('pages.materiels.avismvt.avismvt', ['materials' => $materiels, 'services' => $services]);
-
     }
 
     public function getMaterial($id)
@@ -146,5 +146,22 @@ class AvisMvtController extends Controller
             'performed_at' => now()
         ]);
         return $pdf->download('Avis_Mouvement' . preg_replace('/[\/\\\\]/', '_', $avismvt->materiel->num_inventaire) . '.pdf');
+    }
+
+    public function exportAllPDF()
+    {
+        $avismvts = Avis_Mvt::all();
+
+        $pdf = PDF::loadView('pages.pdfs.AllAvismvt', ['avismvts' => $avismvts]);
+
+        Log::create([
+            'action' => 'export',
+            'table_name' => 'avis_mvts',
+            'record_id' => 0,
+            'performed_by' => Auth::user()->id,
+            'performed_at' => now()
+        ]);
+
+        return $pdf->download('tous_avis_mouvements.pdf');
     }
 }

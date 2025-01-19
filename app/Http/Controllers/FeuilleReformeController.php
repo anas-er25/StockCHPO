@@ -20,7 +20,7 @@ class FeuilleReformeController extends Controller
 
     public function addreforme()
     {
-        $materials = Material::all();
+        $materials = Material::WhereNotNull('service_id')->get();
         return view('pages.materiels.reformes.create', compact('materials'));
     }
 
