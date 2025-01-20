@@ -58,7 +58,9 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profil mis à jour');
     }
 
-
+    /**
+     * Display a specific user profile information.
+     */
     public function edituser($id): View
     {
         $user = User::find($id);
@@ -67,6 +69,9 @@ class ProfileController extends Controller
         ]);
     }
 
+    /**
+     * Update a specific user profile information.
+     */
     public function updateuser(Request $request, $id): RedirectResponse
     {
         // validation
@@ -94,6 +99,7 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.userlist')->with('status', 'Utilisateur mis à jour');
     }
+
     /**
      * Delete the user's account.
      */
@@ -122,6 +128,9 @@ class ProfileController extends Controller
     {
         return view('profile.adduser');
     }
+    /**
+     * Store a new user.
+     */
     public function store(Request $request): RedirectResponse
     {
         // Validation des données d'entrée
@@ -155,7 +164,7 @@ class ProfileController extends Controller
         return Redirect::route('profile.userlist')->with('status', 'Utilisateur créé avec le rôle de subadmin');
     }
 
-    // delete user
+    // delete an user
     public function destroyuser($id): RedirectResponse
     {
         $user = User::find($id);

@@ -27,7 +27,6 @@ class BonDechargeController extends Controller
         return response()->json($material);
     }
 
-
     public function storebondecharge(Request $request)
     {
         // dd($request->all());
@@ -133,6 +132,8 @@ class BonDechargeController extends Controller
         return redirect(route('bondecharge.allbondecharge'))->with('success', 'Bon de décharge supprimé avec succès.');
     }
 
+    
+    // Export
     public function bondechargePDF($id)
     {
         $bondecharge = Bon_Decharge::findOrFail($id);
