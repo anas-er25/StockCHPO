@@ -79,8 +79,7 @@
 
 
                             <div>
-                                <label for="motif" class="block text-sm font-medium text-gray-700">Motif de
-                                    décharge:</label>
+                                <label for="motif" class="block text-sm font-medium text-gray-700">Motif de mouvement:</label>
                                 <textarea name="motif" id="motif" rows="3"
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ old('motif', $avismvt->motif) }}</textarea>
                                 <x-input-error :messages="$errors->get('motif')" class="mt-2" />
