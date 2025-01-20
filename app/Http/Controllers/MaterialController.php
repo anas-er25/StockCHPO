@@ -9,6 +9,7 @@ use App\Models\Material;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MaterialController extends Controller
 {
@@ -158,7 +159,20 @@ class MaterialController extends Controller
         return redirect(route('materiels.index'))->with('success', 'Matériele supprimé avec succès.');
     }
 
+    public function stock()
+    {
 
+        $materiels = Material::whereNull('service_id')->get();
+        $sorties = Material::whereIn('etat', ['affecté', 'en mouvement', 'réformé'])->count();
+        $entries = Material::where('etat', 'réceptionné')
+            ->orWhere('etat', 'colis fermé')
+            ->orWhereNull('service_id')
+            ->count();
+        $materialstotal = Material::all()->count();
+        return view('pages.materiels.stock', ['materialstotal' => $materialstotal, 'materiels' => $materiels, 'sorties' => $sorties, 'entries' => $entries]);
+    }
+
+    // Export
     public function exportPDF($id)
     {
         // Fetch the specific material by ID
@@ -184,7 +198,6 @@ class MaterialController extends Controller
         // Return the generated PDF as a download
         return $pdf->download($filename);
     }
-
 
     public function exportexcel()
     {
@@ -226,15 +239,6 @@ class MaterialController extends Controller
             Log::error('Export error: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
-    }
-
-
-
-    public function stock()
-    {
-
-        $materiels = Material::whereNull('service_id')->get();
-        return view('pages.materiels.stock', ['materiels' => $materiels]);
     }
 
     public function importExcel(Request $request)
@@ -315,7 +319,4 @@ class MaterialController extends Controller
         return redirect(route('materiels.index'))
             ->with('success', "Import terminé. $imported produits importés, $skipped produits existants ignorés.");
     }
-
-    // ===================================================================================================================================
-
 }
