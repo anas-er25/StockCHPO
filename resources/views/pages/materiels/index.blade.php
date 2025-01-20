@@ -155,7 +155,6 @@
 @endsection
 
 @section('jslink')
-
     <script>
         // Fonction de confirmation avant la suppression avec SweetAlert2
         function confirmDelete(materialId) {
@@ -180,37 +179,51 @@
         }
 
         function exportToExcel() {
+            // Show loading indicator
+            Swal.fire({
+            title: 'Export en cours...',
+            text: 'Veuillez patienter',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+            });
+
             const baseUrl = window.location.origin;
             fetch(`${baseUrl}/export-excel`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (!data || data.length === 0) {
-                        throw new Error('Aucune donnée disponible');
-                    }
+            .then(response => {
+                if (!response.ok) {
+                throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (!data || data.length === 0) {
+                throw new Error('Aucune donnée disponible');
+                }
 
-                    const wb = XLSX.utils.book_new();
-                    const ws = XLSX.utils.json_to_sheet(data);
-                    ws['!cols'] = Object.keys(data[0]).map(() => ({
-                        wch: 20
-                    }));
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.json_to_sheet(data);
+                ws['!cols'] = Object.keys(data[0]).map(() => ({
+                wch: 20
+                }));
 
-                    XLSX.utils.book_append_sheet(wb, ws, "Materiels");
-                    XLSX.writeFile(wb, `materiels_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.xlsx`);
-                })
-                .catch(error => {
-                    console.error('Export error:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erreur d\'exportation',
-                        text: error.message || 'Une erreur est survenue lors de l\'exportation.',
-                        confirmButtonColor: '#3085d6'
-                    });
+                XLSX.utils.book_append_sheet(wb, ws, "Materiels");
+                XLSX.writeFile(wb, `materiels_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.xlsx`);
+
+                // Close loading indicator on success
+                Swal.close();
+            })
+            .catch(error => {
+                console.error('Export error:', error);
+                Swal.fire({
+                icon: 'error',
+                title: 'Erreur d\'exportation',
+                text: error.message || 'Une erreur est survenue lors de l\'exportation.',
+                confirmButtonColor: '#3085d6'
                 });
+            });
         }
 
         function triggerFileInput() {
