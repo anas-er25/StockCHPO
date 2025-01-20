@@ -29,10 +29,70 @@
 
 @endphp
 @extends('layouts.index')
+@section('csslink')
+    <style>
+        /* Ajoutez ces styles dans votre fichier CSS */
+        .quote-container {
+            background-color: #f9fafb;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .quote-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .quote-text {
+            font-size: 1.25rem;
+            color: #374151;
+            font-style: italic;
+        }
+
+        .quote-author {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+    </style>
+@endsection
 @section('title', 'Tableau de bord')
 @section('content')
     <main class="h-full overflow-y-auto  max-w-full  pt-4">
         {{-- <div class="container full-container py-5 flex flex-col gap-6"> --}}
+        @if (session()->has('just_logged_in') && session('just_logged_in') === true)
+            <div class="mt-8 text-center px-4">
+                @php
+                    $quote = strip_tags(\Illuminate\Foundation\Inspiring::quote());
+                    // Split the quote into text and author
+                    $parts = explode('-', $quote);
+                    $quoteText = trim($parts[0]);
+                    $author = isset($parts[1]) ? trim($parts[1]) : '';
+                    // Remove the session flag after displaying the quote
+                    session()->forget('just_logged_in');
+                @endphp
+                <div id="quote-container"
+                    class="animate-fade-in-up bg-white p-6 rounded-lg shadow-lg border-l-4 border-blue-500">
+                    <p class="text-gray-700 italic text-lg">“{{ $quoteText }}”</p>
+                    @if ($author)
+                        <footer class="text-gray-500 text-sm mt-2">— {{ $author }}</footer>
+                    @endif
+                </div>
+                <script>
+                    setTimeout(function() {
+                        const quoteContainer = document.getElementById('quote-container');
+                        quoteContainer.style.opacity = '0';
+                        quoteContainer.style.transition = 'opacity 0.5s';
+                        setTimeout(function() {
+                            quoteContainer.remove();
+                        }, 500);
+                    }, 5000);
+                </script>
+            </div>
+        @endif
         <div class="p-5">
             <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
                 <div class="col-span-2">

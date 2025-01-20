@@ -100,6 +100,7 @@ class FeuilleReformeController extends Controller
         return redirect()->route('reforme.allreforme')->with('success', 'Reforme supprimée avec succès');
     }
 
+    // Export
     public function reformePDF()
     {
         // Ensuite, vous passez la variable à la vue pour la génération du PDF

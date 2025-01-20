@@ -11,30 +11,72 @@
                         <div class="card-body">
                             <div class="flex justify-between items-center">
                                 <h2 class="text-xl font-semibold">Liste de matériels en stock</h2>
-                                {{-- <a href="{{ route('materiels.create') }}"
-                                    class="btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 px-4 py-2 rounded-md">
-                                    Ajouter un matériel
-                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20"
-                                        viewBox="0 0 50 50">
-                                        <path fill="white"
-                                            d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z">
-                                        </path>
-                                    </svg>
-                                </a> --}}
                             </div>
+                            {{-- <!-- Statistiques -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 mb-8 ">
+                                <!-- Total en stock -->
+                                <div class="p-4 bg-blue-600 rounded-lg hover:shadow-lg transition duration-300">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-lg font-semibold text-blue-700">Total en stock</h3>
+                                            <p class="text-2xl font-bold text-blue-800">
+                                                {{ $materialstotal }}
+                                            </p>
+                                        </div>
+                                        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <!-- Entrées (matériels réceptionnés) -->
+                                <div class="p-4 bg-teal-500 rounded-lg hover:shadow-lg transition duration-300">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-lg font-semibold text-blue-700">Entrées</h3>
+                                            <p class="text-2xl font-bold text-blue-800">
+                                                {{ $entries }}
+                                            </p>
+                                        </div>
+                                        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-red-500 rounded-lg hover:shadow-lg transition duration-300">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-lg font-semibold text-blue-700">Sorties</h3>
+                                            <p class="text-2xl font-bold text-blue-800">
+                                                {{ $sorties }}
+                                            </p>
+                                        </div>
+                                        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div> --}}
 
                             <div class="relative overflow-x-auto mt-8">
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N d'inventaire</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription
+                                            </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Désignation</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Quantité</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Marque</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Modèle</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Affectation</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Date d'affectation</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Date d'affectation
+                                            </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Série</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Observation</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Type</th>
@@ -59,7 +101,8 @@
                                                     {{ $material->service ? $material->service->nom : 'N/A' }}
                                                     <!-- Assuming 'service' is a relationship -->
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $material->date_affectation }}</td>
+                                                <td class="px-6 py-4 text-center">{{ $material->date_affectation }}
+                                                </td>
                                                 <td class="px-6 py-4 text-center">{{ $material->num_serie }}</td>
                                                 <td class="px-6 py-4 text-center observation"
                                                     title="{{ $material->observation }}">
@@ -81,7 +124,8 @@
 
                                                     <!-- Formulaire de suppression -->
                                                     <form action="{{ route('materiels.destroy', $material->id) }}"
-                                                        method="POST" class="inline" id="delete-form-{{ $material->id }}">
+                                                        method="POST" class="inline"
+                                                        id="delete-form-{{ $material->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                         <div class="cursor-pointer mr-4"
@@ -122,36 +166,7 @@
                 </div>
             </div>
             <x-footer />
-
         </div>
         {{-- </div> --}}
     </main>
-@endsection
-
-@section('jslink')
-
-    <script>
-        // Fonction de confirmation avant la suppression avec SweetAlert2
-        function confirmDelete(materialId) {
-            Swal.fire({
-                title: 'Êtes-vous sûr?',
-                text: "Cette action est irréversible!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Oui, supprimer!',
-                cancelButtonText: 'Annuler',
-                reverseButtons: true,
-                customClass: {
-                    confirmButton: 'bg-red-700 text-white hover:bg-red-800', // Couleur du bouton de confirmation
-                    cancelButton: 'bg-blue-300 text-white hover:bg-blue-600' // Couleur du bouton d'annulation
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Soumettre le formulaire de suppression si confirmé
-                    document.getElementById('delete-form-' + materialId).submit();
-                }
-            });
-        }
-
-    </script>
 @endsection

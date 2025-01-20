@@ -116,30 +116,3 @@
         {{-- </div> --}}
     </main>
 @endsection
-
-@section('jslink')
-
-    <script>
-        // Fonction de confirmation avant la suppression avec SweetAlert2
-        function confirmDelete(bondechargeId) {
-            Swal.fire({
-                title: 'Êtes-vous sûr?',
-                text: "Cette action est irréversible!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Oui, supprimer!',
-                cancelButtonText: 'Annuler',
-                reverseButtons: true,
-                customClass: {
-                    confirmButton: 'bg-red-700 text-white hover:bg-red-800', // Couleur du bouton de confirmation
-                    cancelButton: 'bg-blue-300 text-white hover:bg-blue-600' // Couleur du bouton d'annulation
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Soumettre le formulaire de suppression si confirmé
-                    document.getElementById('delete-form-' + bondechargeId).submit();
-                }
-            });
-        }
-    </script>
-@endsection

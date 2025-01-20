@@ -131,6 +131,7 @@ class AvisMvtController extends Controller
         return redirect(route('avismvt.allavismvt'))->with('success', 'Avis de mouvement supprimé avec succès.');
     }
 
+    // Export
     public function avismvtPDF($id)
     {
         $avismvt = Avis_Mvt::findOrFail($id);
