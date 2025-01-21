@@ -35,4 +35,9 @@ class Service extends Model
     {
         return $this->hasMany(Avis_Mvt::class, 'cessionnaire_id');
     }
+
+    public function materialHistories()
+    {
+        return $this->hasMany(MaterialHistory::class);
+    }
 }

@@ -48,18 +48,12 @@
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 <x-input-error :messages="$errors->get('qte')" class="mt-2" />
                             </div>
+                            <input type="number" name="cedant_id" id="cedant_id" value="{{ old('cedant_id') }}"
+                                class="hidden mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             <div>
                                 <label for="cedant" class="block text-sm font-medium text-gray-700">Cédant:</label>
-                                <select name="cedant_id" id="cedant_id"
-                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    <option value="">Sélectionner un Cédant</option>
-                                    @foreach ($services as $service)
-                                        <option value="{{ $service->id }}"
-                                            {{ old('cedant_id') == $service->id ? 'selected' : '' }}>
-                                            {{ $service->nom }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="cedant" id="cedant" value="{{ old('cedant') }}" readonly
+                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50">
                                 <x-input-error :messages="$errors->get('cedant_id')" class="mt-2" />
                             </div>
 
@@ -80,7 +74,8 @@
                             </div>
 
                             <div>
-                                <label for="motif" class="block text-sm font-medium text-gray-700">Motif de mouvement:</label>
+                                <label for="motif" class="block text-sm font-medium text-gray-700">Motif de
+                                    mouvement:</label>
                                 <textarea name="motif" id="motif" rows="3"
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ old('motif') }}</textarea>
                                 <x-input-error :messages="$errors->get('motif')" class="mt-2" />
@@ -121,6 +116,8 @@
                         .then(response => response.json())
                         .then(data => {
                             $('#qte').val(data.qte);
+                            $('#cedant_id').val(data.service.id);
+                            $('#cedant').val(data.service.nom);
                             $('#num_serie').val(data.num_serie);
                             $('#material-info').show();
                         });

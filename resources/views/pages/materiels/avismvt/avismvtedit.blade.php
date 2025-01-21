@@ -46,17 +46,10 @@
 
                             <div>
                                 <label for="cedant_id" class="block text-sm font-medium text-gray-700">Cédant:</label>
-                                <select name="cedant_id" id="cedant_id"
-                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                    aria-label="Sélectionner le Cédant">
-                                    <option value="">Sélectionner un Cédant</option>
-                                    @foreach ($services as $service)
-                                        <option value="{{ $service->id }}"
-                                            {{ old('cedant_id', $avismvt->cedant_id) == $service->id ? 'selected' : '' }}>
-                                            {{ $service->nom }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="cedant_id" id="cedant_id"
+                                    value="{{ old('cedant_id', $avismvt->cedant_id) == $avismvt->cedant_id ? $avismvt->cedant->nom : '' }}"
+                                    readonly
+                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 <x-input-error :messages="$errors->get('cedant_id')" class="mt-2" />
                             </div>
 
@@ -79,7 +72,8 @@
 
 
                             <div>
-                                <label for="motif" class="block text-sm font-medium text-gray-700">Motif de mouvement:</label>
+                                <label for="motif" class="block text-sm font-medium text-gray-700">Motif de
+                                    mouvement:</label>
                                 <textarea name="motif" id="motif" rows="3"
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ old('motif', $avismvt->motif) }}</textarea>
                                 <x-input-error :messages="$errors->get('motif')" class="mt-2" />

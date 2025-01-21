@@ -51,4 +51,9 @@ class Material extends Model
     {
         return $this->hasMany(Log::class, 'record_id');
     }
+
+    public function materialHistories()
+    {
+        return $this->hasMany(MaterialHistory::class);
+    }
 }
