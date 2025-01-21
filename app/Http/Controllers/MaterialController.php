@@ -178,8 +178,8 @@ class MaterialController extends Controller
     public function stock()
     {
 
-        $materiels = Material::whereNull('service_id')->get();
-        $sorties = Material::whereIn('etat', ['affecté', 'en mouvement', 'réformé'])->count();
+        $materiels = Material::whereNull('service_id')->where('etat', '!=', 'réformé')->get();
+        $sorties = Material::whereIn('etat', ['affecté', 'en mouvement'])->count();
         $entries = Material::where('etat', 'réceptionné')
             ->orWhere('etat', 'colis fermé')
             ->orWhereNull('service_id')
@@ -278,37 +278,96 @@ class MaterialController extends Controller
 
         // Parcourir les lignes de données et les insérer dans la base
         foreach ($data as $key => $row) {
-            // Ignorer l'entête (première ligne)
-            if ($key == 0) continue;
+            // Skip header rows (first 8 rows)
+            if ($key < 8) continue;
 
-            // Vérifier si le produit existe déjà
+            // Skip if row is empty or first column (N° d'inventaire) is empty
+            if (empty($row) || empty($row[0])) continue;
+
+            // Check if material already exists
             if (Material::where('num_inventaire', $row[0])->exists()) {
                 $skipped++;
                 continue;
             }
 
-            // Valider et insérer chaque ligne dans la base de données
+            // try {
             $material = new Material();
-            $material->num_inventaire = $row[0];
-            $material->date_inscription = $row[1];
+            // Nettoyer le numéro d'inventaire en enlevant les caractères spéciaux
+            $cleanInventaire = preg_replace('[^0-9-]', '', $row[0]);
+            $material->num_inventaire = $cleanInventaire;
+
+            // Si le numéro d'inventaire contient un tiret, on le divise en deux
+            if (strpos($cleanInventaire, '-') !== false) {
+                $inventaireNums = explode('-', $cleanInventaire);
+                foreach ($inventaireNums as $num) {
+                    // Skip if the inventory number already exists
+                    if (Material::where('num_inventaire', trim($num))->exists()) {
+                        $skipped++;
+                        continue;
+                    }
+                    $newMaterial = new Material();
+                    $newMaterial->num_inventaire = trim($num);
+                    // Copier toutes les autres propriétés du matériel original
+                    $newMaterial->date_inscription = $material->date_inscription;
+                    $newMaterial->designation = $material->designation;
+                    $newMaterial->qte = $material->qte;
+                    $newMaterial->marque = $material->marque;
+                    $newMaterial->modele = $material->modele;
+                    $newMaterial->service_id = $material->service_id;
+                    $newMaterial->date_affectation = $material->date_affectation;
+                    $newMaterial->num_serie = $material->num_serie;
+                    $newMaterial->observation = $material->observation;
+                    $newMaterial->numero_bl = $material->numero_bl;
+                    $newMaterial->nom_societe = $material->nom_societe;
+                    $newMaterial->numero_marche = $material->numero_marche;
+                    $newMaterial->type = $material->type;
+                    $newMaterial->origin = $material->origin;
+                    $newMaterial->etat = $material->etat;
+
+                    if ($newMaterial->save()) {
+                        $imported++;
+                        MaterialHistory::create([
+                            'material_id' => $newMaterial->id,
+                            'from_service_id' => null,
+                            'to_service_id' => $newMaterial->service_id,
+                            'moved_at' => now()
+                        ]);
+                    }
+                }
+                continue;
+            }
+            try {
+                $material->date_inscription = !empty($row[1]) ?
+                    \Carbon\Carbon::createFromFormat('d/m/Y', $row[1])->format('Y-m-d') : (!empty($row[1]) ? \Carbon\Carbon::createFromFormat('m/d/Y', $row[1])->format('Y-m-d') : now());
+            } catch (\Exception $e) {
+                try {
+                    $material->date_inscription = \Carbon\Carbon::createFromFormat('m/d/Y', $row[1])->format('Y-m-d');
+                } catch (\Exception $e) {
+                    $material->date_inscription = now();
+                }
+            }
             $material->designation = $row[2];
             $material->qte = $row[3];
             $material->marque = $row[4];
             $material->modele = $row[5];
 
-            // Vérifier si row[6] est un nom de service
-            if (!is_null($row[6])) {
+            // Handle service assignment
+            if (!empty($row[6])) {
                 $service = Service::where('nom', $row[6])->first();
-                if ($service) {
-                    $material->service_id = $service->id;
-                } else {
-                    $material->service_id = null;
-                }
-            } else {
-                $material->service_id = null;
+                $material->service_id = $service ? $service->id : null;
             }
 
-            $material->date_affectation = $row[7];
+            // $material->date_affectation = !empty($row[7]) ? \Carbon\Carbon::createFromFormat('d/m/Y', $row[7])->format('Y-m-d') : now();
+            try {
+                $material->date_affectation = !empty($row[1]) ?
+                    \Carbon\Carbon::createFromFormat('d/m/Y', $row[7])->format('Y-m-d') : (!empty($row[7]) ? \Carbon\Carbon::createFromFormat('m/d/Y', $row[7])->format('Y-m-d') : now());
+            } catch (\Exception $e) {
+                try {
+                    $material->date_affectation = \Carbon\Carbon::createFromFormat('m/d/Y', $row[7])->format('Y-m-d');
+                } catch (\Exception $e) {
+                    $material->date_affectation = now();
+                }
+            }
             $material->num_serie = $row[8];
             $material->observation = $row[9];
             $material->numero_bl = $row[10];
@@ -316,17 +375,19 @@ class MaterialController extends Controller
             $material->numero_marche = $row[12];
             $material->type = $row[13];
             $material->origin = $row[14];
-            $material->etat = $row[15];
+            $material->etat = !empty($row[15]) ? $row[15] : null;
 
-            $material->save();
-            $imported++;
-            // Pour chaque nouveau matériel importé, créer son historique
-            MaterialHistory::create([
-                'material_id' => $material->id,
-                'from_service_id' => null,
-                'to_service_id' => $material->service_id,
-                'moved_at' => now()
-            ]);
+            if ($material->save()) {
+                $imported++;
+                // Create material history
+                MaterialHistory::create([
+                    'material_id' => $material->id,
+                    'from_service_id' => null,
+                    'to_service_id' => $material->service_id,
+                    'moved_at' => now()
+                ]);
+            }
+            // }
         }
 
         // Créer le log pour l'import

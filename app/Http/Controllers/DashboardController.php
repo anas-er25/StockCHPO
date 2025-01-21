@@ -88,7 +88,7 @@ class DashboardController extends Controller
             'entries' => Material::whereIn('etat', ['réceptionné', 'colis fermé'])
                 ->orderBy('date_inscription', 'desc')
                 ->get(),
-            'outputs' => Material::whereIn('etat', ['affecté', 'en mouvement', 'réformé'])
+            'outputs' => Material::whereIn('etat', ['affecté', 'en mouvement'])
                 ->orderBy('date_affectation', 'desc')
                 ->get()
         ];
