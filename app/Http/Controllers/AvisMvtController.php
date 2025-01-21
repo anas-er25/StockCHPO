@@ -6,6 +6,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Avis_Mvt;
 use App\Models\Log;
 use App\Models\Material;
+use App\Models\MaterialHistory;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -58,15 +59,32 @@ class AvisMvtController extends Controller
         $avismvt->motif = $request->motif;
 
         // Sauvegarder les données
-        $avismvt->save();
-        // Créer le log
-        Log::create([
-            'action' => 'create',
-            'table_name' => 'avis__mvts',
-            'record_id' => $avismvt->id,
-            'performed_by' => Auth::user()->id,
-            'performed_at' => now()
-        ]);
+        if ($avismvt->save()) {
+            // update on service_id on material table
+            Material::where('id', $avismvt->material_id)->update([
+                'service_id' => $avismvt->cessionnaire_id,
+            ]);
+            // Get material history id
+            $last_to_service_id = MaterialHistory::where('material_id', $avismvt->material_id)
+                ->latest()
+                ->first();
+
+            // Sauvegarder l'history de material dans la table materialHistory
+            MaterialHistory::create([
+                'material_id' => $avismvt->material_id,
+                'from_service_id' => $last_to_service_id ? $last_to_service_id->to_service_id : null,
+                'to_service_id' => $avismvt->cessionnaire_id,
+                'moved_at' => now()
+            ]);
+            // Créer le log
+            Log::create([
+                'action' => 'create',
+                'table_name' => 'avis__mvts',
+                'record_id' => $avismvt->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
 
         // Retourner à la page de Avis de mouvement avec un message de succès
         return redirect(route('avismvt.allavismvt'))->with('success', 'Avis de mouvement créé avec succès.');
@@ -88,7 +106,7 @@ class AvisMvtController extends Controller
         $request->validate([
             'material_id' => 'required|exists:materials,id',
             'qte' => 'required',
-            'cedant_id' => 'required|exists:services,id',
+            // 'cedant_id' => 'required|exists:services,id',
             'cessionnaire_id' => 'required',
             'motif' => 'required',
         ]);
@@ -98,20 +116,42 @@ class AvisMvtController extends Controller
         // Assigner les valeurs à l'instance du Avis de mouvement
         $avismvt->material_id = $request->material_id;
         $avismvt->qte = $request->qte;
-        $avismvt->cedant_id = $request->cedant_id;
+        // $avismvt->cedant_id = $request->cedant_id;
         $avismvt->cessionnaire_id = $request->cessionnaire_id;
         $avismvt->motif = $request->motif;
 
         // Sauvegarder les données
-        $avismvt->save();
-        // Créer le log
-        Log::create([
-            'action' => 'update',
-            'table_name' => 'avis__mvts',
-            'record_id' => $avismvt->id,
-            'performed_by' => Auth::user()->id,
-            'performed_at' => now()
-        ]);
+        if ($avismvt->save()) {
+            // Trouver le dernier enregistrement pour le matériel donné
+            $lastHistory = MaterialHistory::where('material_id', $avismvt->material_id)
+                ->latest('moved_at')
+                ->first();
+
+            if ($lastHistory) {
+                // Mettre à jour le dernier enregistrement
+                $lastHistory->update([
+                    'from_service_id' => $avismvt->cedant_id,
+                    'to_service_id' => $avismvt->cessionnaire_id,
+                    'moved_at' => now()
+                ]);
+            } else {
+                // Si aucun enregistrement n'est trouvé, vous pouvez créer un nouvel enregistrement
+                MaterialHistory::create([
+                    'material_id' => $avismvt->material_id,
+                    'from_service_id' => $avismvt->cedant_id,
+                    'to_service_id' => $avismvt->cessionnaire_id,
+                    'moved_at' => now()
+                ]);
+            }
+            // Créer le log
+            Log::create([
+                'action' => 'update',
+                'table_name' => 'avis__mvts',
+                'record_id' => $avismvt->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
         // Retourner à la page de Avis de mouvement avec un message de succès
         return redirect(route('avismvt.allavismvt'))->with('success', 'Avis de mouvement modifié avec succès.');
     }

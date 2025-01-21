@@ -12,16 +12,19 @@
                             <div class="flex justify-between items-center">
                                 <h2 class="text-xl font-semibold">Liste des avis de mouvement</h2>
                                 <div class="flex items-center gap-4">
-                                    <a href="{{ route('avismvt.exportAllPDF') }}"
-                                    title="Télécharger Tous PDFs"
+                                    <a href="{{ route('avismvt.exportAllPDF') }}" title="Télécharger Tous PDFs"
                                         class="btn bg-red-500 text-white hover:bg-red-700 flex items-center gap-2 px-4 py-2 rounded-md">
                                         Tous PDFs<i class="fa-solid fa-file-pdf"></i>
+                                    </a>
+                                    <a href="{{ route('material.historyview') }}"
+                                        class="btn bg-gray-600 text-white hover:bg-gray-700 flex items-center gap-2 px-4 py-2 rounded-md">
+                                        Historique <i class="fa-solid fa-eye"></i>
                                     </a>
                                     <a href="{{ route('avismvt.avismvt') }}"
                                         class="btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 px-4 py-2 rounded-md">
                                         Ajouter un avis de mouvement
-                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20"
-                                            viewBox="0 0 50 50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20"
+                                            height="20" viewBox="0 0 50 50">
                                             <path fill="white"
                                                 d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z">
                                             </path>

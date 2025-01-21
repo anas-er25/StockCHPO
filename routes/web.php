@@ -5,6 +5,7 @@ use App\Http\Controllers\BonDechargeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FeuilleReformeController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\MaterialHistoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
@@ -111,6 +112,16 @@ Route::group(["middleware" => "auth"], function () {
 
         // Export PDF
         Route::get('/reformePDF/export-pdf', 'reformePDF')->name('reformePDF');
+    });
+
+
+    /* -------------------------------------------------------------------------- */
+    /*                            MouvementHistory routes - START                */
+    /* -------------------------------------------------------------------------- */
+    Route::group(['controller' => MaterialHistoryController::class, 'as' => 'material.'], function () {
+        // MouvementHistory
+        Route::get('/materialhistory',  'historyView')->name('historyview');
+        Route::get('/material', 'history')->name('history');
     });
 });
 

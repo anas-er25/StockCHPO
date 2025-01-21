@@ -11,6 +11,14 @@
                         <div class="card-body">
                             <div class="flex justify-between items-center">
                                 <h2 class="text-xl font-semibold">Liste des mouvements: Réceptionné et Colis fermé</h2>
+                                <div class="flex items-center gap-4">
+
+                                    <a href="{{ route('material.historyview') }}"
+                                        class="btn bg-gray-600 text-white hover:bg-gray-700 flex items-center gap-2 px-4 py-2 rounded-md">
+                                        Historique <i class="fa-solid fa-eye"></i>
+                                    </a>
+
+                                </div>
                             </div>
 
                             <div class="relative overflow-x-auto mt-8">

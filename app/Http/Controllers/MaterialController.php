@@ -6,10 +6,10 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Material;
+use App\Models\MaterialHistory;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class MaterialController extends Controller
 {
@@ -64,16 +64,24 @@ class MaterialController extends Controller
         $material->numero_bl = $request->numero_bl; // Peut être NULL
         $material->nom_societe = $request->nom_societe; // Peut être NULL
 
-        $material->save();
+        if ($material->save()) {
+            // Sauvegarder l'history de material dans la table materialHistory
+            MaterialHistory::create([
+                'material_id' => $material->id,
+                'from_service_id' => null,
+                'to_service_id' => $material->service_id,
+                'moved_at' => now()
+            ]);
 
-        // Créer le log
-        Log::create([
-            'action' => 'create',
-            'table_name' => 'materials',
-            'record_id' => $material->id,
-            'performed_by' => Auth::user()->id,
-            'performed_at' => now()
-        ]);
+            // Créer le log
+            Log::create([
+                'action' => 'create',
+                'table_name' => 'materials',
+                'record_id' => $material->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
         return redirect(route('materiels.index'))->with('success', 'Matériele créé avec succès.');
     }
 
@@ -89,7 +97,6 @@ class MaterialController extends Controller
     {
         // Validate the request...
         $request->validate([
-
             'designation' => 'required',
             'qte' => 'required',
             'type' => 'required',
@@ -124,15 +131,24 @@ class MaterialController extends Controller
         $material->numero_bl = $request->numero_bl;
         $material->nom_societe = $request->nom_societe;
 
-        $material->save();
-        // Créer le log
-        Log::create([
-            'action' => 'update',
-            'table_name' => 'materials',
-            'record_id' => $material->id,
-            'performed_by' => Auth::user()->id,
-            'performed_at' => now()
-        ]);
+        if ($material->save()) {
+
+            // Modifier l'history de material dans la table materialHistory
+            MaterialHistory::where('material_id', $material->id)->update([
+                'from_service_id' => null,
+                'to_service_id' => $material->service_id,
+                'moved_at' => now()
+            ]);
+
+            // Créer le log
+            Log::create([
+                'action' => 'update',
+                'table_name' => 'materials',
+                'record_id' => $material->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
 
         return redirect(route('materiels.index'))->with('success', 'Matériele modifié avec succès.');
     }
@@ -175,7 +191,6 @@ class MaterialController extends Controller
     // Export
     public function exportPDF($id)
     {
-        // Fetch the specific material by ID
         // Fetch the specific material by ID
         $material = Material::findOrFail($id);
 
@@ -305,6 +320,13 @@ class MaterialController extends Controller
 
             $material->save();
             $imported++;
+            // Pour chaque nouveau matériel importé, créer son historique
+            MaterialHistory::create([
+                'material_id' => $material->id,
+                'from_service_id' => null,
+                'to_service_id' => $material->service_id,
+                'moved_at' => now()
+            ]);
         }
 
         // Créer le log pour l'import
