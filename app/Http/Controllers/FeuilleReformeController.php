@@ -39,15 +39,21 @@ class FeuilleReformeController extends Controller
         $reforme->date_reforme = now();
         $reforme->qte = $request->qte;
         $reforme->designation = $request->designation;
-        $reforme->save();
-        // Créer le log
-        Log::create([
-            'action' => 'create',
-            'table_name' => 'feuille_reformes',
-            'record_id' => $reforme->id,
-            'performed_by' => Auth::user()->id,
-            'performed_at' => now()
-        ]);
+        if ($reforme->save()) {
+            // Changer le service_id du matériel
+            Material::where('id', $request->material_id)->update([
+                'service_id' => null,
+                'etat' => 'réformé'
+            ]);
+            // Créer le log
+            Log::create([
+                'action' => 'create',
+                'table_name' => 'feuille_reformes',
+                'record_id' => $reforme->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
         return redirect()->route('reforme.allreforme')->with('success', 'Reforme ajoutée avec succès');
     }
 
@@ -73,30 +79,32 @@ class FeuilleReformeController extends Controller
         $reforme->date_reforme = now();
         $reforme->qte = $request->qte;
         $reforme->designation = $request->designation;
-        $reforme->save();
-        // Créer le log
-        Log::create([
-            'action' => 'update',
-            'table_name' => 'feuille_reformes',
-            'record_id' => $reforme->id,
-            'performed_by' => Auth::user()->id,
-            'performed_at' => now()
-        ]);
+        if ($reforme->save()) {
+            // Créer le log
+            Log::create([
+                'action' => 'update',
+                'table_name' => 'feuille_reformes',
+                'record_id' => $reforme->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
         return redirect()->route('reforme.allreforme')->with('success', 'Reforme modifiée avec succès');
     }
 
     public function reformedelete($id)
     {
         $reforme = FeuilleReforme::find($id);
-        $reforme->delete();
-        // Créer le log
-        Log::create([
-            'action' => 'delete',
-            'table_name' => 'feuille_reformes',
-            'record_id' => $reforme->id,
-            'performed_by' => Auth::user()->id,
-            'performed_at' => now()
-        ]);
+        if ($reforme->delete()) {
+            // Créer le log
+            Log::create([
+                'action' => 'delete',
+                'table_name' => 'feuille_reformes',
+                'record_id' => $reforme->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
         return redirect()->route('reforme.allreforme')->with('success', 'Reforme supprimée avec succès');
     }
 

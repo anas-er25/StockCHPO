@@ -35,7 +35,6 @@ class AvisMvtController extends Controller
         return response()->json($material);
     }
 
-
     public function storeavismvt(Request $request)
     {
         // dd($request->all());
@@ -89,7 +88,6 @@ class AvisMvtController extends Controller
         // Retourner à la page de Avis de mouvement avec un message de succès
         return redirect(route('avismvt.allavismvt'))->with('success', 'Avis de mouvement créé avec succès.');
     }
-
 
     public function avismvtedit($id)
     {
