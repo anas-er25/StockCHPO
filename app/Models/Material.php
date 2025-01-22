@@ -32,6 +32,10 @@ class Material extends Model
         return $this->belongsTo(Service::class);
     }
 
+    public function societe(){
+        return $this->belongsTo(Societe::class);
+    }
+
     public function feuilleReformes()
     {
         return $this->hasMany(FeuilleReforme::class);

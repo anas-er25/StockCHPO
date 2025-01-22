@@ -26,9 +26,7 @@ return new class extends Migration
             $table->foreignId('service_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('observation')->nullable();
             $table->enum('etat', ['réceptionné', 'affecté', 'en mouvement', 'réformé', 'colis fermé'])->nullable();
-            $table->string('numero_marche')->nullable();
-            $table->string('numero_bl')->nullable();
-            $table->string('nom_societe')->nullable();
+            $table->foreignId('societe_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

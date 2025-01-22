@@ -26,6 +26,8 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     @yield('csslink')
+    
+
 </head>
 
 <body class=" bg-white">
@@ -39,13 +41,17 @@
                 @include('components.header')
                 <!--  Header End -->
 
+
+                <x-loader/>
                 @yield('content')
+
                 <!-- Main Content End -->
             </div>
         </div>
         <!--end of project-->
     </main>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('/assets/js/loading.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="./assets/libs/simplebar/dist/simplebar.min.js"></script>

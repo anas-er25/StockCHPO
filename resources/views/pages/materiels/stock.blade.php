@@ -79,12 +79,12 @@
                                             </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Série</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Observation</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Type</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Origine</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">État</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Numéro BL</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Nom société</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Numéro Marché</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Type</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Origine</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">État</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Actions</th>
                                         </tr>
                                     </thead>
@@ -108,13 +108,12 @@
                                                     title="{{ $material->observation }}">
                                                     {{ Str::limit($material->observation, 28) }}
                                                 </td>
+                                                <td class="px-6 py-4 text-center">{{ $material->societe ? $material->societe->numero_bl : 'N/A' }}</td>
+                                                <td class="px-6 py-4 text-center">{{ $material->societe ? $material->societe->nom_societe : 'N/A' }}</td>
+                                                <td class="px-6 py-4 text-center">{{ $material->societe ? $material->societe->numero_marche : 'N/A' }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->type }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->origin }}</td>
-
                                                 <td class="px-6 py-4 text-center">{{ $material->etat }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->numero_bl }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->nom_societe }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->numero_marche }}</td>
                                                 <td class="px-6 py-4 flex items-center justify-center">
                                                     <!-- Icône de modification -->
                                                     <a href="{{ route('materiels.edit', $material->id) }}"

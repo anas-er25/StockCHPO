@@ -210,6 +210,14 @@ button,
     background-image: none; /* 2 */
 }
 
+/* padding */
+.pr-3 {
+    padding-right: 1rem;
+}
+.pl-3 {
+    padding-left: 1rem;
+}
+
 /*
 Use the modern Firefox focus style for all focusable elements.
 */
