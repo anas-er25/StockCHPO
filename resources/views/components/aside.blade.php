@@ -37,12 +37,18 @@
                               <i class="ti ti-briefcase text-xl"></i> <span>Services</span>
                           </a>
                       </li>
+                      <li class="sidebar-item">
+                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
+                              href="{{ route('societies.index') }}">
+                              <i class="ti ti-briefcase text-xl"></i> <span>Sociétés</span>
+                          </a>
+                      </li>
 
 
                       <li class="sidebar-item">
                           <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('bondecharge.allbondecharge') }}">
-                              <i class="fa-solid fa-eject"></i> <span>Bon Décharge</span>
+                              <i class="fa-solid fa-eject"></i> <span>Bon de Décharge</span>
                           </a>
                       </li>
 
@@ -61,7 +67,7 @@
                       <li class="sidebar-item">
                           <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('materiels.stock') }}">
-                              <i class="fas fa-shopping-cart"></i> <span>Consulter stock</span>
+                              <i class="fas fa-shopping-cart"></i> <span>Gestion de stock</span>
 
                           </a>
                       </li>

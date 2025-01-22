@@ -100,7 +100,8 @@
 
                                     <!-- Origin -->
                                     <div>
-                                        <label for="origin" class="block text-sm font-medium text-gray-700">Origin</label>
+                                        <label for="origin"
+                                            class="block text-sm font-medium text-gray-700">Origine</label>
                                         <select name="origin" id="origin" required
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                             <option value="achat"
@@ -149,13 +150,48 @@
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('num_serie')" class="mt-2" />
                                     </div>
+                                    {{-- Société --}}
+                                    <div class="col-span-1">
+                                        <label for="societe_id"
+                                            class="block text-sm font-medium text-gray-700">Société</label>
+                                        <div class="flex items-center gap-2">
+                                            <div id="societe_id_container" class="flex-1">
+                                                <select name="societe_id" id="societe_id"
+                                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                    <option value="">Sélectionner une société</option>
+                                                    @foreach ($societes as $societe)
+                                                        <option value="{{ $societe->id }}"
+                                                            {{ old('societe_id', $material->societe_id) == $societe->id ? 'selected' : '' }}>
+                                                            {{ $societe->nom_societe }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div id="nouvelle_societe_container" class="flex-1 hidden">
+                                                <input type="text" name="nouvelle_societe" id="nouvelle_societe"
+                                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                                    placeholder="Nouvelle société">
+                                            </div>
+                                            <button type="button" onclick="toggleSocieteFields()"
+                                                class="mt-1 p-2 bg-blue-600 text-white rounded-md hover:bg-blue-600">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                                    viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <x-input-error :messages="$errors->get('societe_id')" class="mt-2" />
+                                        <x-input-error :messages="$errors->get('nouvelle_societe')" class="mt-2" />
+                                    </div>
 
                                     <!-- Numéro de marché -->
                                     <div>
                                         <label for="numero_marche" class="block text-sm font-medium text-gray-700">Numéro
                                             de marché</label>
                                         <input type="text" name="numero_marche" id="numero_marche" required
-                                            value="{{ old('numero_marche', $material->numero_marche) }}"
+                                            value="{{old('numero_marche', $material->societe->numero_marche ?? '') }}"
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('numero_marche')" class="mt-2" />
                                     </div>
@@ -165,19 +201,9 @@
                                         <label for="numero_bl" class="block text-sm font-medium text-gray-700">Numéro
                                             BL</label>
                                         <input type="text" name="numero_bl" id="numero_bl"
-                                            value="{{ old('numero_bl', $material->numero_bl) }}" required
+                                            value="{{ old('numero_bl', $material->societe->numero_bl ?? '') }}" required
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('numero_bl')" class="mt-2" />
-                                    </div>
-
-                                    <!-- Nom de société -->
-                                    <div>
-                                        <label for="nom_societe" class="block text-sm font-medium text-gray-700">Nom de
-                                            société</label>
-                                        <input type="text" name="nom_societe" id="nom_societe"
-                                            value="{{ old('nom_societe', $material->nom_societe) }}" required
-                                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                        <x-input-error :messages="$errors->get('nom_societe')" class="mt-2" />
                                     </div>
 
                                     <!-- État -->
@@ -250,5 +276,18 @@
                 numInventaireInput.value = numEntered + '/' + lastTwoDigits;
             });
         });
+
+        function toggleSocieteFields() {
+            const selectField = document.getElementById('societe_id_container');
+            const inputField = document.getElementById('nouvelle_societe_container');
+
+            if (selectField.classList.contains('hidden')) {
+                selectField.classList.remove('hidden');
+                inputField.classList.add('hidden');
+            } else {
+                selectField.classList.add('hidden');
+                inputField.classList.remove('hidden');
+            }
+        }
     </script>
 @endsection

@@ -107,11 +107,20 @@
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     </div>
 
+                                    <!-- Nom de société -->
+                                    <div>
+                                        <label for="nom_societe" class="block text-sm font-medium text-gray-700">Nom de
+                                            société</label>
+                                        <input type="text" id="nom_societe" value="{{ $material->societe ? $material->societe->nom_societe : 'Non attribué' }}"
+                                            readonly
+                                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    </div>
+
                                     <!-- Numéro de marché -->
                                     <div>
                                         <label for="numero_marche" class="block text-sm font-medium text-gray-700">Numéro de
                                             marché</label>
-                                        <input type="text" id="numero_marche" value="{{ $material->numero_marche }}"
+                                        <input type="text" id="numero_marche" value="{{ $material->societe ? $material->societe->numero_marche : 'Non attribué' }}"
                                             readonly
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     </div>
@@ -120,18 +129,10 @@
                                     <div>
                                         <label for="numero_bl" class="block text-sm font-medium text-gray-700">Numéro
                                             BL</label>
-                                        <input type="text" id="numero_bl" value="{{ $material->numero_bl }}" readonly
+                                        <input type="text" id="numero_bl" value="{{ $material->societe ? $material->societe->numero_bl : 'Non attribué' }}" readonly
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     </div>
 
-                                    <!-- Nom de société -->
-                                    <div>
-                                        <label for="nom_societe" class="block text-sm font-medium text-gray-700">Nom de
-                                            société</label>
-                                        <input type="text" id="nom_societe" value="{{ $material->nom_societe }}"
-                                            readonly
-                                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    </div>
 
                                     <!-- État -->
                                     <div>

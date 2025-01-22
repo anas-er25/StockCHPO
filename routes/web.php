@@ -8,6 +8,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialHistoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SocieteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,6 +35,19 @@ Route::group(["middleware" => "auth"], function () {
         Route::put('/services/{id}', 'update')->name('update');
         Route::delete('/services/{id}', 'destroy')->name('destroy');
     });
+
+    /* -------------------------------------------------------------------------- */
+    /*                            Societe routes - START                          */
+    /* -------------------------------------------------------------------------- */
+    Route::group(['controller' => SocieteController::class, 'as' => 'societies.'], function () {
+        Route::get('/societies', 'index')->name('index');
+        // Route::get('/addservice', 'create')->name('create');
+        // Route::post('/addservice', 'store')->name('store');
+        Route::get('/societies/{id}/edit', 'edit')->name('edit');
+        Route::put('/societies/{id}', 'update')->name('update');
+        // Route::delete('/societies/{id}', 'destroy')->name('destroy');
+    });
+
     /* -------------------------------------------------------------------------- */
     /*                            Materiels routes - START                        */
     /* -------------------------------------------------------------------------- */
