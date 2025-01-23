@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FeuilleReforme;
 use App\Models\Log;
 use App\Models\Material;
+use App\Models\MaterialHistory;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 use Illuminate\Http\Request;
@@ -45,6 +46,27 @@ class FeuilleReformeController extends Controller
                 'service_id' => null,
                 'etat' => 'réformé'
             ]);
+            // Trouver le dernier enregistrement pour le matériel donné
+            $lastHistory = MaterialHistory::where('material_id', $reforme->material_id)
+                ->latest('moved_at')
+                ->first();
+
+            if ($lastHistory) {
+                // Mettre à jour le dernier enregistrement
+                $lastHistory->update([
+                    'from_service_id' => $reforme->cedant_id,
+                    'to_service_id' => $reforme->cessionnaire_id,
+                    'moved_at' => now()
+                ]);
+            } else {
+                // Si aucun enregistrement n'est trouvé, vous pouvez créer un nouvel enregistrement
+                MaterialHistory::create([
+                    'material_id' => $reforme->material_id,
+                    'from_service_id' => $reforme->cedant_id,
+                    'to_service_id' => $reforme->cessionnaire_id,
+                    'moved_at' => now()
+                ]);
+            }
             // Créer le log
             Log::create([
                 'action' => 'create',

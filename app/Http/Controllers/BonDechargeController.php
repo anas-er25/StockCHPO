@@ -132,7 +132,6 @@ class BonDechargeController extends Controller
         return redirect(route('bondecharge.allbondecharge'))->with('success', 'Bon de décharge supprimé avec succès.');
     }
 
-    
     // Export
     public function bondechargePDF($id)
     {

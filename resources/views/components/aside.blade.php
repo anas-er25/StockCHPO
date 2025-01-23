@@ -11,9 +11,9 @@
                                     </li> --}}
 
                       <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md  w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
+                          <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('dashboard') }}">
-                              <i class="ti ti-layout-dashboard  text-xl"></i> <span>Tableau de bord</span>
+                              <i class="ti ti-layout-dashboard text-xl"></i> <span>Tableau de bord</span>
                           </a>
                       </li>
 
@@ -24,7 +24,7 @@
                       </li>
 
                       <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
+                          <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('materiels.index') }}">
                               <i class="ti ti-tools text-xl"></i> <span>Matériels</span>
 
@@ -32,28 +32,28 @@
                       </li>
 
                       <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
+                          <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('services.index') }}">
                               <i class="ti ti-briefcase text-xl"></i> <span>Services</span>
                           </a>
                       </li>
                       <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
+                          <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('societies.index') }}">
-                              <i class="ti ti-briefcase text-xl"></i> <span>Sociétés</span>
+                              <i class="ti ti-building text-xl"></i> <span>Sociétés</span>
                           </a>
                       </li>
 
 
                       <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
+                          <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('bondecharge.allbondecharge') }}">
                               <i class="fa-solid fa-eject"></i> <span>Bon de Décharge</span>
                           </a>
                       </li>
 
                       <li class="sidebar-item">
-                          <a class="sidebar-link gap-3 py-2 px-3  rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
+                          <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('avismvt.allavismvt') }}">
                               <i class="fas fa-exchange-alt"></i> <span>Avis de mouvement</span>
                           </a>

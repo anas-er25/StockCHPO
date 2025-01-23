@@ -10,10 +10,50 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="flex justify-between items-center">
-                                <h2 class="text-xl font-semibold">Liste de matériels en stock</h2>
+                                <div class="flex items-center gap-4">
+                                    <h2 class="text-xl font-semibold">Liste de matériels en stock</h2>
+                                </div>
+
+                                <div class="flex items-center gap-4">
+                                    {{-- Total in circle --}}
+
+                                    <div
+                                        class="flex items-center justify-center bg-blue-600 rounded-full h-8 w-8 text-white">
+                                        {{ $materiels->count() }}
+                                    </div>
+
+                                    <form action="{{ route('materiels.stock') }}" method="GET"
+                                        class="flex items-center space-x-4">
+                                        <div class="flex-1 max-w-xs">
+                                            <select name="etat" id="etat"
+                                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                                                onchange="this.form.submit()">
+                                                <option value="">Tous les états</option>
+                                                <option value="réformé" {{ $selectedEtat == 'réformé' ? 'selected' : '' }}>
+                                                    Réformé
+                                                </option>
+                                                <option value="réceptionné"
+                                                    {{ $selectedEtat == 'réceptionné' ? 'selected' : '' }}>
+                                                    Réceptionné
+                                                </option>
+                                                <option value="affecté" {{ $selectedEtat == 'affecté' ? 'selected' : '' }}>
+                                                    Affecté
+                                                </option>
+                                                <option value="en mouvement"
+                                                    {{ $selectedEtat == 'en mouvement' ? 'selected' : '' }}>
+                                                    En mouvement
+                                                </option>
+                                                <option value="colis fermé"
+                                                    {{ $selectedEtat == 'colis fermé' ? 'selected' : '' }}>
+                                                    Colis fermé
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            {{-- <!-- Statistiques -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 mb-8 ">
+                            <!-- Statistiques -->
+                            {{-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 mb-8 ">
                                 <!-- Total en stock -->
                                 <div class="p-4 bg-blue-600 rounded-lg hover:shadow-lg transition duration-300">
                                     <div class="flex items-center justify-between">
@@ -63,11 +103,12 @@
                                 </div>
                             </div> --}}
 
+
                             <div class="relative overflow-x-auto mt-8">
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">N d'inventaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° d'inventaire</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription
                                             </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Désignation</th>
@@ -77,11 +118,11 @@
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Affectation</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Date d'affectation
                                             </th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Série</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° de série</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Observation</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Numéro BL</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Nom société</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Numéro Marché</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° de BL</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Nom de société</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° du marché</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Type</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Origine</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">État</th>
@@ -108,9 +149,13 @@
                                                     title="{{ $material->observation }}">
                                                     {{ Str::limit($material->observation, 28) }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $material->societe ? $material->societe->numero_bl : 'N/A' }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->societe ? $material->societe->nom_societe : 'N/A' }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->societe ? $material->societe->numero_marche : 'N/A' }}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    {{ $material->societe ? $material->societe->numero_bl : 'N/A' }}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    {{ $material->societe ? $material->societe->nom_societe : 'N/A' }}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    {{ $material->societe ? $material->societe->numero_marche : 'N/A' }}
+                                                </td>
                                                 <td class="px-6 py-4 text-center">{{ $material->type }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->origin }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->etat }}</td>
@@ -123,8 +168,7 @@
 
                                                     <!-- Formulaire de suppression -->
                                                     <form action="{{ route('materiels.destroy', $material->id) }}"
-                                                        method="POST" class="inline"
-                                                        id="delete-form-{{ $material->id }}">
+                                                        method="POST" class="inline" id="delete-form-{{ $material->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                         <div class="cursor-pointer mr-4"

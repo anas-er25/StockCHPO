@@ -52,7 +52,7 @@
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">N d'inventaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° d'inventaire</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription
                                             </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Désignation</th>
@@ -62,11 +62,11 @@
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Affectation</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Date d'affectation
                                             </th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Série</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° de série</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Observation</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Numéro BL</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Nom société</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Numéro Marché</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° de BL</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Nom de société</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° du marché</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Type</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Origine</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">État</th>
@@ -92,9 +92,13 @@
                                                     title="{{ $material->observation }}">
                                                     {{ Str::limit($material->observation, 28) }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $material->societe ? $material->societe->numero_bl : 'N/A' }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->societe ? $material->societe->nom_societe : 'N/A' }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->societe ? $material->societe->numero_marche : 'N/A' }}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    {{ $material->societe ? $material->societe->numero_bl : 'N/A' }}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    {{ $material->societe ? $material->societe->nom_societe : 'N/A' }}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    {{ $material->societe ? $material->societe->numero_marche : 'N/A' }}
+                                                </td>
                                                 <td class="px-6 py-4 text-center">{{ $material->type }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->origin }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->etat }}</td>
@@ -156,53 +160,52 @@
 
 @section('jslink')
     <script>
-
         function exportToExcel() {
             // Show loading indicator
             Swal.fire({
-            title: 'Export en cours...',
-            text: 'Veuillez patienter',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            willOpen: () => {
-                Swal.showLoading();
-            }
+                title: 'Export en cours...',
+                text: 'Veuillez patienter',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
             });
 
             const baseUrl = window.location.origin;
             fetch(`${baseUrl}/export-excel`)
-            .then(response => {
-                if (!response.ok) {
-                throw new Error(response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (!data || data.length === 0) {
-                throw new Error('Aucune donnée disponible');
-                }
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data || data.length === 0) {
+                        throw new Error('Aucune donnée disponible');
+                    }
 
-                const wb = XLSX.utils.book_new();
-                const ws = XLSX.utils.json_to_sheet(data);
-                ws['!cols'] = Object.keys(data[0]).map(() => ({
-                wch: 20
-                }));
+                    const wb = XLSX.utils.book_new();
+                    const ws = XLSX.utils.json_to_sheet(data);
+                    ws['!cols'] = Object.keys(data[0]).map(() => ({
+                        wch: 20
+                    }));
 
-                XLSX.utils.book_append_sheet(wb, ws, "Materiels");
-                XLSX.writeFile(wb, `materiels_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.xlsx`);
+                    XLSX.utils.book_append_sheet(wb, ws, "Materiels");
+                    XLSX.writeFile(wb, `materiels_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.xlsx`);
 
-                // Close loading indicator on success
-                Swal.close();
-            })
-            .catch(error => {
-                console.error('Export error:', error);
-                Swal.fire({
-                icon: 'error',
-                title: 'Erreur d\'exportation',
-                text: error.message || 'Une erreur est survenue lors de l\'exportation.',
-                confirmButtonColor: '#3085d6'
+                    // Close loading indicator on success
+                    Swal.close();
+                })
+                .catch(error => {
+                    console.error('Export error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erreur d\'exportation',
+                        text: error.message || 'Une erreur est survenue lors de l\'exportation.',
+                        confirmButtonColor: '#3085d6'
+                    });
                 });
-            });
         }
 
         function triggerFileInput() {

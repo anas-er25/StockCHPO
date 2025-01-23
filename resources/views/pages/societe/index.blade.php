@@ -52,9 +52,9 @@
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Nom société</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Numéro Marché</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Numéro BL</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Nom de société</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° du marché</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° de BL</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">P.V</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">CPS</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Actions</th>
@@ -66,8 +66,10 @@
                                                 <td class="px-6 py-4 text-center">{{ $societe->nom_societe }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $societe->numero_marche }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $societe->numero_bl }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $societe->PV ? $societe->PV : 'Non Attribué' }}</td>
-                                                <td class="px-6 py-4 text-center">{{$societe->CPS  ? $societe->CPS  : 'Non Attribué'}}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    {{ $societe->PV ? $societe->PV : 'Non Attribué' }}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    {{ $societe->CPS ? $societe->CPS : 'Non Attribué' }}</td>
                                                 <td class="px-6 py-4 flex items-center justify-center">
                                                     <!-- Icône de modification -->
                                                     <a href="{{ route('societies.edit', $societe->id) }}"
@@ -76,7 +78,7 @@
                                                     </a>
 
                                                     <!-- Formulaire de suppression -->
-                                                    {{-- <form action="{{ route('societies.destroy', $societe->id) }}"
+                                                    <form action="{{ route('societies.destroy', $societe->id) }}"
                                                         method="POST" class="inline" id="delete-form-{{ $societe->id }}">
                                                         @csrf
                                                         @method('DELETE')
@@ -85,20 +87,7 @@
                                                             <i
                                                                 class="fa-solid fa-trash text-red-500 hover:text-red-700"></i>
                                                         </div>
-                                                    </form> --}}
-
-                                                    <!-- Icône de téléchargement PDF -->
-                                                    <a href="{{ route('materiels.export_pdf', $societe->id) }}"
-                                                        class="cursor-pointer mr-4">
-                                                        <i
-                                                            class="fa-solid fa-download text-blue-600 hover:text-blue-700"></i>
-                                                    </a>
-
-                                                    <!-- Icône de vue -->
-                                                    <a href="{{ route('materiels.show', $societe->id) }}"
-                                                        class="cursor-pointer">
-                                                        <i class="fa-solid fa-eye text-blue-600 hover:text-blue-700"></i>
-                                                    </a>
+                                                    </form>
                                                 </td>
 
                                             </tr>
@@ -126,53 +115,52 @@
 
 @section('jslink')
     <script>
-
         function exportToExcel() {
             // Show loading indicator
             Swal.fire({
-            title: 'Export en cours...',
-            text: 'Veuillez patienter',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            willOpen: () => {
-                Swal.showLoading();
-            }
+                title: 'Export en cours...',
+                text: 'Veuillez patienter',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
             });
 
             const baseUrl = window.location.origin;
             fetch(`${baseUrl}/export-excel`)
-            .then(response => {
-                if (!response.ok) {
-                throw new Error(response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (!data || data.length === 0) {
-                throw new Error('Aucune donnée disponible');
-                }
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data || data.length === 0) {
+                        throw new Error('Aucune donnée disponible');
+                    }
 
-                const wb = XLSX.utils.book_new();
-                const ws = XLSX.utils.json_to_sheet(data);
-                ws['!cols'] = Object.keys(data[0]).map(() => ({
-                wch: 20
-                }));
+                    const wb = XLSX.utils.book_new();
+                    const ws = XLSX.utils.json_to_sheet(data);
+                    ws['!cols'] = Object.keys(data[0]).map(() => ({
+                        wch: 20
+                    }));
 
-                XLSX.utils.book_append_sheet(wb, ws, "Materiels");
-                XLSX.writeFile(wb, `materiels_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.xlsx`);
+                    XLSX.utils.book_append_sheet(wb, ws, "Materiels");
+                    XLSX.writeFile(wb, `materiels_${new Date().toLocaleDateString('fr-FR').replace(/\//g, '-')}.xlsx`);
 
-                // Close loading indicator on success
-                Swal.close();
-            })
-            .catch(error => {
-                console.error('Export error:', error);
-                Swal.fire({
-                icon: 'error',
-                title: 'Erreur d\'exportation',
-                text: error.message || 'Une erreur est survenue lors de l\'exportation.',
-                confirmButtonColor: '#3085d6'
+                    // Close loading indicator on success
+                    Swal.close();
+                })
+                .catch(error => {
+                    console.error('Export error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erreur d\'exportation',
+                        text: error.message || 'Une erreur est survenue lors de l\'exportation.',
+                        confirmButtonColor: '#3085d6'
+                    });
                 });
-            });
         }
 
         function triggerFileInput() {

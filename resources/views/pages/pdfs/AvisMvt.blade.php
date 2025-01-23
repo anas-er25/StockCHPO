@@ -103,7 +103,7 @@
             <tr>
                 <th>Désignation</th>
                 <th>Quantité</th>
-                <th>Numéro d'inventaire</th>
+                <th>N° d'inventaire</th>
                 <th>Cédant</th>
                 <th>Cessionnaire</th>
                 <th>Motif de mouvement</th>
@@ -113,7 +113,7 @@
             <tr>
                 <td>{{ $avismvt->material_id ? $avismvt->materiel->designation : 'N/A' }}</td>
                 <td>{{ $avismvt->qte }}</td>
-                <td>{{ $avismvt->material_id ? explode('/', $avismvt->materiel->num_inventaire)[0] : 'N/A' }}
+                <td>{{ $avismvt->material_id ? $avismvt->materiel->num_inventaire : 'N/A' }}
                 </td>
                 <td>{{ $avismvt->cedant_id ? $avismvt->cedant->nom : 'N/A' }}</td>
                 <td>{{ $avismvt->cessionnaire_id ? $avismvt->cessionnaire->nom : 'N/A' }}</td>

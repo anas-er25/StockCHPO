@@ -107,7 +107,7 @@
                 <tr>
                     <th>Désignation</th>
                     <th>Quantité</th>
-                    <th>Numéro d'inventaire</th>
+                    <th>N° d'inventaire</th>
                     <th>Cédant</th>
                     <th>Cessionnaire</th>
                     <th>Motif de mouvement</th>

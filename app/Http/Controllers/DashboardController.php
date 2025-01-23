@@ -41,39 +41,44 @@ class DashboardController extends Controller
                 ->get()
         ];
 
-        // Matériels par type
+        // Matériels par type pour l'année en cours
         $materielstype = Material::select('type')
+            ->whereYear('date_inscription', date('Y'))
             ->groupBy('type')
             ->selectRaw('type, count(*) as count')
             ->get();
-        // Matériels par Etat
+
+        // Matériels par Etat pour l'année en cours
         $materielsetat = Material::select('etat')
+            ->whereYear('date_inscription', date('Y'))
             ->groupBy('etat')
             ->selectRaw('etat, count(*) as count')
             ->get();
 
         return view('dashboard', compact('logs', 'recentMovements', 'materielstype', 'materielsetat'));
     }
+
     public function getChartData(Request $request)
     {
         $month = $request->input('month');
+        $year = $request->input('year', date('Y'));
 
         $materielsetat = Material::select('etat')
-            ->whereMonth('date_inscription', $month) // Filter by month
+            ->whereMonth('date_inscription', $month)
+            ->whereYear('date_inscription', $year)
             ->groupBy('etat')
             ->selectRaw('etat, count(*) as count')
             ->get();
 
-        $labelsetat = [];
-        $seriesetat = [];
-        foreach ($materielsetat as $item) {
-            $labelsetat[] = $item->etat;
-            $seriesetat[] = $item->count;
-        }
+        $labelsetat = $materielsetat->pluck('etat')->toArray();
+        $seriesetat = $materielsetat->pluck('count')->map(function ($value) {
+            return (int)$value;
+        })->toArray();
 
+        // Provide default data if empty
         if (empty($labelsetat)) {
-            $labelsetat = ['No Data'];
-            $seriesetat = [0]; // Important: Use 0 to avoid chart errors
+            $labelsetat = ['Aucune donnée'];
+            $seriesetat = [0];
         }
 
         return response()->json([

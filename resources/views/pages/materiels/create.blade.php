@@ -18,9 +18,9 @@
                                 @csrf
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
-                                    <!-- Numéro d'inventaire -->
+                                    <!-- N° d'inventaire -->
                                     <div>
-                                        <label for="num_inventaire" class="block text-sm font-medium text-gray-700">Numéro
+                                        <label for="num_inventaire" class="block text-sm font-medium text-gray-700">N°
                                             d'inventaire</label>
                                         <input type="text" name="num_inventaire" id="num_inventaire"
                                             value="{{ old('num_inventaire') }}" required autofocus
@@ -129,10 +129,10 @@
                                         <x-input-error :messages="$errors->get('date_affectation')" class="mt-2" />
                                     </div>
 
-                                    <!-- Numéro de série -->
+                                    <!-- N°  de N° de série -->
                                     <div>
-                                        <label for="num_serie" class="block text-sm font-medium text-gray-700">Numéro de
-                                            série</label>
+                                        <label for="num_serie" class="block text-sm font-medium text-gray-700">N° de
+                                            N° de série</label>
                                         <input type="text" name="num_serie" id="num_serie"
                                             value="{{ old('num_serie') }}" required
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -174,9 +174,9 @@
                                         <x-input-error :messages="$errors->get('nouvelle_societe')" class="mt-2" />
                                     </div>
 
-                                    <!-- Numéro de marché -->
+                                    <!-- N°  de marché -->
                                     <div>
-                                        <label for="numero_marche" class="block text-sm font-medium text-gray-700">Numéro
+                                        <label for="numero_marche" class="block text-sm font-medium text-gray-700">N°
                                             de
                                             marché</label>
                                         <input type="text" name="numero_marche" id="numero_marche" required
@@ -185,9 +185,9 @@
                                         <x-input-error :messages="$errors->get('numero_marche')" class="mt-2" />
                                     </div>
 
-                                    <!-- Numéro BL -->
+                                    <!-- N°  de BL -->
                                     <div>
-                                        <label for="numero_bl" class="block text-sm font-medium text-gray-700">Numéro
+                                        <label for="numero_bl" class="block text-sm font-medium text-gray-700">N°
                                             BL</label>
                                         <input type="text" name="numero_bl" id="numero_bl"
                                             value="{{ old('numero_bl') }}" required
@@ -256,7 +256,7 @@
             const lastTwoDigitsOfYear = currentYear.toString().slice(-
                 2); // Obtenir les 2 derniers chiffres de l'année
 
-            // Lorsque l'utilisateur saisit un numéro d'inventaire
+            // Lorsque l'utilisateur saisit un N° d'inventaire
             numInventaireInput.addEventListener("input", function() {
                 const numInputValue = numInventaireInput.value;
                 if (numInputValue && !numInputValue.includes('/')) {

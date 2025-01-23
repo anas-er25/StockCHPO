@@ -203,14 +203,35 @@ class MaterialController extends Controller
     public function stock()
     {
 
-        $materiels = Material::whereNull('service_id')->where('etat', '!=', 'réformé')->get();
+        // Get the selected state from the query parameter
+        $selectedEtat = request('etat');
+
+        // Base query
+        $query = Material::query();
+
+        // Apply state filter if selected
+        if ($selectedEtat) {
+            $query->where('etat', $selectedEtat);
+        } else {
+            // Default behavior: show only materials without service
+            $query->WhereNull('service_id');
+        }
+
+        $materiels = $query->get();
         $sorties = Material::whereIn('etat', ['affecté', 'en mouvement'])->count();
         $entries = Material::where('etat', 'réceptionné')
             ->orWhere('etat', 'colis fermé')
             ->orWhereNull('service_id')
             ->count();
         $materialstotal = Material::all()->count();
-        return view('pages.materiels.stock', ['materialstotal' => $materialstotal, 'materiels' => $materiels, 'sorties' => $sorties, 'entries' => $entries]);
+
+        return view('pages.materiels.stock', [
+            'materialstotal' => $materialstotal,
+            'materiels' => $materiels,
+            'sorties' => $sorties,
+            'entries' => $entries,
+            'selectedEtat' => $selectedEtat
+        ]);
     }
 
     // Export
@@ -246,7 +267,7 @@ class MaterialController extends Controller
                 ->get()
                 ->map(function ($material) {
                     return [
-                        'Numéro d\'inventaire' => $material->num_inventaire,
+                        'N°  d\'inventaire' => $material->num_inventaire,
                         'Date d\'inscription' => $material->date_inscription,
                         'Désignation de l\'objet' => $material->designation,
                         'Qté' => $material->qte,
@@ -254,11 +275,11 @@ class MaterialController extends Controller
                         'Modèle' => $material->modele,
                         'Service' => $material->service_id ? $material->service->nom : 'Non affecté',
                         'Date d\'affectation' => $material->date_affectation,
-                        'Série' => $material->num_serie,
+                        'N° de série' => $material->num_serie,
                         'Observation' => $material->observation,
-                        'Numéro BL' => $material->societe ? $material->societe->numero_bl : null,
-                        'Nom société' => $material->societe ? $material->societe->nom_societe : null,
-                        'Numéro de marché' => $material->societe ? $material->societe->numero_marche : null,
+                        'N°  de BL' => $material->societe ? $material->societe->numero_bl : null,
+                        'Nom de société' => $material->societe ? $material->societe->nom_societe : null,
+                        'N°  de marché' => $material->societe ? $material->societe->numero_marche : null,
                         'Type' => $material->type,
                         'Origine' => $material->origin,
                         'Etat' => $material->etat,
@@ -333,7 +354,7 @@ class MaterialController extends Controller
             }
 
             $cleanInventaire = $row[0];
-            $formats = ['Y-m-d', 'm-d-Y', 'd-m-Y'];
+            $formats = ['Y-m-d', 'm-d-Y', 'd-m-Y', 'm/d/Y'];
             $date = null;
 
             foreach ($formats as $format) {
