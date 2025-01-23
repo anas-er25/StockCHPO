@@ -23,7 +23,7 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => 'required'
+            'nom' => 'required|unique:services'
         ]);
 
         // Créer le service
@@ -51,7 +51,7 @@ class ServiceController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nom' => 'required'
+            'nom' => 'required|unique:services'
         ]);
 
         $service = Service::find($id);
@@ -85,5 +85,4 @@ class ServiceController extends Controller
             return redirect()->route('services.index')->with('error', 'Service non trouvé.');
         }
     }
-
 }

@@ -25,11 +25,11 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
                         <div>
-                            <label for="material_id" class="block text-sm font-medium text-gray-700">Numéro
+                            <label for="material_id" class="block text-sm font-medium text-gray-700">N°
                                 d'inventaire:</label>
                             <select name="material_id" id="material_id"
                                 class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md select2">
-                                <option value="">Sélectionner un Numéro d'inventaire</option>
+                                <option value="">Sélectionner un N° d'inventaire</option>
                                 @foreach ($materials as $material)
                                     <option value="{{ $material->id }}">{{ $material->num_inventaire }}</option>
                                 @endforeach
@@ -55,8 +55,7 @@
                                 <x-input-error :messages="$errors->get('qte')" class="mt-2" />
                             </div>
                             <div>
-                                <label for="num_serie" class="block text-sm font-medium text-gray-700">Numéro de
-                                    série:</label>
+                                <label for="num_serie" class="block text-sm font-medium text-gray-700">N° de série:</label>
                                 <input type="text" name="num_serie" id="num_serie" value="{{ old('num_serie') }}"
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 <x-input-error :messages="$errors->get('num_serie')" class="mt-2" />
@@ -64,6 +63,7 @@
                             <div>
                                 <label for="cedant" class="block text-sm font-medium text-gray-700">Cédant:</label>
                                 <input type="text" name="cedant" id="cedant" value="{{ old('cedant') }}"
+                                readonly
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 <x-input-error :messages="$errors->get('cedant')" class="mt-2" />
                             </div>
@@ -108,7 +108,7 @@
     <script>
         $(document).ready(function() {
             $('#material_id').select2({
-                placeholder: "Sélectionner un Numéro d'inventaire",
+                placeholder: "Sélectionner un N° d'inventaire",
                 allowClear: true
             });
 

@@ -25,7 +25,7 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
                         <div>
-                            <label for="material_id" class="block text-sm font-medium text-gray-700">Numéro
+                            <label for="material_id" class="block text-sm font-medium text-gray-700">N°
                                 d'inventaire:</label>
                             <input type="text" name="material" id="material"
                                 value="{{ old('material_id', $avismvt->material_id ? $avismvt->materiel->num_inventaire : 'N/A') }}"
@@ -102,7 +102,7 @@
     <script>
         $(document).ready(function() {
             $('#material_id').select2({
-                placeholder: "Sélectionner un Numéro d'inventaire",
+                placeholder: "Sélectionner un N° d'inventaire",
                 allowClear: true
             });
         });

@@ -22,7 +22,7 @@ class AvisMvtController extends Controller
 
     public function avismvt()
     {
-        $materiels = Material::all();
+        $materiels = Material::WhereNotNull('service_id')->get();
         $services = Service::all();
 
         return view('pages.materiels.avismvt.avismvt', ['materials' => $materiels, 'services' => $services]);
@@ -120,6 +120,10 @@ class AvisMvtController extends Controller
 
         // Sauvegarder les données
         if ($avismvt->save()) {
+            // update on service_id on material table
+            Material::where('id', $avismvt->material_id)->update([
+                'service_id' => $avismvt->cessionnaire_id,
+            ]);
             // Trouver le dernier enregistrement pour le matériel donné
             $lastHistory = MaterialHistory::where('material_id', $avismvt->material_id)
                 ->latest('moved_at')

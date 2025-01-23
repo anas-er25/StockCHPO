@@ -41,11 +41,9 @@ Route::group(["middleware" => "auth"], function () {
     /* -------------------------------------------------------------------------- */
     Route::group(['controller' => SocieteController::class, 'as' => 'societies.'], function () {
         Route::get('/societies', 'index')->name('index');
-        // Route::get('/addservice', 'create')->name('create');
-        // Route::post('/addservice', 'store')->name('store');
         Route::get('/societies/{id}/edit', 'edit')->name('edit');
         Route::put('/societies/{id}', 'update')->name('update');
-        // Route::delete('/societies/{id}', 'destroy')->name('destroy');
+        Route::delete('/societies/{id}', 'destroy')->name('destroy');
     });
 
     /* -------------------------------------------------------------------------- */

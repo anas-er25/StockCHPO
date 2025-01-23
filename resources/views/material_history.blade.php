@@ -15,7 +15,7 @@
                                 <div class="w-full md:w-1/3">
                                     <div class="relative">
                                         <input type="text" id="inventory_number" autofocus
-                                            placeholder="Rechercher par numéro d'inventaire..."
+                                            placeholder="Rechercher par N° d'inventaire..."
                                             class="w-full md:w-96 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 pl-12 py-2 transition-all duration-300 ease-in-out focus:outline-none hover:ring-1 hover:ring-gray-400">
                                     </div>
                                 </div>
@@ -27,7 +27,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                     </svg>
-                                    <p class="text-gray-500 text-lg">Entrez un numéro d'inventaire pour voir l'historique
+                                    <p class="text-gray-500 text-lg">Entrez un N° d'inventaire pour voir l'historique
                                         des mouvements</p>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                             resultsDiv.innerHTML = html;
                         } else {
                             resultsDiv.innerHTML =
-                                `<p>Aucun matériel trouvé pour le numéro d'inventaire fourni.</p>`;
+                                `<p>Aucun matériel trouvé pour le N° d'inventaire fourni.</p>`;
                         }
                     })
                     .catch(error => {

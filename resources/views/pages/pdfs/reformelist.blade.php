@@ -53,7 +53,7 @@
                 <th class="designation">Désignation</th>
                 <th>Quantité</th>
                 <th>Motifs de réforme</th>
-                <th>Numéro d'inventaire</th>
+                <th>N° d'inventaire</th>
             </tr>
         </thead>
         <tbody>

@@ -107,8 +107,8 @@
                 <tr>
                     <th>Désignation</th>
                     <th>Quantité</th>
-                    <th>Numéro d'inventaire</th>
-                    <th>Numéro de série</th>
+                    <th>N° d'inventaire</th>
+                    <th>N° de série</th>
                     <th>Cédant</th>
                     <th>Cessionnaire</th>
                     <th>Motif de décharge</th>

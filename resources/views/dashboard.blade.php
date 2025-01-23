@@ -396,152 +396,136 @@
         var chart = new ApexCharts(document.querySelector("#materieltype"), materieltype);
         chart.render();
 
-        var materieletat = {
-            color: "#adb5bd",
-            series: <?= json_encode($seriesetat) ?>, // Use PHP to pass data to JS
-            labels: <?= json_encode($labelsetat) ?>, // Use PHP to pass data to JS
-            chart: {
-                width: 200,
-                type: "donut",
-                fontFamily: "Plus Jakarta Sans', sans-serif",
-                foreColor: "#adb0bb",
-            },
-            plotOptions: {
-                pie: {
-                    startAngle: 0,
-                    endAngle: 360,
-                    donut: {
-                        size: '75%',
+        document.addEventListener('DOMContentLoaded', function() {
+            var materieletat = {
+                color: "#adb5bd",
+                series: <?= json_encode($seriesetat) ?>, // Use PHP to pass data to JS
+                labels: <?= json_encode($labelsetat) ?>, // Use PHP to pass data to JS
+                chart: {
+                    width: 200,
+                    type: "donut",
+                    fontFamily: "Plus Jakarta Sans', sans-serif",
+                    foreColor: "#adb0bb",
+                },
+                plotOptions: {
+                    pie: {
+                        startAngle: 0,
+                        endAngle: 360,
+                        donut: {
+                            size: '75%',
+                        },
                     },
                 },
-            },
-            stroke: {
-                show: false,
-            },
-            dataLabels: {
-                enabled: false,
-            },
-            legend: {
-                show: true, // Show the legend
-                position: 'bottom' // Position the legend
-            },
-            // Use more distinct colors or a color palette
-            colors: ['#1e90ff', '#ffeb3b', '#32cd32', '#20b2aa', '#ff7f50'],
-            responsive: [{
-                breakpoint: 991,
-                options: {
-                    chart: {
-                        width: 150,
-                    },
+                stroke: {
+                    show: false,
                 },
-            }, ],
-            tooltip: {
-                theme: "dark",
-                fillSeriesColor: false,
-            },
-        };
+                dataLabels: {
+                    enabled: false,
+                },
+                legend: {
+                    show: true, // Show the legend
+                    position: 'bottom' // Position the legend
+                },
+                colors: ['#1e90ff', '#ffeb3b', '#32cd32', '#20b2aa', '#ff7f50'],
+                responsive: [{
+                    breakpoint: 991,
+                    options: {
+                        chart: {
+                            width: 150,
+                        },
+                    },
+                }],
+                tooltip: {
+                    theme: "dark",
+                    fillSeriesColor: false,
+                },
+            };
 
-        var chart = new ApexCharts(document.querySelector("#materieletat"), materieletat);
-        chart.render();
-
-
-        document.getElementById('month-filter').addEventListener('change', function() {
-            const selectedMonth = this.value;
-
-            fetch(`/dashboard/chart-data?month=${selectedMonth}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Update the chart with the new data
-                    chart.updateSeries([{
-                        data: data.series
-                    }]);
-                    chart.updateOptions({
-                        xaxis: {
-                            categories: data.labels
-                        }
-                    });
-                });
+            var etatChart = new ApexCharts(document.querySelector("#materieletat"), materieletat);
+            etatChart.render();
         });
 
-        var chartOptions = {
 
+        // Chart configuration
+        var chartOptions = {
             series: [{
-                data: <?= json_encode($seriesetat) ?>
+                name: 'Matériaux',
+                data: []
             }],
             chart: {
-                type: "bar",
-                height: 352,
-                offsetX: -15,
-                toolbar: {
-                    show: true
-                },
-                foreColor: "#adb0bb",
-                fontFamily: 'inherit',
-                sparkline: {
-                    enabled: false
-                },
+                type: 'bar',
+                height: 350,
+                animations: {
+                    enabled: true
+                }
             },
-            colors: ["#5D87FF"],
             plotOptions: {
                 bar: {
                     horizontal: false,
-                    columnWidth: "35%",
-                    borderRadius: [6],
-                    borderRadiusApplication: 'end',
-                    borderRadiusWhenStacked: 'all'
-                },
-            },
-            markers: {
-                size: 0
+                    columnWidth: '55%',
+                    borderRadius: 5
+                }
             },
             dataLabels: {
-                enabled: false
+                enabled: true
             },
-            legend: {
-                show: false
-            },
-            grid: {
-                borderColor: "rgba(0,0,0,0.1)",
-                strokeDashArray: 3,
-                xaxis: {
-                    lines: {
-                        show: false
-                    }
-                },
-            },
+            colors: ['#5D87FF'],
             xaxis: {
-                type: "category",
-                categories: <?= json_encode($labelsetat) ?>,
+                categories: [],
                 labels: {
+                    rotate: -45,
                     style: {
-                        cssClass: "grey--text lighten-2--text fill-color"
+                        fontSize: '12px'
                     }
-                },
+                }
             },
             yaxis: {
-                show: true,
-                min: 0,
-                tickAmount: 4,
-                labels: {
-                    style: {
-                        cssClass: "grey--text lighten-2--text fill-color"
-                    }
-                },
-            },
-            stroke: {
-                show: true,
-                width: 3,
-                lineCap: "butt",
-                colors: ["transparent"]
-            },
-            tooltip: {
-                theme: "light"
-            },
-            responsive: [],
+                title: {
+                    text: 'Nombre de matériaux'
+                }
+            }
         };
 
-        var chartElement = document.querySelector("#chart");
-        var chart = new ApexCharts(chartElement, chartOptions); // Use the stored options
-        chart.render();
+        // Initialize chart on DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create chart instance
+            const mainChart = new ApexCharts(document.querySelector("#chart"), chartOptions);
+            mainChart.render();
+
+            // Initial data load
+            updateChartData(mainChart, <?php echo json_encode($seriesetat); ?>, <?php echo json_encode($labelsetat); ?>);
+
+            // Month filter handler
+            document.getElementById('month-filter').addEventListener('change', function() {
+                const selectedMonth = this.value;
+                fetch(`/dashboard/chart-data?month=${selectedMonth}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Received data:', data); // Debug log
+                        if (data && Array.isArray(data.series) && Array.isArray(data.labels)) {
+                            updateChartData(mainChart, data.series, data.labels);
+                        } else {
+                            console.error('Invalid data format received');
+                        }
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            });
+        });
+
+        // Helper function to update chart data
+        function updateChartData(chart, series, labels) {
+            // Replace null labels with "Non défini"
+            const cleanLabels = labels.map(label => label === null ? "Non défini" : label);
+
+            chart.updateOptions({
+                series: [{
+                    name: 'Matériaux',
+                    data: series
+                }],
+                xaxis: {
+                    categories: cleanLabels
+                }
+            }, true);
+        }
     </script>
 @endsection

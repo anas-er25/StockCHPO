@@ -26,7 +26,7 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
                         <div>
-                            <label for="material_id" class="block text-sm font-medium text-gray-700">Numéro
+                            <label for="material_id" class="block text-sm font-medium text-gray-700">N°
                                 d'inventaire:</label>
                             <input type="text" name="material" id="material"
                                 value="{{ old('material_id', $bondecharge->material_id ? $bondecharge->materiel->num_inventaire : 'N/A') }}"
@@ -46,8 +46,7 @@
                                 <x-input-error :messages="$errors->get('qte')" class="mt-2" />
                             </div>
                             <div>
-                                <label for="num_serie" class="block text-sm font-medium text-gray-700">Numéro de
-                                    série:</label>
+                                <label for="num_serie" class="block text-sm font-medium text-gray-700">N° de série:</label>
                                 <input type="text" name="num_serie" id="num_serie"
                                     value="{{ old('num_serie', $bondecharge->num_serie) }}"
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -56,6 +55,7 @@
                             <div>
                                 <label for="cedant" class="block text-sm font-medium text-gray-700">Cédant:</label>
                                 <input type="text" name="cedant" id="cedant"
+                                readonly
                                     value="{{ old('cedant', $bondecharge->cedant_id ? $bondecharge->cedant->nom : '') }}"
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 <x-input-error :messages="$errors->get('cedant')" class="mt-2" />
@@ -102,7 +102,7 @@
     <script>
         $(document).ready(function() {
             $('#material_id').select2({
-                placeholder: "Sélectionner un Numéro d'inventaire",
+                placeholder: "Sélectionner un N° d'inventaire",
                 allowClear: true
             });
         });
