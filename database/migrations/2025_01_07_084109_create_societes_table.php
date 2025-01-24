@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('societes', function (Blueprint $table) {
             $table->id();
             $table->string('nom_societe')->unique();
-            $table->string('numero_marche')->nullable();
-            $table->string('numero_bl')->nullable();
-            $table->string('PV')->nullable();
-            $table->string('CPS')->nullable();
+             $table->string('siege_social')->nullable();
+            $table->string('telephone')->nullable();
+            $table->integer('nombre_articles')->nullable();
             $table->timestamps();
         });
     }

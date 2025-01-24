@@ -20,7 +20,7 @@
 
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
-                                    <!-- N° d'inventaire -->
+                                    {{-- <!-- N° d'inventaire --> --}}
                                     <div>
                                         <label for="num_inventaire" class="block text-sm font-medium text-gray-700">N°
                                             d'inventaire</label>
@@ -32,7 +32,7 @@
                                         <x-input-error :messages="$errors->get('num_inventaire')" class="mt-2" />
                                     </div>
 
-                                    <!-- Date d'inscription -->
+                                    {{-- <!-- Date d'inscription --> --}}
                                     <div>
                                         <label for="date_inscription" class="block text-sm font-medium text-gray-700">Date
                                             d'inscription</label>
@@ -42,7 +42,7 @@
                                         <x-input-error :messages="$errors->get('date_inscription')" class="mt-2" />
                                     </div>
 
-                                    <!-- Désignation -->
+                                    {{-- <!-- Désignation --> --}}
                                     <div>
                                         <label for="designation"
                                             class="block text-sm font-medium text-gray-700">Désignation</label>
@@ -52,17 +52,17 @@
                                         <x-input-error :messages="$errors->get('designation')" class="mt-2" />
                                     </div>
 
-                                    <!-- Quantité -->
+                                    {{-- <!-- Quantité --> --}}
                                     <div>
                                         <label for="qte"
                                             class="block text-sm font-medium text-gray-700">Quantité</label>
                                         <input type="number" name="qte" id="qte"
-                                            value="{{ old('qte', $material->qte) }}" required
+                                            value="{{ old('qte', $material->qte) }}" readonly
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('qte')" class="mt-2" />
                                     </div>
 
-                                    <!-- Marque -->
+                                    {{-- <!-- Marque --> --}}
                                     <div>
                                         <label for="marque" class="block text-sm font-medium text-gray-700">Marque</label>
                                         <input type="text" name="marque" id="marque"
@@ -71,7 +71,7 @@
                                         <x-input-error :messages="$errors->get('marque')" class="mt-2" />
                                     </div>
 
-                                    <!-- Modèle -->
+                                    {{-- <!-- Modèle --> --}}
                                     <div>
                                         <label for="modele" class="block text-sm font-medium text-gray-700">Modèle</label>
                                         <input type="text" name="modele" id="modele"
@@ -80,7 +80,7 @@
                                         <x-input-error :messages="$errors->get('modele')" class="mt-2" />
                                     </div>
 
-                                    <!-- Type -->
+                                    {{-- <!-- Type --> --}}
                                     <div>
                                         <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
                                         <select name="type" id="type" required
@@ -94,27 +94,45 @@
                                             <option value="biomédical"
                                                 {{ old('type', $material->type) == 'biomédical' ? 'selected' : '' }}>
                                                 Biomédical</option>
+                                            <option value="dispositif medicaux"
+                                                {{ old('type', $material->type) == 'dispositif medicaux' ? 'selected' : '' }}>
+                                                Dispositif medicaux</option>
+                                            <option value="autres"
+                                                {{ old('type', $material->type) == 'autres' ? 'selected' : '' }}>
+                                                Autres</option>
                                         </select>
                                         <x-input-error :messages="$errors->get('type')" class="mt-2" />
                                     </div>
 
-                                    <!-- Origin -->
+                                    {{-- <!-- Origin --> --}}
                                     <div>
                                         <label for="origin"
                                             class="block text-sm font-medium text-gray-700">Origine</label>
                                         <select name="origin" id="origin" required
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                            <option value="achat"
-                                                {{ old('origin', $material->origin) == 'achat' ? 'selected' : '' }}>Achat
+                                            <option value="bon de commande"
+                                                {{ old('origin', $material->origin) == 'bon de commande' ? 'selected' : '' }}>
+                                                Bon de commande</option>
+                                            <option value="marché négociés"
+                                                {{ old('origin', $material->origin) == 'marché négociés' ? 'selected' : '' }}>
+                                                Marché négociés</option>
+                                            <option value="convention"
+                                                {{ old('origin', $material->origin) == 'convention' ? 'selected' : '' }}>
+                                                Convention</option>
+                                            <option value="marché"
+                                                {{ old('origin', $material->origin) == 'marché' ? 'selected' : '' }}>Marché
                                             </option>
-                                            <option value="don"
-                                                {{ old('origin', $material->origin) == 'don' ? 'selected' : '' }}>Don
+                                            <option value="dons"
+                                                {{ old('origin', $material->origin) == 'dons' ? 'selected' : '' }}>Dons
+                                            </option>
+                                            <option value="autres"
+                                                {{ old('origin', $material->origin) == 'autres' ? 'selected' : '' }}>Autres
                                             </option>
                                         </select>
                                         <x-input-error :messages="$errors->get('origin')" class="mt-2" />
                                     </div>
 
-                                    <!-- Service -->
+                                    {{-- <!-- Service --> --}}
                                     <div>
                                         <label for="service_id"
                                             class="block text-sm font-medium text-gray-700">Service</label>
@@ -141,15 +159,16 @@
                                         <x-input-error :messages="$errors->get('date_affectation')" class="mt-2" />
                                     </div>
 
-                                    <!-- N°  de N° de série -->
+                                    {{-- <!-- N°  de N° de série --> --}}
                                     <div>
                                         <label for="num_serie" class="block text-sm font-medium text-gray-700">N° de
-                                            N° de série</label>
+                                            série</label>
                                         <input type="text" name="num_serie" id="num_serie"
                                             value="{{ old('num_serie', $material->num_serie) }}" required
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('num_serie')" class="mt-2" />
                                     </div>
+
                                     {{-- Société --}}
                                     <div class="col-span-1">
                                         <label for="societe_id"
@@ -186,52 +205,72 @@
                                         <x-input-error :messages="$errors->get('nouvelle_societe')" class="mt-2" />
                                     </div>
 
-                                    <!-- N°  de marché -->
+                                    {{-- <!-- N°  de marché --> --}}
                                     <div>
                                         <label for="numero_marche" class="block text-sm font-medium text-gray-700">N°
                                             de marché</label>
                                         <input type="text" name="numero_marche" id="numero_marche" required
-                                            value="{{ old('numero_marche', $material->societe->numero_marche ?? '') }}"
+                                            value="{{ old('numero_marche', $material->societeMaterials->first()->numero_marche ?? '') }}"
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('numero_marche')" class="mt-2" />
                                     </div>
 
-                                    <!-- N°  de BL -->
+                                    {{-- <!-- N°  de BL --> --}}
                                     <div>
                                         <label for="numero_bl" class="block text-sm font-medium text-gray-700">N°
                                             BL</label>
                                         <input type="text" name="numero_bl" id="numero_bl"
-                                            value="{{ old('numero_bl', $material->societe->numero_bl ?? '') }}" required
+                                            value="{{ old('numero_bl', $material->societeMaterials->first()->numero_bl ?? '') }}"
+                                            required
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('numero_bl')" class="mt-2" />
                                     </div>
-
-                                    <!-- État -->
+                                    {{-- État --}}
                                     <div>
                                         <label for="etat" class="block text-sm font-medium text-gray-700">État</label>
                                         <select name="etat" id="etat" required
+                                            onchange="toggleReceptionOptions()"
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                             <option value="réceptionné"
                                                 {{ old('etat', $material->etat) == 'réceptionné' ? 'selected' : '' }}>
                                                 Réceptionné</option>
                                             <option value="affecté"
-                                                {{ old('etat', $material->etat) == 'affecté' ? 'selected' : '' }}>Affecté
+                                                {{ old('etat', $material->etat) == 'affecté' ? 'selected' : '' }}>
+                                                Affecté
                                             </option>
                                             <option value="en mouvement"
-                                                {{ old('etat', $material->etat) == 'en mouvement' ? 'selected' : '' }}>En
-                                                mouvement</option>
+                                                {{ old('etat', $material->etat) == 'en mouvement' ? 'selected' : '' }}>
+                                                En mouvement</option>
                                             <option value="réformé"
-                                                {{ old('etat', $material->etat) == 'réformé' ? 'selected' : '' }}>Réformé
-                                            </option>
-                                            <option value="colis fermé"
-                                                {{ old('etat', $material->etat) == 'colis fermé' ? 'selected' : '' }}>
-                                                colis fermé
+                                                {{ old('etat', $material->etat) == 'réformé' ? 'selected' : '' }}>
+                                                Réformé
                                             </option>
                                         </select>
+                                        <div id="receptionOptions" class="mt-2 space-y-2" style="display: none;">
+                                            <div class="flex items-center mt-2">
+                                                <input type="radio" name="etat" id="provisoire" value="provisoire"
+                                                    {{ old('etat', $material->etat) == 'provisoire' ? 'checked' : '' }}
+                                                    class="pl-3">
+                                                <label for="provisoire" class="pl-3">Provisoire</label>
+                                            </div>
+                                            <div class="flex items-center ml-2 mt-2 ">
+                                                <input type="radio" name="etat" id="définitive" value="définitive"
+                                                    {{ old('etat', $material->etat) == 'définitive' ? 'checked' : '' }}
+                                                    class="pl-3">
+                                                <label for="définitive" class="pl-3">Définitive</label>
+                                            </div>
+                                            <div class="flex items-center ml-2 mt-2 ">
+                                                <input type="radio" name="etat" id="colis fermé"
+                                                    value="colis fermé"
+                                                    {{ old('etat', $material->etat) == 'colis fermé' ? 'checked' : '' }}
+                                                    class="pl-3">
+                                                <label for="colis fermé" class="pl-3">Colis fermé</label>
+                                            </div>
+                                        </div>
                                         <x-input-error :messages="$errors->get('etat')" class="mt-2" />
                                     </div>
 
-                                    <!-- Observation -->
+                                    {{-- <!-- Observation --> --}}
                                     <div>
                                         <label for="observation"
                                             class="block text-sm font-medium text-gray-700">Observation</label>
@@ -242,7 +281,7 @@
 
                                 </div>
 
-                                <!-- Bouton de soumission -->
+                                {{-- <!-- Bouton de soumission --> --}}
                                 <div class="mt-8">
                                     <button type="submit"
                                         class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
@@ -289,5 +328,15 @@
                 inputField.classList.remove('hidden');
             }
         }
+
+
+        // Toggle reception options
+        function toggleReceptionOptions() {
+            const etatSelect = document.getElementById('etat');
+            const receptionOptions = document.getElementById('receptionOptions');
+            receptionOptions.style.display = etatSelect.value === 'réceptionné' ? 'block' : 'none';
+        }
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', toggleReceptionOptions);
     </script>
 @endsection

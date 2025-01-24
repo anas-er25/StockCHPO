@@ -93,11 +93,12 @@
                                                     {{ Str::limit($material->observation, 28) }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center">
-                                                    {{ $material->societe ? $material->societe->numero_bl : 'N/A' }}</td>
+                                                    {{ $material->societeMaterials->first() ? $material->societeMaterials->first()->numero_bl : 'N/A' }}
+                                                </td>
                                                 <td class="px-6 py-4 text-center">
                                                     {{ $material->societe ? $material->societe->nom_societe : 'N/A' }}</td>
                                                 <td class="px-6 py-4 text-center">
-                                                    {{ $material->societe ? $material->societe->numero_marche : 'N/A' }}
+                                                    {{ $material->societeMaterials->first() ? $material->societeMaterials->first()->numero_marche : 'N/A' }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center">{{ $material->type }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->origin }}</td>
@@ -108,7 +109,6 @@
                                                         class="cursor-pointer mr-4">
                                                         <i class="fa-solid fa-pen text-blue-600 hover:text-blue-700"></i>
                                                     </a>
-
                                                     <!-- Formulaire de suppression -->
                                                     <form action="{{ route('materiels.destroy', $material->id) }}"
                                                         method="POST" class="inline" id="delete-form-{{ $material->id }}">

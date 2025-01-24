@@ -22,8 +22,8 @@
                                     <div>
                                         <label for="num_inventaire" class="block text-sm font-medium text-gray-700">N°
                                             d'inventaire</label>
-                                        <input type="text" name="num_inventaire" id="num_inventaire"
-                                            value="{{ old('num_inventaire') }}" required autofocus
+                                        <input type="text" name="num_inventaire" id="num_inventaire" readonly
+                                            value="{{ $latestMaterial ?? old('num_inventaire') }}" required autofocus
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('num_inventaire')" class="mt-2" />
                                     </div>
@@ -84,6 +84,11 @@
                                             </option>
                                             <option value="biomédical" {{ old('type') == 'biomédical' ? 'selected' : '' }}>
                                                 Biomédical</option>
+                                            <option value="dispositif medicaux"
+                                                {{ old('type') == 'dispositif medicaux' ? 'selected' : '' }}>
+                                                Dispositif medicaux</option>
+                                            <option value="autres" {{ old('type') == 'autres' ? 'selected' : '' }}>
+                                                Autres</option>
                                         </select>
                                         <x-input-error :messages="$errors->get('type')" class="mt-2" />
                                     </div>
@@ -94,9 +99,19 @@
                                             class="block text-sm font-medium text-gray-700">Origine</label>
                                         <select name="origin" id="origin" required
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                            <option value="achat" {{ old('origin') == 'achat' ? 'selected' : '' }}>Achat
+                                            <option value="bon de commande"
+                                                {{ old('origin') == 'bon de commande' ? 'selected' : '' }}>Bon de commande
                                             </option>
-                                            <option value="don" {{ old('origin') == 'don' ? 'selected' : '' }}>Don
+                                            <option value="marché négociés"
+                                                {{ old('origin') == 'marché négociés' ? 'selected' : '' }}>Marché négociés
+                                            </option>
+                                            <option value="convention"
+                                                {{ old('origin') == 'convention' ? 'selected' : '' }}>Convention</option>
+                                            <option value="marché" {{ old('origin') == 'marché' ? 'selected' : '' }}>Marché
+                                            </option>
+                                            <option value="dons" {{ old('origin') == 'dons' ? 'selected' : '' }}>Dons
+                                            </option>
+                                            <option value="autres" {{ old('origin') == 'autres' ? 'selected' : '' }}>Autres
                                             </option>
                                         </select>
                                         <x-input-error :messages="$errors->get('origin')" class="mt-2" />
@@ -129,10 +144,10 @@
                                         <x-input-error :messages="$errors->get('date_affectation')" class="mt-2" />
                                     </div>
 
-                                    <!-- N°  de N° de série -->
+                                    <!-- N° de série -->
                                     <div>
                                         <label for="num_serie" class="block text-sm font-medium text-gray-700">N° de
-                                            N° de série</label>
+                                            série</label>
                                         <input type="text" name="num_serie" id="num_serie"
                                             value="{{ old('num_serie') }}" required
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -199,7 +214,9 @@
                                     <div>
                                         <label for="etat" class="block text-sm font-medium text-gray-700">État</label>
                                         <select name="etat" id="etat" required
+                                            onchange="toggleReceptionOptions()"
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                            <option value="">Sélectionner un état</option>
                                             <option value="réceptionné"
                                                 {{ old('etat') == 'réceptionné' ? 'selected' : '' }}>
                                                 Réceptionné</option>
@@ -207,18 +224,77 @@
                                                 Affecté
                                             </option>
                                             <option value="en mouvement"
-                                                {{ old('etat') == 'en mouvement' ? 'selected' : '' }}>En mouvement</option>
+                                                {{ old('etat') == 'en mouvement' ? 'selected' : '' }}>
+                                                En mouvement</option>
                                             <option value="réformé" {{ old('etat') == 'réformé' ? 'selected' : '' }}>
                                                 Réformé
                                             </option>
-                                            <option value="colis fermé"
-                                                {{ old('etat') == 'colis fermé' ? 'selected' : '' }}>
-                                                colis fermé
-                                            </option>
                                         </select>
+                                        <div id="receptionOptions" class="mt-2 space-y-2" style="display: none;">
+                                            <div class="flex items-center mt-2">
+                                                <input type="radio" name="etat" id="provisoire" value="provisoire"
+                                                    class="pl-3">
+                                                <label for="provisoire" class="pl-3">Provisoire</label>
+                                            </div>
+                                            <div class="flex items-center mt-2 ">
+                                                <input type="radio" name="etat" id="définitive" value="définitive"
+                                                    class="pl-3">
+                                                <label for="définitive" class="pl-3">Définitive</label>
+                                            </div>
+                                            <div class="flex items-center mt-2 ">
+                                                <input type="radio" name="etat" id="colis fermé"
+                                                    value="colis fermé" class="pl-3">
+                                                <label for="colis fermé" class="pl-3">Colis fermé</label>
+                                            </div>
+                                        </div>
                                         <x-input-error :messages="$errors->get('etat')" class="mt-2" />
                                     </div>
-                                    <!-- Observation -->
+
+                                    {{-- PV and CPS --}}
+                                    <div class="flex space-x-8 mt-2">
+                                        <div class="pr-3">
+                                            <label for="pv"
+                                                class="block text-sm font-medium text-gray-700">PV</label>
+                                            <div class="flex items-center mt-1">
+                                                <input type="checkbox" name="pv" id="pv"
+                                                    {{ old('pv') ? 'checked' : '' }}
+                                                    class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                                                <span class="pl-3">{{ old('pv') }}</span>
+                                            </div>
+                                            <x-input-error :messages="$errors->get('pv')" class="mt-2" />
+                                        </div>
+                                        <div>
+                                            <label for="cps"
+                                                class="block text-sm font-medium text-gray-700">CPS</label>
+                                            <div class="flex items-center mt-1">
+                                                <input type="checkbox" name="cps" id="cps"
+                                                    {{ old('cps') ? 'checked' : '' }}
+                                                    class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                                                <span class="pl-3">{{ old('cps') }}</span>
+                                            </div>
+                                            <x-input-error :messages="$errors->get('cps')" class="mt-2" />
+                                        </div>
+                                        <select name="observation_reserve" id="observation_reserve" required
+                                            class="ml-2 mt-1 ml-3 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                            <option value="">Sous réserve de:</option>
+                                            <option value="conformité technique"
+                                                {{ old('observation_reserve') == 'conformité technique' ? 'selected' : '' }}>
+                                                Sous réserve de Conformité technique</option>
+                                            <option value="installation et mise en marche"
+                                                {{ old('observation_reserve') == 'installation et mise en marche' ? 'selected' : '' }}>
+                                                Sous réserve d'Installation et mise en marche</option>
+                                            <option value="formation"
+                                                {{ old('observation_reserve') == 'formation' ? 'selected' : '' }}>Sous réserve de Formation
+                                            </option>
+                                            <option value="autres"
+                                                {{ old('observation_reserve') == 'autres' ? 'selected' : '' }}>Sous réserve d'Autres
+                                            </option>
+                                        </select>
+                                        <x-input-error :messages="$errors->get('observation_reserve')" class="mt-2" />
+
+                                    </div>
+
+                                    {{-- <!-- Observation --> --}}
                                     <div>
                                         <label for="observation"
                                             class="block text-sm font-medium text-gray-700">Observation</label>
@@ -228,7 +304,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Bouton de soumission -->
+                                {{-- <!-- Bouton de soumission --> --}}
                                 <div class="mt-8">
                                     <button type="submit"
                                         class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
@@ -250,22 +326,6 @@
 @endsection
 @section('jslink')
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const numInventaireInput = document.getElementById("num_inventaire");
-            const currentYear = new Date().getFullYear();
-            const lastTwoDigitsOfYear = currentYear.toString().slice(-
-                2); // Obtenir les 2 derniers chiffres de l'année
-
-            // Lorsque l'utilisateur saisit un N° d'inventaire
-            numInventaireInput.addEventListener("input", function() {
-                const numInputValue = numInventaireInput.value;
-                if (numInputValue && !numInputValue.includes('/')) {
-                    // Ajouter les deux derniers chiffres de l'année à la fin
-                    numInventaireInput.value = `${numInputValue}/${lastTwoDigitsOfYear}`;
-                }
-            });
-        });
-
         function toggleSocieteFields() {
             const selectField = document.getElementById('societe_id_container');
             const inputField = document.getElementById('nouvelle_societe_container');
@@ -278,5 +338,14 @@
                 inputField.classList.remove('hidden');
             }
         }
+
+        // Toggle reception options
+        function toggleReceptionOptions() {
+            const etatSelect = document.getElementById('etat');
+            const receptionOptions = document.getElementById('receptionOptions');
+            receptionOptions.style.display = etatSelect.value === 'réceptionné' ? 'block' : 'none';
+        }
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', toggleReceptionOptions);
     </script>
 @endsection

@@ -237,6 +237,38 @@
                         <div class="card h-full">
                             <div class="card-body">
                                 <h4 class="text-gray-600 text-lg font-semibold mb-6">Journal des Activités</h4>
+                                <form method="GET" action="{{ route('dashboard') }}" class="flex gap-4 items-center mb-4">
+                                    <select id="time_filter" name="time_filter"
+                                        class="border-gray-400 text-gray-500 rounded-md text-sm border-[1px] focus:ring-0"
+                                        onchange="toggleCustomDates(this.value)">
+                                        <option value="all" {{ $timeFilter == 'all' ? 'selected' : '' }}>Tout</option>
+                                        <option value="day" {{ $timeFilter == 'day' ? 'selected' : '' }}>Aujourd'hui
+                                        </option>
+                                        <option value="week" {{ $timeFilter == 'week' ? 'selected' : '' }}>Cette semaine
+                                        </option>
+                                        <option value="month" {{ $timeFilter == 'month' ? 'selected' : '' }}>Ce mois</option>
+                                        <option value="custom" {{ $timeFilter == 'custom' ? 'selected' : '' }}>Période
+                                            personnalisée</option>
+                                    </select>
+
+                                    <div id="custom-dates" class="{{ $timeFilter != 'custom' ? 'hidden' : '' }} flex gap-2">
+                                        <input type="date" name="start_date" value="{{ $startDate }}"
+                                            class="border-gray-400 text-gray-500 rounded-md text-sm border-[1px]">
+                                        <span class="mt-2">à</span>
+                                        <input type="date" name="end_date" value="{{ $endDate }}"
+                                            class="border-gray-400 text-gray-500 rounded-md text-sm border-[1px]">
+                                    </div>
+
+                                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md">
+                                        <i class="fas fa-search"></i></button>
+                                </form>
+
+                                <script>
+                                    function toggleCustomDates(value) {
+                                        const customDates = document.getElementById('custom-dates');
+                                        customDates.classList.toggle('hidden', value !== 'custom');
+                                    }
+                                </script>
                                 <div class="relative overflow-x-auto">
 
                                     <table id="table" class="text-left w-full whitespace-nowrap text-sm">

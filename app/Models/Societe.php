@@ -14,10 +14,20 @@ class Societe extends Model
         'numero_marche',
         'numero_bl',
         'PV',
-        'CPS'
+        'CPS',
+        'siege_social',
+        'telephone',
+        'nombre_articles',
+        'observation'
     ];
 
-    public function materials(){
+    public function materials()
+    {
         return $this->hasMany(Material::class);
+    }
+
+    public function societeMaterials()
+    {
+        return $this->hasMany(SocieteMaterial::class);
     }
 }
