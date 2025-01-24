@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('num_inventaire')->unique();
             $table->string('designation')->nullable();
             $table->integer('qte')->nullable();
-            $table->enum('type', ['hospitalier', 'bureau', 'biomédical'])->nullable();
-            $table->enum('origin', ['achat', 'don'])->nullable();
+            $table->enum('type', ['hospitalier', 'bureau', 'biomédical', 'dispositif medicaux', 'autres'])->nullable();
+            $table->enum('origin', ['bon de commande','marché négociés', 'convention', 'marché', 'dons', 'autres'])->nullable();
             $table->string('marque')->nullable();
             $table->string('modele')->nullable();
             $table->string('num_serie')->nullable();
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->date('date_affectation')->nullable();
             $table->foreignId('service_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('observation')->nullable();
-            $table->enum('etat', ['réceptionné', 'affecté', 'en mouvement', 'réformé', 'colis fermé'])->nullable();
+            $table->enum('etat', ['provisoire', 'définitive', 'colis fermé', 'affecté', 'en mouvement', 'réformé'])->nullable();
             $table->foreignId('societe_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });

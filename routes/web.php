@@ -9,6 +9,7 @@ use App\Http\Controllers\MaterialHistoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocieteController;
+use App\Http\Controllers\SocieteMaterialController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -44,6 +45,15 @@ Route::group(["middleware" => "auth"], function () {
         Route::get('/societies/{id}/edit', 'edit')->name('edit');
         Route::put('/societies/{id}', 'update')->name('update');
         Route::delete('/societies/{id}', 'destroy')->name('destroy');
+    });
+
+    /* -------------------------------------------------------------------------- */
+    /*                            Societe Materiels routes - START                          */
+    /* -------------------------------------------------------------------------- */
+    Route::group(['controller' => SocieteMaterialController::class, 'as' => 'societiesmaterial.'], function () {
+        Route::get('/society/{id}/show', 'show')->name('show');
+        Route::post('/society/{societyId}/material/{materialId}/update-pv-cps', 'updatePVCPS')
+        ->name('societiesmaterial.updatePVCPS');
     });
 
     /* -------------------------------------------------------------------------- */

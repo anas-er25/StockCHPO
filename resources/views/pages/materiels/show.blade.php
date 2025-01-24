@@ -102,7 +102,7 @@
                                     <!-- N°  de N° de série -->
                                     <div>
                                         <label for="num_serie" class="block text-sm font-medium text-gray-700">N° de
-                                            N° de série</label>
+                                            série</label>
                                         <input type="text" id="num_serie" value="{{ $material->num_serie }}" readonly
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     </div>

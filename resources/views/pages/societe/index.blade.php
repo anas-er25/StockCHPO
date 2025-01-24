@@ -53,10 +53,9 @@
                                     <thead class="text-xs text-gray-900 uppercase bg-gray-50">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Nom de société</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° du marché</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° de BL</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">P.V</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">CPS</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Siège Social</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Téléphone</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Nombre d'Articles</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Actions</th>
                                         </tr>
                                     </thead>
@@ -64,17 +63,24 @@
                                         @forelse ($societies as $societe)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
                                                 <td class="px-6 py-4 text-center">{{ $societe->nom_societe }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $societe->numero_marche }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $societe->numero_bl }}</td>
                                                 <td class="px-6 py-4 text-center">
-                                                    {{ $societe->PV ? $societe->PV : 'Non Attribué' }}</td>
+                                                    {{ $societe->siege_social ? $societe->siege_social : 'Non Attribué' }}
+                                                </td>
                                                 <td class="px-6 py-4 text-center">
-                                                    {{ $societe->CPS ? $societe->CPS : 'Non Attribué' }}</td>
+                                                    {{ $societe->telephone ? $societe->telephone : 'Non Attribué' }}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    {{$count = \DB::table('societe_materials')->where('societe_id', $societe->id)->count() ?: 0}}
+                                                </td>
                                                 <td class="px-6 py-4 flex items-center justify-center">
                                                     <!-- Icône de modification -->
                                                     <a href="{{ route('societies.edit', $societe->id) }}"
                                                         class="cursor-pointer mr-4">
                                                         <i class="fa-solid fa-pen text-blue-600 hover:text-blue-700"></i>
+                                                    </a>
+                                                    <!-- Icône de  -->
+                                                    <a href="{{ route('societiesmaterial.show', $societe->id) }}"
+                                                        class="cursor-pointer mr-4">
+                                                        <i class="fa-solid fa-eye text-blue-600 hover:text-blue-700"></i>
                                                     </a>
 
                                                     <!-- Formulaire de suppression -->

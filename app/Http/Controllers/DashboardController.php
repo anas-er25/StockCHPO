@@ -9,29 +9,57 @@ use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Logs existants
-        $logs = Log::with('user')
-            ->orderBy('performed_at', 'DESC')
-            ->get()
-            ->map(function ($log) {
-                $record = $this->getRecordInfo($log->table_name, $log->record_id);
-                return [
-                    'id' => $log->id,
-                    'action' => $log->action,
-                    'table_name' => $log->table_name,
-                    'record' => $record,
-                    'record_id' => $log->record_id,
-                    'numero_inventaire' => $record ? $record->num_inventaire : null,
-                    'user' => $log->user->name,
-                    'performed_at' => $log->performed_at,
-                ];
-            });
+        // Get filter parameters
+        $timeFilter = $request->get('time_filter', 'all');
+        $startDate = $request->get('start_date');
+        $endDate = $request->get('end_date');
+
+        $query = Log::with('user')->orderBy('performed_at', 'DESC');
+
+        // Apply filters
+        if ($timeFilter === 'custom' && $startDate && $endDate) {
+            $query->whereBetween('performed_at', [
+                $startDate . ' 00:00:00',
+                $endDate . ' 23:59:59'
+            ]);
+        } else {
+            switch ($timeFilter) {
+                    // ...existing time filter cases...
+                case 'day':
+                    $query->whereDate('performed_at', date('Y-m-d'));
+                    break;
+                case 'week':
+                    $query->whereBetween('performed_at', [
+                        date('Y-m-d', strtotime('monday this week')) . ' 00:00:00',
+                        date('Y-m-d', strtotime('sunday this week')) . ' 23:59:59'
+                    ]);
+                    break;
+                case 'month':
+                    $query->whereMonth('performed_at', date('m'));
+                    break;
+
+            }
+        }
+        // Get filtered logs
+        $logs = $query->get()->map(function ($log) {
+            $record = $this->getRecordInfo($log->table_name, $log->record_id);
+            return [
+                'id' => $log->id,
+                'action' => $log->action,
+                'table_name' => $log->table_name,
+                'record' => $record,
+                'record_id' => $log->record_id,
+                'numero_inventaire' => $record ? $record->num_inventaire : null,
+                'user' => $log->user->name,
+                'performed_at' => $log->performed_at,
+            ];
+        });
 
         // Derniers mouvements de stock
         $recentMovements = [
-            'entries' => Material::whereIn('etat', ['réceptionné', 'colis fermé'])
+            'entries' => Material::whereIn('etat', ['provisoire', 'définitive', 'colis fermé'])
                 ->orderBy('date_inscription', 'desc')
                 ->take(4)
                 ->get(),
@@ -55,7 +83,7 @@ class DashboardController extends Controller
             ->selectRaw('etat, count(*) as count')
             ->get();
 
-        return view('dashboard', compact('logs', 'recentMovements', 'materielstype', 'materielsetat'));
+        return view('dashboard', compact('logs', 'recentMovements', 'materielstype', 'materielsetat', 'timeFilter','startDate', 'endDate'));
     }
 
     public function getChartData(Request $request)
@@ -90,7 +118,7 @@ class DashboardController extends Controller
     public function Movements()
     {
         $Movements = [
-            'entries' => Material::whereIn('etat', ['réceptionné', 'colis fermé'])
+            'entries' => Material::whereIn('etat', ['provisoire', 'définitive', 'colis fermé'])
                 ->orderBy('date_inscription', 'desc')
                 ->get(),
             'outputs' => Material::whereIn('etat', ['affecté', 'en mouvement'])

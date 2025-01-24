@@ -32,7 +32,8 @@ class Material extends Model
         return $this->belongsTo(Service::class);
     }
 
-    public function societe(){
+    public function societe()
+    {
         return $this->belongsTo(Societe::class);
     }
 
@@ -59,5 +60,10 @@ class Material extends Model
     public function materialHistories()
     {
         return $this->hasMany(MaterialHistory::class);
+    }
+
+    public function societeMaterials()
+    {
+        return $this->hasMany(SocieteMaterial::class);
     }
 }

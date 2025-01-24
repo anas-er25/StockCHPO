@@ -21,61 +21,31 @@
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                     {{-- Société --}}
                                     <div>
-                                        <label for="nom_societe" class="block text-sm font-medium text-gray-700">Nom de
-                                            société</label>
+                                        <label for="nom_societe" class="block text-sm font-medium text-gray-700">Nom de société</label>
                                         <input type="text" name="nom_societe" id="nom_societe" required
                                             value="{{ old('nom_societe', $societe->nom_societe ?? '') }}"
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('nom_societe')" class="mt-2" />
                                     </div>
 
-                                    <!-- N°  de marché -->
+                                    <!-- Siège social -->
                                     <div>
-                                        <label for="numero_marche" class="block text-sm font-medium text-gray-700">N°
-                                            de marché</label>
-                                        <input type="text" name="numero_marche" id="numero_marche" required
-                                            value="{{ old('numero_marche', $societe->numero_marche ?? '') }}"
+                                        <label for="siege_social" class="block text-sm font-medium text-gray-700">Siège social</label>
+                                        <input type="text" name="siege_social" id="siege_social" required
+                                            value="{{ old('siege_social', $societe->siege_social ?? '') }}"
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                        <x-input-error :messages="$errors->get('numero_marche')" class="mt-2" />
+                                        <x-input-error :messages="$errors->get('siege_social')" class="mt-2" />
                                     </div>
 
-                                    <!-- N°  de BL -->
+                                    <!-- Téléphone -->
                                     <div>
-                                        <label for="numero_bl" class="block text-sm font-medium text-gray-700">N°
-                                            BL</label>
-                                        <input type="text" name="numero_bl" id="numero_bl"
-                                            value="{{ old('numero_bl', $societe->numero_bl ?? '') }}" required
+                                        <label for="telephone" class="block text-sm font-medium text-gray-700">Téléphone</label>
+                                        <input type="tel" name="telephone" id="telephone" required
+                                            value="{{ old('telephone', $societe->telephone ?? '') }}"
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                        <x-input-error :messages="$errors->get('numero_bl')" class="mt-2" />
+                                        <x-input-error :messages="$errors->get('telephone')" class="mt-2" />
                                     </div>
-
-                                    {{-- PV and CPS --}}
-                                    <div class="flex space-x-8 mt-2">
-                                        <div class="pr-3">
-                                            <label for="pv" class="block text-sm font-medium text-gray-700">PV</label>
-                                            <div class="flex items-center mt-1">
-                                                <input type="checkbox" name="pv" id="pv"
-                                                    {{ old('pv', $societe->PV) ? 'checked' : '' }}
-                                                    class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                                                <span
-                                                    class="ml-2 pl-3">{{ old('pv', $societe->PV ?? 'aucun PV assigné') }}</span>
-                                            </div>
-                                            <x-input-error :messages="$errors->get('pv')" class="mt-2" />
-                                        </div>
-                                        <div>
-                                            <label for="cps"
-                                                class="block text-sm font-medium text-gray-700">CPS</label>
-                                            <div class="flex items-center mt-1">
-                                                <input type="checkbox" name="cps" id="cps"
-                                                    {{ old('cps', $societe->CPS) ? 'checked' : '' }}
-                                                    class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                                                <span
-                                                    class="ml-2 pl-3">{{ old('cps', $societe->CPS ?? 'aucun CPS assigné') }}</span>
-                                            </div>
-                                            <x-input-error :messages="$errors->get('cps')" class="mt-2" />
-                                        </div>
-                                    </div>
-
+                                    
                                     <!-- Bouton de soumission -->
                                     <div class="mt-8">
                                         <button type="submit"

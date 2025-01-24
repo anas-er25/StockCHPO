@@ -1005,6 +1005,9 @@ select {
     margin-top: 7px;
 }
 
+.ml-2{
+    margin-left: 1rem;
+}
 .block {
     display: block;
 }

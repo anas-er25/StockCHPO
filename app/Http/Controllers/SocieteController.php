@@ -26,17 +26,14 @@ class SocieteController extends Controller
         // validate the form
         $request->validate([
             'nom_societe' => 'required',
-            'numero_marche' => 'required',
-            'numero_bl' => 'required',
+            'telephone' => 'required',
         ]);
 
         // update the data
         $societe = Societe::find($id);
         $societe->nom_societe = $request->nom_societe;
-        $societe->numero_marche = $request->numero_marche;
-        $societe->numero_bl = $request->numero_bl;
-        $societe->PV = $request->pv ? ('Ok /' . now()) : null;
-        $societe->CPS = $request->cps ? ('Ok /' . now()) : null;
+        $societe->siege_social = $request->siege_social;
+        $societe->telephone = $request->telephone;
 
         if ($societe->save()) {
             // create log

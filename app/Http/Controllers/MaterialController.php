@@ -9,6 +9,7 @@ use App\Models\Material;
 use App\Models\MaterialHistory;
 use App\Models\Service;
 use App\Models\Societe;
+use App\Models\SocieteMaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +18,12 @@ class MaterialController extends Controller
 
     public function index()
     {
-        $materiels = Material::all();
+        $materiels = Material::chunk(100, function ($materials) use (&$allMaterials) {
+            foreach ($materials as $material) {
+                $allMaterials[] = $material;
+            }
+        });
+        $materiels = collect($allMaterials ?? []);
         return view('pages.materiels.index', ['materiels' => $materiels]);
     }
 
@@ -25,7 +31,19 @@ class MaterialController extends Controller
     {
         $services = Service::all();
         $societes = Societe::all();
-        return view('pages.materiels.create', ['services' => $services, 'societes' => $societes]);
+        $year = date('y');
+        $latestMaterial = Material::where('num_inventaire', 'LIKE', "%/$year")
+            ->orderByRaw('CAST(SUBSTRING_INDEX(num_inventaire, "/", 1) AS SIGNED) DESC')
+            ->first();
+        $startNumber = 1;
+        if ($latestMaterial) {
+            $parts = explode('/', $latestMaterial->num_inventaire);
+            $startNumber = (int)$parts[0];
+            $startNumber++;
+        }
+        $latestMaterial = $startNumber . "/$year";
+
+        return view('pages.materiels.create', ['services' => $services, 'societes' => $societes, 'latestMaterial' => $latestMaterial]);
     }
 
     public function store(Request $request)
@@ -34,7 +52,7 @@ class MaterialController extends Controller
         $request->validate([
             'num_inventaire' => 'required|unique:materials,num_inventaire',
             'designation' => 'required',
-            'qte' => 'required',
+            'qte' => 'required|integer|min:1',
             'type' => 'required',
             'origin' => 'required',
             'marque' => 'required',
@@ -42,63 +60,87 @@ class MaterialController extends Controller
             'num_serie' => 'required',
             'observation' => 'required',
             'etat' => 'required',
+            'service_id' => 'nullable|exists:services,id',
+            'date_inscription' => 'required|date',
+            'societe_id' => 'nullable|exists:societes,id',
+            'nouvelle_societe' => 'nullable|string|max:255',
+            'numero_marche' => 'nullable|string|max:255',
+            'numero_bl' => 'nullable|string|max:255',
+            'pv' => 'nullable',
+            'cps' => 'nullable',
+            'observation_reserve' => 'nullable'
+
         ]);
 
-        $material = new Material();
+        // Get latest inventory number
+        $year = date('y');
+        $latestMaterial = Material::where('num_inventaire', 'LIKE', "%/$year")
+            ->orderByRaw('CAST(SUBSTRING_INDEX(num_inventaire, "/", 1) AS SIGNED) DESC')
+            ->first();
 
-        $material->num_inventaire = $request->num_inventaire;
-        $material->designation = $request->designation;
-        $material->qte = $request->qte;
-        $material->type = $request->type;
-        $material->origin = $request->origin;
-        $material->marque = $request->marque;
-        $material->modele = $request->modele;
-        $material->num_serie = $request->num_serie;
+        $startNumber = 1;
+        if ($latestMaterial) {
+            $parts = explode('/', $latestMaterial->num_inventaire);
+            $startNumber = intval($parts[0]) + 1;
+        }
 
-        // Si 'date_inscription' est fourni, l'utiliser; sinon, utiliser la date actuelle
-        $material->date_inscription = $request->has('date_inscription') ? $request->date_inscription : now();
-
-        $material->date_affectation = now();
-        $material->service_id = $request->service_id;
-        $material->observation = $request->observation;
-        $material->etat = $request->etat;
-        // Handle society creation or selection
+        // Handle society
         if ($request->societe_id) {
             $societe = Societe::find($request->societe_id);
         } else {
             $societe = new Societe();
             $societe->nom_societe = $request->nouvelle_societe;
+            $societe->save();
         }
-        // Update society fields
-        $societe->numero_marche = $request->numero_marche;
-        $societe->numero_bl = $request->numero_bl;
-        $societe->save();
 
-        // Associate the material with the society
-        $material->societe_id = $societe->id;
+        // Create materials based on quantity
+        for ($i = 0; $i < $request->qte; $i++) {
+            $material = new Material();
+            $material->num_inventaire = ($startNumber + $i) . "/$year";
+            $material->designation = $request->designation;
+            $material->qte = 1;
+            $material->type = $request->type;
+            $material->origin = $request->origin;
+            $material->marque = $request->marque;
+            $material->modele = $request->modele;
+            $material->num_serie = $request->num_serie;
+            $material->date_inscription = $request->has('date_inscription') ? $request->date_inscription : now();
+            $material->date_affectation = now();
+            $material->service_id = $request->service_id;
+            $material->observation = $request->observation;
+            $material->etat = $request->etat;
+            $material->societe_id = $societe->id;
 
+            if ($material->save()) {
+                // Ajouter l'enregistrement dans la table d'association societe_materials
+                SocieteMaterial::create([
+                    'societe_id' => $societe->id,
+                    'material_id' => $material->id,
+                    'numero_marche' => $request->numero_marche,
+                    'numero_bl' => $request->numero_bl,
+                    'PV' => $request->pv,
+                    'CPS' => $request->cps,
+                    'observation' => $request->observation_reserve
+                ]);
+                MaterialHistory::create([
+                    'material_id' => $material->id,
+                    'from_service_id' => null,
+                    'to_service_id' => $material->service_id,
+                    'moved_at' => now()
+                ]);
 
-        if ($material->save()) {
-            // Sauvegarder l'history de material dans la table materialHistory
-            MaterialHistory::create([
-                'material_id' => $material->id,
-                'from_service_id' => null,
-                'to_service_id' => $material->service_id,
-                'moved_at' => now()
-            ]);
-
-            // Créer le log
-            Log::create([
-                'action' => 'create',
-                'table_name' => 'materials',
-                'record_id' => $material->id,
-                'performed_by' => Auth::user()->id,
-                'performed_at' => now()
-            ]);
+                Log::create([
+                    'action' => 'create',
+                    'table_name' => 'materials',
+                    'record_id' => $material->id,
+                    'performed_by' => Auth::user()->id,
+                    'performed_at' => now()
+                ]);
+            }
         }
-        return redirect(route('materiels.index'))->with('success', 'Matériele créé avec succès.');
+
+        return redirect(route('materiels.index'))->with('success', 'Matériels créés avec succès.');
     }
-
 
     public function edit($id)
     {
@@ -126,7 +168,7 @@ class MaterialController extends Controller
         $material = Material::find($id);
 
         $material->designation = $request->designation;
-        $material->qte = $request->qte;
+        $material->qte = 1;
         $material->type = $request->type;
         $material->origin = $request->origin;
         $material->marque = $request->marque;
@@ -267,7 +309,7 @@ class MaterialController extends Controller
                 ->get()
                 ->map(function ($material) {
                     return [
-                        'N°  d\'inventaire' => $material->num_inventaire,
+                        'N° d\'inventaire' => $material->num_inventaire,
                         'Date d\'inscription' => $material->date_inscription,
                         'Désignation de l\'objet' => $material->designation,
                         'Qté' => $material->qte,
@@ -277,9 +319,9 @@ class MaterialController extends Controller
                         'Date d\'affectation' => $material->date_affectation,
                         'N° de série' => $material->num_serie,
                         'Observation' => $material->observation,
-                        'N°  de BL' => $material->societe ? $material->societe->numero_bl : null,
+                        'N° de BL' => $material->societeMaterials->isNotEmpty() ? $material->societeMaterials->first()->numero_bl : null,
                         'Nom de société' => $material->societe ? $material->societe->nom_societe : null,
-                        'N°  de marché' => $material->societe ? $material->societe->numero_marche : null,
+                        'N° de marché' => $material->societeMaterials->isNotEmpty() ? $material->societeMaterials->first()->numero_marche : null,
                         'Type' => $material->type,
                         'Origine' => $material->origin,
                         'Etat' => $material->etat,
@@ -333,22 +375,15 @@ class MaterialController extends Controller
                 $numero_marche = isset($row[12]) ? trim($row[12]) : '';
 
                 $societe = Societe::where(function ($query) use ($numero_bl, $nom_societe, $numero_marche) {
-                    if (!empty($numero_bl)) {
-                        $query->orWhere('numero_bl', $numero_bl);
-                    }
-                    if (!empty($nom_societe)) {
-                        $query->orWhere('nom_societe', $nom_societe);
-                    }
                     if (!empty($numero_marche)) {
-                        $query->orWhere('numero_marche', $numero_marche);
+                        $query->orWhere('nom_societe', $nom_societe); // Only search by nom_societe
                     }
                 })->first();
 
                 if (!$societe) {
                     $societe = Societe::create([
-                        'numero_bl' => $numero_bl,
                         'nom_societe' => $nom_societe ?: 'Non spécifié',
-                        'numero_marche' => $numero_marche
+                        // Remove numero_bl and numero_marche from here since they belong in societe_materials
                     ]);
                 }
             }
@@ -390,7 +425,7 @@ class MaterialController extends Controller
                     }
                     $newMaterial->date_inscription = $dateInscription ? $dateInscription->format('Y-m-d') : now();
                     $newMaterial->designation = $row[2];
-                    $newMaterial->qte = $row[3];
+                    $newMaterial->qte = 1;
                     $newMaterial->marque = $row[4];
                     $newMaterial->modele = $row[5];
                     $newMaterial->service_id = !empty($row[6]) ? (Service::where('nom', $row[6])->first()?->id ?? null) : null;
@@ -418,6 +453,15 @@ class MaterialController extends Controller
                     $newMaterial->etat = !empty($row[15]) ? $row[15] : null;
 
                     if ($newMaterial->save()) {
+                        // Create the societe_materials record after material is saved
+                        if ($societe) {
+                            SocieteMaterial::create([
+                                'societe_id' => $societe->id,
+                                'material_id' => $newMaterial->id,
+                                'numero_marche' => $numero_marche ?? null,
+                                'numero_bl' => $numero_bl ?? null,
+                            ]);
+                        }
                         $imported++;
                         MaterialHistory::create([
                             'material_id' => $newMaterial->id,
@@ -446,7 +490,7 @@ class MaterialController extends Controller
             }
             $material->date_inscription = $dateInscription ? $dateInscription->format('Y-m-d') : now();
             $material->designation = $row[2];
-            $material->qte = $row[3];
+            $material->qte = 1;
             $material->marque = $row[4];
             $material->modele = $row[5];
             $material->service_id = !empty($row[6]) ? (Service::where('nom', $row[6])->first()?->id ?? null) : null;
@@ -474,6 +518,15 @@ class MaterialController extends Controller
             $material->etat = !empty($row[15]) ? $row[15] : null;
 
             if ($material->save()) {
+                // Create the societe_materials record after material is saved
+                if ($societe) {
+                    SocieteMaterial::create([
+                        'societe_id' => $societe->id,
+                        'material_id' => $material->id,
+                        'numero_marche' => $numero_marche ?? null,
+                        'numero_bl' => $numero_bl ?? null,
+                    ]);
+                }
                 $imported++;
                 MaterialHistory::create([
                     'material_id' => $material->id,
