@@ -253,13 +253,13 @@
                                                     class="pl-3">
                                                 <label for="provisoire" class="pl-3">Provisoire</label>
                                             </div>
-                                            <div class="flex items-center ml-2 mt-2 ">
+                                            <div class="flex items-center mt-2 ">
                                                 <input type="radio" name="etat" id="définitive" value="définitive"
                                                     {{ old('etat', $material->etat) == 'définitive' ? 'checked' : '' }}
                                                     class="pl-3">
                                                 <label for="définitive" class="pl-3">Définitive</label>
                                             </div>
-                                            <div class="flex items-center ml-2 mt-2 ">
+                                            <div class="flex items-center mt-2 ">
                                                 <input type="radio" name="etat" id="colis fermé"
                                                     value="colis fermé"
                                                     {{ old('etat', $material->etat) == 'colis fermé' ? 'checked' : '' }}

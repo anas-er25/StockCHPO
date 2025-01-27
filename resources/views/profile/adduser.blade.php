@@ -48,11 +48,9 @@
 
                                      <!-- role -->
                                      <div>
-                                         <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                                         <label for="role" class="block text-sm font-medium text-gray-700">Rôle</label>
                                          <select name="role" id="role" required
                                              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                             <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>
-                                                 Admin</option>
                                              <option value="subadmin" {{ old('role') == 'subadmin' ? 'selected' : '' }}>Sous
                                                  Admin
                                              </option>

@@ -10,6 +10,7 @@ use App\Models\MaterialHistory;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class AvisMvtController extends Controller
 {
@@ -161,6 +162,10 @@ class AvisMvtController extends Controller
     public function avismvtdestroy($id)
     {
         $avismvt = Avis_Mvt::find($id);
+        // Check authorization using Gate
+        if (Gate::denies('delete', $avismvt)) {
+            abort(403, 'Action non autorisée.');
+        }
         $avismvt->delete();
         // Créer le log
         Log::create([

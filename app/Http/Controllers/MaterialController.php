@@ -12,6 +12,7 @@ use App\Models\Societe;
 use App\Models\SocieteMaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class MaterialController extends Controller
 {
@@ -62,8 +63,8 @@ class MaterialController extends Controller
             'etat' => 'required',
             'service_id' => 'nullable|exists:services,id',
             'date_inscription' => 'required|date',
-            'societe_id' => 'nullable|exists:societes,id',
-            'nouvelle_societe' => 'nullable|string|max:255',
+            'societe_id' => 'required_without:nouvelle_societe|nullable|exists:societes,id',
+            'nouvelle_societe' => 'required_without:societe_id|nullable|string|max:255',
             'numero_marche' => 'nullable|string|max:255',
             'numero_bl' => 'nullable|string|max:255',
             'pv' => 'nullable',
@@ -184,16 +185,21 @@ class MaterialController extends Controller
         $material->etat = $request->etat;
 
         // Handle society creation or selection
-        if ($request->societe_id) {
-            $societe = Societe::find($request->societe_id);
-        } else {
-            $societe = new Societe();
-            $societe->nom_societe = $request->nouvelle_societe;
-        }
+        $societe = $request->societe_id
+            ? Societe::findOrFail($request->societe_id)
+            : Societe::create(['nom_societe' => $request->nouvelle_societe]);
+
         // Update society fields
-        $societe->numero_marche = $request->numero_marche;
-        $societe->numero_bl = $request->numero_bl;
-        $societe->save();
+        $societeMaterials = SocieteMaterial::updateOrCreate(
+            [
+                'societe_id' => $societe->id,
+                'material_id' => $material->id,
+            ],
+            [
+                'numero_marche' => $request->numero_marche,
+                'numero_bl' => $request->numero_bl,
+            ]
+        );
 
         // Associate the material with the society
         $material->societe_id = $societe->id;
@@ -230,6 +236,10 @@ class MaterialController extends Controller
     public function destroy($id)
     {
         $material = Material::find($id);
+        // Check authorization using Gate
+        if (Gate::denies('delete', $material)) {
+            abort(403, 'Action non autorisée.');
+        }
         $material->delete();
         // Créer le log
         Log::create([
@@ -241,12 +251,11 @@ class MaterialController extends Controller
         ]);
         return redirect(route('materiels.index'))->with('success', 'Matériele supprimé avec succès.');
     }
-
     public function stock()
     {
-
-        // Get the selected state from the query parameter
+        // Get the selected state and search term from the query parameters
         $selectedEtat = request('etat');
+        $searchTerm = request('search');
 
         // Base query
         $query = Material::query();
@@ -256,7 +265,25 @@ class MaterialController extends Controller
             $query->where('etat', $selectedEtat);
         } else {
             // Default behavior: show only materials without service
-            $query->WhereNull('service_id');
+            $query->whereNull('service_id');
+        }
+
+        // Apply search filter if a search term is provided
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('num_inventaire', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('designation', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('marque', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('num_serie', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('modele', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('type', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('origin', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('etat', 'like', '%' . $searchTerm . '%')
+                    ->orWhereHas('societeMaterials', function ($q) use ($searchTerm) {
+                        $q->where('numero_marche', 'like', '%' . $searchTerm . '%');
+                        $q->where('numero_bl', 'like', '%' . $searchTerm . '%');
+                    });
+            });
         }
 
         $materiels = $query->get();
@@ -272,16 +299,18 @@ class MaterialController extends Controller
             'materiels' => $materiels,
             'sorties' => $sorties,
             'entries' => $entries,
-            'selectedEtat' => $selectedEtat
+            'selectedEtat' => $selectedEtat,
+            'searchTerm' => $searchTerm
         ]);
     }
 
     // Export
     public function exportPDF($id)
     {
+
         // Fetch the specific material by ID
         $material = Material::findOrFail($id);
-
+       
         // Create PDF content
         $pdf = Pdf::loadView('pages.pdfs.Bullteincession', compact('material'));
 

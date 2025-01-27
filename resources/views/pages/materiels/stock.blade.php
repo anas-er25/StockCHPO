@@ -16,7 +16,6 @@
 
                                 <div class="flex items-center gap-4">
                                     {{-- Total in circle --}}
-
                                     <div
                                         class="flex items-center justify-center bg-blue-600 rounded-full h-8 w-8 text-white">
                                         {{ $materiels->count() }}
@@ -25,30 +24,33 @@
                                     <form action="{{ route('materiels.stock') }}" method="GET"
                                         class="flex items-center space-x-4">
                                         <div class="flex-1 max-w-xs">
+                                            <input type="text" name="search" id="search"
+                                                placeholder="Rechercher par nom"
+                                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                                                value="{{ request('search') }}">
+                                        </div>
+                                        <div class="ml-2 flex-1 max-w-xs">
                                             <select name="etat" id="etat"
                                                 class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
                                                 onchange="this.form.submit()">
                                                 <option value="">Tous les états</option>
                                                 <option value="réformé" {{ $selectedEtat == 'réformé' ? 'selected' : '' }}>
-                                                    Réformé
-                                                </option>
+                                                    Réformé</option>
                                                 <option value="réceptionné"
-                                                    {{ $selectedEtat == 'réceptionné' ? 'selected' : '' }}>
-                                                    Réceptionné
+                                                    {{ $selectedEtat == 'réceptionné' ? 'selected' : '' }}>Réceptionné
                                                 </option>
                                                 <option value="affecté" {{ $selectedEtat == 'affecté' ? 'selected' : '' }}>
-                                                    Affecté
-                                                </option>
+                                                    Affecté</option>
                                                 <option value="en mouvement"
-                                                    {{ $selectedEtat == 'en mouvement' ? 'selected' : '' }}>
-                                                    En mouvement
+                                                    {{ $selectedEtat == 'en mouvement' ? 'selected' : '' }}>En mouvement
                                                 </option>
                                                 <option value="colis fermé"
-                                                    {{ $selectedEtat == 'colis fermé' ? 'selected' : '' }}>
-                                                    Colis fermé
+                                                    {{ $selectedEtat == 'colis fermé' ? 'selected' : '' }}>Colis fermé
                                                 </option>
                                             </select>
                                         </div>
+                                        <button type="submit" class="ml-2 bg-blue-600 text-white px-4 py-2 rounded-md">
+                                            <i class="fas fa-search"></i></button>
                                     </form>
                                 </div>
                             </div>

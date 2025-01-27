@@ -6,6 +6,7 @@ use App\Models\Log;
 use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ServiceController extends Controller
 {
@@ -70,6 +71,10 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         $service = Service::find($id);
+        // Check authorization using Gate
+        if (Gate::denies('delete', $service)) {
+            abort(403, 'Action non autorisée.');
+        }
         if ($service) {
             $service->delete();
             // Créer le log

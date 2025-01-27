@@ -117,7 +117,7 @@
                 <td>{{ $bondecharge->material_id ? explode('/', $bondecharge->materiel->num_inventaire)[0] : 'N/A' }}
                 </td>
                 <td>{{ $bondecharge->num_serie }}</td>
-                <td>{{ $bondecharge->service ? $bondecharge->service->nom : 'N/A' }}</td>
+                <td>{{ $bondecharge->cedant ? $bondecharge->cedant->nom : 'Service non défini' }}</td>
                 <td>CHPO</td>
                 <td>{{ $bondecharge->motif }}</td>
             </tr>
@@ -137,7 +137,7 @@
             <div><u>Chef PAA </u></div>
         </div>
         <div>
-            <div><u>{{ $bondecharge->service ? $bondecharge->service->nom : 'N/A' }} </u></div>
+            <div><u>{{ $bondecharge->cedant ? $bondecharge->cedant->nom : 'Service non défini' }} </u></div>
             <div><u>Le Directeur du CHPO </u></div>
         </div>
     </div>
@@ -148,7 +148,7 @@
                 Chef
             </li>
             <li>
-                {{ $bondecharge->service ? $bondecharge->service->nom : 'N/A' }}
+                {{ $bondecharge->cedant ? $bondecharge->cedant->nom : 'Service non défini' }}
             </li>
             <li>
                 Archives

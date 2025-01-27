@@ -6,6 +6,7 @@ use App\Models\Log;
 use App\Models\Societe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class SocieteController extends Controller
 {
@@ -52,6 +53,10 @@ class SocieteController extends Controller
     public function destroy($id)
     {
         $societe = Societe::find($id);
+        // Check authorization using Gate
+        if (Gate::denies('delete', $societe)) {
+            abort(403, 'Action non autorisée.');
+        }
         if ($societe->delete()) {
             // create log
             Log::create([

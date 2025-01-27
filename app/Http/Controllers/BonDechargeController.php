@@ -10,6 +10,7 @@ use App\Models\Material;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class BonDechargeController extends Controller
 {
@@ -120,6 +121,10 @@ class BonDechargeController extends Controller
     public function bondechargedestroy($id)
     {
         $bonDecharge = Bon_Decharge::find($id);
+        // Check authorization using Gate
+        if (Gate::denies('delete', $bonDecharge)) {
+            abort(403, 'Action non autorisée.');
+        }
         $bonDecharge->delete();
         // Créer le log
         Log::create([
