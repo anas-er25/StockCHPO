@@ -7,6 +7,7 @@ use App\Http\Controllers\FeuilleReformeController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialHistoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RepareController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocieteController;
 use App\Http\Controllers\SocieteMaterialController;
@@ -136,6 +137,22 @@ Route::group(["middleware" => "auth"], function () {
         Route::get('/reformePDF/export-pdf', 'reformePDF')->name('reformePDF');
     });
 
+    /* -------------------------------------------------------------------------- */
+    /*                            Reparation routes - START                */
+    /* -------------------------------------------------------------------------- */
+    Route::group(['controller' => RepareController::class, 'as' => 'repare.'], function () {
+        // Reforme
+        Route::get('/allrepare', 'reparelist')->name('allrepare');
+        Route::get('/repare', 'addrepare')->name('addrepare');
+        Route::post('/addrepare', 'storerepare')->name('storerepare');
+        Route::get('/repare/{id}/edit', 'repareedit')->name('repareedit');
+        Route::put('/repare/{id}', 'repareupdate')->name('repareupdate');
+        Route::delete('/repare/{id}', 'reparedelete')->name('reparedestroy');
+
+        // Export PDF
+        Route::get('/reparePDF/export-pdf', 'reparePDF')->name('reparePDF');
+    });
+
 
     /* -------------------------------------------------------------------------- */
     /*                            MouvementHistory routes - START                */
@@ -145,6 +162,7 @@ Route::group(["middleware" => "auth"], function () {
         Route::get('/materialhistory',  'historyView')->name('historyview');
         Route::get('/material', 'history')->name('history');
     });
+
 });
 
 // Route::get('/dashboard', function () {

@@ -42,6 +42,11 @@ class Material extends Model
         return $this->hasMany(FeuilleReforme::class);
     }
 
+    public function Reparation()
+    {
+        return $this->hasMany(Repare::class);
+    }
+
     public function bonDecharges()
     {
         return $this->hasMany(Bon_Decharge::class);

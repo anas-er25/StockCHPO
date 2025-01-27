@@ -78,7 +78,7 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'role' => 'required|string',
+            // 'role' => 'required|string',
             'status' => 'required|string',
         ]);
         $user = User::find($id);
@@ -138,7 +138,7 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|string',
+            // 'role' => 'required|string',
             'status' => 'required|string'
         ]);
 

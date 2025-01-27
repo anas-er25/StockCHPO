@@ -40,4 +40,9 @@ class Service extends Model
     {
         return $this->hasMany(MaterialHistory::class);
     }
+
+    public function repares()
+    {
+        return $this->hasMany(Repare::class);
+    }
 }
