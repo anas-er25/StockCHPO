@@ -114,7 +114,7 @@
             <tr>
                 <td>{{ $bondecharge->material_id ? $bondecharge->materiel->designation : 'N/A' }}</td>
                 <td>{{ $bondecharge->qte }}</td>
-                <td>{{ $bondecharge->material_id ? explode('/', $bondecharge->materiel->num_inventaire)[0] : 'N/A' }}
+                <td>{{ $bondecharge->material_id ? $bondecharge->materiel->num_inventaire : 'N/A' }}
                 </td>
                 <td>{{ $bondecharge->num_serie }}</td>
                 <td>{{ $bondecharge->cedant ? $bondecharge->cedant->nom : 'Service non défini' }}</td>

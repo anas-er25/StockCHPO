@@ -57,16 +57,17 @@
                                             </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Désignation</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Quantité</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° de série</th>
+
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Marque</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Modèle</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Affectation</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Date d'affectation
                                             </th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° de série</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Observation</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° de BL</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Nom de société</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N° du marché</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° de BL</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Type</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Origine</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">État</th>
@@ -80,6 +81,7 @@
                                                 <td class="px-6 py-4 text-center">{{ $material->date_inscription }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->designation }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->qte }}</td>
+                                                <td class="px-6 py-4 text-center">{{ $material->num_serie }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->marque }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->modele }}</td>
                                                 <td class="px-6 py-4 text-center">
@@ -87,18 +89,17 @@
                                                     <!-- Assuming 'service' is a relationship -->
                                                 </td>
                                                 <td class="px-6 py-4 text-center">{{ $material->date_affectation }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->num_serie }}</td>
                                                 <td class="px-6 py-4 text-center observation"
                                                     title="{{ $material->observation }}">
                                                     {{ Str::limit($material->observation, 28) }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center">
-                                                    {{ $material->societeMaterials->first() ? $material->societeMaterials->first()->numero_bl : 'N/A' }}
-                                                </td>
-                                                <td class="px-6 py-4 text-center">
                                                     {{ $material->societe ? $material->societe->nom_societe : 'N/A' }}</td>
                                                 <td class="px-6 py-4 text-center">
                                                     {{ $material->societeMaterials->first() ? $material->societeMaterials->first()->numero_marche : 'N/A' }}
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    {{ $material->societeMaterials->first() ? $material->societeMaterials->first()->numero_bl : 'N/A' }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center">{{ $material->type }}</td>
                                                 <td class="px-6 py-4 text-center">{{ $material->origin }}</td>

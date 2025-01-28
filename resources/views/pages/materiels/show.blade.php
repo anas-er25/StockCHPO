@@ -122,7 +122,7 @@
                                         <label for="numero_marche" class="block text-sm font-medium text-gray-700">N° de
                                             marché</label>
                                         <input type="text" id="numero_marche"
-                                            value="{{ $material->societe ? $material->societe->numero_marche : 'Non attribué' }}"
+                                            value="{{ $material->societeMaterials ? $material->societeMaterials->first()->numero_marche : 'Non attribué' }}"
                                             readonly
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     </div>
@@ -132,7 +132,7 @@
                                         <label for="numero_bl" class="block text-sm font-medium text-gray-700">N°
                                             BL</label>
                                         <input type="text" id="numero_bl"
-                                            value="{{ $material->societe ? $material->societe->numero_bl : 'Non attribué' }}"
+                                            value="{{ $material->societeMaterials ? $material->societeMaterials->first()->numero_bl : 'Non attribué' }}"
                                             readonly
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     </div>

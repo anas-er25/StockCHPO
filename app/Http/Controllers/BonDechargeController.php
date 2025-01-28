@@ -7,6 +7,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Bon_Decharge;
 use App\Models\Log;
 use App\Models\Material;
+use App\Models\MaterialHistory;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,15 +54,33 @@ class BonDechargeController extends Controller
         $bonDecharge->motif = $request->motif;
 
         // Sauvegarder les données
-        $bonDecharge->save();
-        // Créer le log
-        Log::create([
-            'action' => 'create',
-            'table_name' => 'bon_decharges',
-            'record_id' => $bonDecharge->id,
-            'performed_by' => Auth::user()->id,
-            'performed_at' => now()
-        ]);
+        if ($bonDecharge->save()) {
+            // update on service_id on material table
+            Material::where('id', $bonDecharge->material_id)->update([
+                'service_id' => $bonDecharge->cessionnaire_id,
+            ]);
+            // Get material history id
+            $last_to_service_id = MaterialHistory::where('material_id', $bonDecharge->material_id)
+                ->latest()
+                ->first();
+
+            // Sauvegarder l'history de material dans la table materialHistory
+            MaterialHistory::create([
+                'material_id' => $bonDecharge->material_id,
+                'from_service_id' => $last_to_service_id ? $last_to_service_id->to_service_id : null,
+                'to_service_id' => $bonDecharge->cessionnaire_id,
+                'moved_at' => now()
+            ]);
+            // Créer le log
+            Log::create([
+                'action' => 'create',
+                'table_name' => 'bon_decharges',
+                'record_id' => $bonDecharge->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
+        }
+
 
         // Retourner à la page de bon de décharge avec un message de succès
         return redirect(route('bondecharge.allbondecharge'))->with('success', 'Bon de décharge créé avec succès.');
@@ -104,7 +123,33 @@ class BonDechargeController extends Controller
         $bonDecharge->motif = $request->motif;
 
         // Sauvegarder les données
-        $bonDecharge->save();
+        if($bonDecharge->save())
+        {
+            // update on service_id on material table
+            Material::where('id', $bonDecharge->material_id)->update([
+                'service_id' => $bonDecharge->cessionnaire_id,
+            ]);
+            // Trouver le dernier enregistrement pour le matériel donné
+            $lastHistory = MaterialHistory::where('material_id', $bonDecharge->material_id)
+                ->latest('moved_at')
+                ->first();
+
+            if ($lastHistory) {
+                // Mettre à jour le dernier enregistrement
+                $lastHistory->update([
+                    'from_service_id' => $bonDecharge->cedant_id,
+                    'to_service_id' => $bonDecharge->cessionnaire_id,
+                    'moved_at' => now()
+                ]);
+            } else {
+                // Si aucun enregistrement n'est trouvé, vous pouvez créer un nouvel enregistrement
+                MaterialHistory::create([
+                    'material_id' => $bonDecharge->material_id,
+                    'from_service_id' => $bonDecharge->cedant_id,
+                    'to_service_id' => $bonDecharge->cessionnaire_id,
+                    'moved_at' => now()
+                ]);
+            }
         // Créer le log
         Log::create([
             'action' => 'update',
@@ -113,6 +158,8 @@ class BonDechargeController extends Controller
             'performed_by' => Auth::user()->id,
             'performed_at' => now()
         ]);
+        }
+
 
         // Retourner à la page de bon de décharge avec un message de succès
         return redirect(route('bondecharge.allbondecharge'))->with('success', 'Bon de décharge modifié avec succès.');
