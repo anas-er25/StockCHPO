@@ -115,7 +115,7 @@
             <tr>
                 <td>{{ $material->designation }}</td>
                 <td>{{ $material->qte }}</td>
-                <td>{{ explode('/', $material->num_inventaire)[0] }}</td>
+                <td>{{ $material->num_inventaire }}</td>
                 <td>{{ $material->num_serie }}</td>
                 <td>{{ $material->marque }}</td>
                 <td>{{ $material->modele }}</td>

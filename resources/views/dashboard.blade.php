@@ -94,7 +94,7 @@
             </div>
         @endif
         <div class="p-5">
-            <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+            <div class="grid grid-cols-1 {{--lg:grid-cols-3--}} lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
                 <div class="col-span-2">
                     <div class="card">
                         <div class="card-body">
@@ -113,8 +113,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col gap-6">
-                    <div class="card">
+                {{-- <div class="flex flex-col gap-6"> --}}
+                    {{-- <div class="card">
                         <div class="card-body">
                             <h4 class="text-gray-600 text-lg font-semibold mb-5">Matériaux par type</h4>
                             <div class="flex gap-6 items-center justify-between">
@@ -127,8 +127,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card">
+                    </div> --}}
+                    {{-- <div class="card">
                         <div class="card-body">
                             <h4 class="text-gray-600 text-lg font-semibold mb-5">Matériaux par état</h4>
                             <div class="flex gap-6 items-center justify-between">
@@ -141,7 +141,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- <div class="card">
                         <div class="card-body">
                             <div class="flex gap-6 items-center justify-between">
@@ -168,7 +168,7 @@
                         </div>
                         <div id="earning"></div>
                     </div> --}}
-                </div>
+                {{-- </div> --}}
             </div>
             <div class="mt-2 grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
                 <div class="card">
