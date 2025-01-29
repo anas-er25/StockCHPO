@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('cedant_id')->constrained('services')->onDelete('cascade');
             $table->string('cessionnaire');
             $table->string('motif');
+            $table->enum('type', ['definitive', 'provisoire']);
             $table->timestamps();
         });
     }

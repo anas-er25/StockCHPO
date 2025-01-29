@@ -54,8 +54,7 @@
                             </div>
                             <div>
                                 <label for="cedant" class="block text-sm font-medium text-gray-700">Cédant:</label>
-                                <input type="text" name="cedant" id="cedant"
-                                readonly
+                                <input type="text" name="cedant" id="cedant" readonly
                                     value="{{ old('cedant', $bondecharge->cedant_id ? $bondecharge->cedant->nom : '') }}"
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 <x-input-error :messages="$errors->get('cedant')" class="mt-2" />
@@ -70,6 +69,19 @@
                                     value="{{ old('cessionnaire', $bondecharge->cessionnaire) }}"
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 <x-input-error :messages="$errors->get('cessionnaire')" class="mt-2" />
+                            </div>
+                            <div>
+                                <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
+                                <select name="type" id="type"
+                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    <option value="provisoire"
+                                        {{ old('type', $bondecharge->type) == 'provisoire' ? 'selected' : '' }}>
+                                        Provisoire</option>
+                                    <option value="definitive"
+                                        {{ old('type', $bondecharge->type) == 'definitive' ? 'selected' : '' }}>
+                                        Définitive</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('type')" class="mt-2" />
                             </div>
                             <div>
                                 <label for="motif" class="block text-sm font-medium text-gray-700">Motif de

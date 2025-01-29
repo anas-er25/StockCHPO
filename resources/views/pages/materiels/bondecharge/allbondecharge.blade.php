@@ -42,6 +42,7 @@
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Motif</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Cédant</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Cessionnaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">Type</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Fait le</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Actions</th>
                                         </tr>
@@ -61,6 +62,15 @@
                                                     {{ $bondecharge->cedant_id ? $bondecharge->cedant->nom : '' }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center">{{ $bondecharge->cessionnaire }}</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    @if ($bondecharge->type == 'definitive')
+                                                        Définitive
+                                                    @elseif($bondecharge->type == 'provisoire')
+                                                        Provisoire
+                                                    @else
+                                                        Non défini
+                                                    @endif
+                                                </td>
                                                 <td class="px-6 py-4 text-center motif"
                                                     title="{{ $bondecharge->updated_at }}">
                                                     {{ $bondecharge->updated_at->format('d/m/Y') }}

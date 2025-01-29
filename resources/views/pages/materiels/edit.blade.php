@@ -132,7 +132,24 @@
                                         <x-input-error :messages="$errors->get('origin')" class="mt-2" />
                                     </div>
 
-                                    {{-- <!-- Service --> --}}
+                                    <!-- Hôpital -->
+                                    <div>
+                                        <label for="hopital_id"
+                                            class="block text-sm font-medium text-gray-700">Hôpital</label>
+                                        <select name="hopital_id" id="hopital_id"
+                                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                            <option value="">Sélectionner un hôpital</option>
+                                            @foreach ($hopitals as $hopital)
+                                                <option value="{{ $hopital->id }}"
+                                                    {{ old('hopital_id', $material->service->hopital_id ?? '') == $hopital->id ? 'selected' : '' }}>
+                                                    {{ $hopital->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <x-input-error :messages="$errors->get('hopital_id')" class="mt-2" />
+                                    </div>
+
+                                    <!-- Service -->
                                     <div>
                                         <label for="service_id"
                                             class="block text-sm font-medium text-gray-700">Service</label>
@@ -141,6 +158,7 @@
                                             <option value="">Sélectionner un service</option>
                                             @foreach ($services as $service)
                                                 <option value="{{ $service->id }}"
+                                                    data-hopital-id="{{ $service->hopital_id }}"
                                                     {{ old('service_id', $material->service_id) == $service->id ? 'selected' : '' }}>
                                                     {{ $service->nom }}
                                                 </option>
@@ -338,5 +356,64 @@
         }
         // Run on page load
         document.addEventListener('DOMContentLoaded', toggleReceptionOptions);
+        $(document).ready(function() {
+            $('#hopital_id').change(function() {
+                var hopitalId = $(this).val();
+                if (hopitalId) {
+                    $.ajax({
+                        url: '/get-services/' + hopitalId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#service_id').empty();
+                            $('#service_id').append(
+                                '<option value="">Sélectionner un service</option>');
+                            $.each(data, function(key, value) {
+                                $('#service_id').append('<option value="' + value.id +
+                                    '">' + value.nom + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#service_id').empty();
+                    $('#service_id').append('<option value="">Sélectionner un service</option>');
+                }
+            });
+        });
+        $(document).ready(function() {
+            // Lorsque le service est sélectionné, mettre à jour l'hôpital
+            $('#service_id').change(function() {
+                var selectedServiceId = $(this).val();
+                if (selectedServiceId) {
+                    var selectedOption = $(this).find('option:selected');
+                    var hopitalId = selectedOption.data('hopital-id');
+                    $('#hopital_id').val(hopitalId);
+                } else {
+                    $('#hopital_id').val('');
+                }
+            });
+
+            // Lorsque l'hôpital est sélectionné, filtrer les services
+            $('#hopital_id').change(function() {
+                var hopitalId = $(this).val();
+                if (hopitalId) {
+                    $('#service_id option').hide();
+                    $('#service_id option[data-hopital-id="' + hopitalId + '"]').show();
+                    $('#service_id option[value=""]').show(); // Toujours afficher l'option vide
+                } else {
+                    $('#service_id option')
+                        .show(); // Afficher tous les services si aucun hôpital n'est sélectionné
+                }
+                $('#service_id').val(''); // Réinitialiser la sélection du service
+            });
+
+            // Initialiser les sélections au chargement de la page
+            var initialServiceId = $('#service_id').val();
+            if (initialServiceId) {
+                var initialOption = $('#service_id option:selected');
+                var initialHopitalId = initialOption.data('hopital-id');
+                $('#hopital_id').val(initialHopitalId);
+            }
+        });
     </script>
 @endsection
