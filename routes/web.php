@@ -13,15 +13,16 @@ use App\Http\Controllers\SocieteController;
 use App\Http\Controllers\SocieteMaterialController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('pages.home');
-});
+// Route::get('/', function () {
+//     return view('pages.home');
+// });
 
 Route::group(["middleware" => "auth"], function () {
     /* -------------------------------------------------------------------------- */
     /*                            Dashboard routes - START                        */
     /* -------------------------------------------------------------------------- */
     Route::group(['controller' => DashboardController::class], function () {
+        Route::get('/', 'index');
         Route::get('/dashboard', 'index')->name('dashboard');
         Route::get('/dashboard/Movements', 'Movements')->name('dashboard.Movements');
         Route::get('/dashboard/chart-data', 'getChartData');
