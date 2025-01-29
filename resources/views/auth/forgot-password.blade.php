@@ -7,12 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="shortcut icon" href="{{ asset('/assets/images/logos/favicon.png') }}" type="image/x-icon">
-    <title>Réinitialiser le mot de passe</title>
+    <title>Bureau de matériel - CHPO</title>
 </head>
 
 <body class="font-sans antialiased">
     <div class="font-sans antialiased">
-        <div class="bg-gray-100 flex items-center justify-center min-h-screen">
+        <!-- Ajout de l'image de fond -->
+        <div class="flex items-center justify-center min-h-screen" style="background-image: url('{{ asset('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80') }}'); background-size: cover; background-position: center;">
             <div class="relative flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
                 <div class="relative w-full px-6 lg:px-8 max-w-full sm:max-w-md md:max-w-lg lg:max-w-7xl">
 
@@ -20,10 +21,7 @@
                         <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                             <div class="bg-white shadow-xl rounded-lg p-8 max-w-lg w-full">
                                 <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                                    {{-- <img class="mx-auto h-10 w-auto"
-                                        src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                                        alt="Votre entreprise"> --}}
-                                    <x-logo />
+                                    <x-logoauth />
 
                                     <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
                                         Réinitialiser le mot de passe
@@ -58,9 +56,6 @@
                             </div>
                         </div>
                     </main>
-                    <footer class="py-16 text-center text-sm text-gray-700">
-                        Gestion de stock v0.0.1
-                    </footer>
                 </div>
             </div>
         </div>
