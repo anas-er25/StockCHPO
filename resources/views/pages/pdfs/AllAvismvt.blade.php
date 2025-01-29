@@ -19,6 +19,26 @@
             margin-bottom: 30px;
         }
 
+        .header img {
+            width: 100%;
+            /* Ajustez la largeur de l'image de l'en-tête */
+            max-width: 800px;
+            /* Limitez la largeur maximale */
+            height: auto;
+            /* Gardez le ratio de l'image */
+        }
+
+        .footer img {
+            width: 100%;
+            /* Ajustez la largeur de l'image du pied de page */
+            max-width: 800px;
+            /* Limitez la largeur maximale */
+            height: auto;
+            /* Gardez le ratio de l'image */
+            margin-top: 20px;
+            /* Espacement au-dessus du pied de page */
+        }
+
         .right {
             text-align: right;
         }
@@ -39,41 +59,33 @@
         .signature {
             display: flex;
             justify-content: space-between;
-            /* Aligner les divs à gauche et à droite */
             margin-top: 30px;
             width: 100%;
-            /* S'assurer que l'élément prend toute la largeur disponible */
         }
 
         .signature div {
             text-align: center;
-            /* Centrer le texte dans chaque div */
             margin-top: 10px;
         }
 
         .signature div:nth-child(1) {
             text-align: left;
-            /* Aligné à gauche */
             margin-top: 20px;
-
         }
 
         .signature div:nth-child(2) {
             text-align: right;
-            /* Aligné à droite */
             margin-top: 20px;
         }
 
         .signature div:nth-child(3),
         .signature div:nth-child(4) {
             text-align: center;
-            /* Centrer les autres signatures */
             margin-top: 100px;
         }
 
         .subsignature {
             margin-top: 50px;
-
         }
 
         .subsignature h4 {
@@ -89,15 +101,15 @@
             margin-top: 100px;
             font-size: 10px;
         }
-
-        .page-break {
-            page-break-after: always;
-        }
     </style>
 </head>
 
 <body>
     @foreach ($avismvts as $avismvt)
+        <!-- En-tête avec l'image header.png -->
+        <div class="header">
+            <img src="{{ public_path('assets/images/pdf/header.png') }}" alt="En-tête">
+        </div>
         <div class="header">
             <h2>Avis de Mouvement</h2>
         </div>
@@ -157,10 +169,9 @@
                 </li>
             </ul>
         </div>
+        <!-- Pied de page avec l'image footer.png -->
         <div class="footer">
-            <hr>
-            <p>Centre Hospitalier Provincial de Ouarzazate - Tel : (05)24.88.21.22 - Fax : (05)24.88.21.22</p>
-            <p>E-mail: chp.ozte@gmail.com</p>
+            <img src="{{ public_path('assets/images/pdf/footer.png') }}" alt="Pied de page">
         </div>
 
         @if (!$loop->last)
