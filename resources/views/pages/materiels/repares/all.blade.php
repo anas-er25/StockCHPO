@@ -31,7 +31,7 @@
 
                             <div class="relative overflow-x-auto mt-8">
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
-                                    <thead class="text-xs text-gray-900 uppercase bg-gray-50">
+                                    <thead class="text-xs text-blue-600 uppercase bg-gray-100">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N° d'inventaire
                                             </th>
@@ -46,19 +46,24 @@
                                     <tbody>
                                         @forelse ($reparelist as $repare)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $repare->material_id ? $repare->materiel->num_inventaire : 'N/A' }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $repare->qte }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $repare->service ? $repare->service->nom : 'N/A' }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">{{ $repare->qte }}
+                                                </td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $repare->service ? $repare->service->nom : 'N/A' }}</td>
 
-                                                <td class="px-6 py-4 motif text-center" title="{{ $repare->motif }}">
+                                                <td class="px-6 py-4 motif text-center font-bold text-black"
+                                                    title="{{ $repare->motif }}">
                                                     {{ Str::limit($repare->motif, 28) }}
                                                 </td>
-                                                <td class="px-6 py-4 motif text-center" title="{{ $repare->designation }}">
+                                                <td class="px-6 py-4 motif text-center font-bold text-black"
+                                                    title="{{ $repare->designation }}">
                                                     {{ Str::limit($repare->designation, 28) }}
                                                 </td>
-                                                <td class="px-6 py-4 motif text-center" title="{{ $repare->updated_at }}">
+                                                <td class="px-6 py-4 motif text-center font-bold text-black"
+                                                    title="{{ $repare->updated_at }}">
                                                     {{ $repare->updated_at->format('d/m/Y') }}
                                                 </td>
                                                 <td class="px-6 py-4 flex items-center justify-center">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hopital;
 use App\Models\Log;
 use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
@@ -18,13 +19,15 @@ class ServiceController extends Controller
 
     public function create()
     {
-        return view('pages.service.create');
+        $hopitals = Hopital::all();
+        return view('pages.service.create', compact('hopitals'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => 'required|unique:services'
+            'nom' => 'required|unique:services',
+            'hopital_id' => 'required'
         ]);
 
         // Créer le service
@@ -45,14 +48,16 @@ class ServiceController extends Controller
 
     public function edit($id)
     {
+        $hopitals = Hopital::all();
         $service = Service::find($id);
-        return view('pages.service.edit', compact('service'));
+        return view('pages.service.edit', compact('service', 'hopitals'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nom' => 'required|unique:services'
+            'nom' => 'required|unique:services',
+            'hopital_id' => 'required'
         ]);
 
         $service = Service::find($id);

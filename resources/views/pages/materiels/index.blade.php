@@ -50,7 +50,7 @@
 
                             <div class="relative overflow-x-auto mt-8">
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
-                                    <thead class="text-xs text-gray-900 uppercase bg-gray-50">
+                                    <thead class="text-xs text-blue-600 uppercase bg-gray-100">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N° d'inventaire</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription
@@ -77,33 +77,44 @@
                                     <tbody>
                                         @forelse ($materiels as $material)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                                <td class="px-6 py-4 text-center">{{ $material->num_inventaire }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->date_inscription }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->designation }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->qte }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->num_serie }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->marque }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->modele }}</td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->num_inventaire }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->date_inscription }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->designation }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">{{ $material->qte }}
+                                                </td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->num_serie }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->marque }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->modele }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $material->service ? $material->service->nom : 'N/A' }}
                                                     <!-- Assuming 'service' is a relationship -->
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $material->date_affectation }}</td>
-                                                <td class="px-6 py-4 text-center observation"
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->date_affectation }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black observation"
                                                     title="{{ $material->observation }}">
                                                     {{ Str::limit($material->observation, 28) }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $material->societe ? $material->societe->nom_societe : 'N/A' }}</td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $material->societeMaterials->first() ? $material->societeMaterials->first()->numero_marche : 'N/A' }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $material->societeMaterials->first() ? $material->societeMaterials->first()->numero_bl : 'N/A' }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $material->type }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->origin }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $material->etat }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->type }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->origin }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->etat }}</td>
                                                 <td class="px-6 py-4 flex items-center justify-center">
                                                     <!-- Icône de modification -->
                                                     <a href="{{ route('materiels.edit', $material->id) }}"

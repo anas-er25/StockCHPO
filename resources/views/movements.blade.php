@@ -23,7 +23,7 @@
 
                             <div class="relative overflow-x-auto mt-8">
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
-                                    <thead class="text-xs text-gray-900 uppercase bg-gray-50">
+                                    <thead class="text-xs text-blue-600 uppercase bg-gray-100">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N° d'inventaire</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription</th>
@@ -38,17 +38,23 @@
                                     <tbody>
                                         @forelse($Movements['entries'] as $entry)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                                <td class="px-6 py-4 text-center">{{ $entry->num_inventaire }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $entry->date_inscription }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $entry->designation }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $entry->qte }}</td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $entry->num_inventaire }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $entry->date_inscription }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $entry->designation }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">{{ $entry->qte }}
+                                                </td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $entry->service ? $entry->service->nom : 'N/A' }}
                                                     <!-- Assuming 'service' is a relationship -->
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $entry->date_affectation }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $entry->etat }}</td>
-                                                <td class="px-6 py-4 flex items-center justify-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $entry->date_affectation }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">{{ $entry->etat }}
+                                                </td>
+                                                <td class="px-6 py-4 flex items-center font-bold text-black justify-center">
 
                                                     <!-- Icône de vue -->
                                                     <a href="{{ route('materiels.show', $entry->id) }}"
@@ -86,7 +92,7 @@
 
                             <div class="relative overflow-x-auto mt-8">
                                 <table id="table2" class="w-full text-sm text-left rtl:text-right text-gray-500">
-                                    <thead class="text-xs text-gray-900 uppercase bg-gray-50">
+                                    <thead class="text-xs text-blue-600 uppercase bg-gray-50">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N d'inventaire</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription</th>
@@ -101,17 +107,23 @@
                                     <tbody>
                                         @forelse($Movements['outputs'] as $output)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                                <td class="px-6 py-4 text-center">{{ $output->num_inventaire }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $output->date_inscription }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $output->designation }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $output->qte }}</td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $output->num_inventaire }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $output->date_inscription }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $output->designation }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">{{ $output->qte }}
+                                                </td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $output->service ? $output->service->nom : 'N/A' }}
                                                     <!-- Assuming 'service' is a relationship -->
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $output->date_affectation }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $output->etat }}</td>
-                                                <td class="px-6 py-4 flex items-center justify-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $output->date_affectation }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">{{ $output->etat }}
+                                                </td>
+                                                <td class="px-6 py-4 flex items-center font-bold text-black justify-center">
 
                                                     <!-- Icône de vue -->
                                                     <a href="{{ route('materiels.show', $output->id) }}"
