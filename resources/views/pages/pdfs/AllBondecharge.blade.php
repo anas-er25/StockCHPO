@@ -99,7 +99,15 @@
 <body>
     @foreach ($bondecharges as $bondecharge)
         <div class="header">
-            <h2>Bon de Décharge</h2>
+            <h2>Bon de Décharge
+                @if ($bondecharge->type == 'definitive')
+                    Définitive
+                @elseif($bondecharge->type == 'provisoire')
+                    Provisoire
+                @else
+                    {{ $bondecharge->type }}
+                @endif
+            </h2>
         </div>
 
         <table class="table">

@@ -117,6 +117,20 @@
                                         <x-input-error :messages="$errors->get('origin')" class="mt-2" />
                                     </div>
 
+                                    <!-- Hôpital -->
+                                    <div>
+                                        <label for="hopital_id"
+                                            class="block text-sm font-medium text-gray-700">Hôpital</label>
+                                        <select name="hopital_id" id="hopital_id"
+                                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                            <option value="">Sélectionner un hôpital</option>
+                                            @foreach ($hopitals as $hopital)
+                                                <option value="{{ $hopital->id }}">{{ $hopital->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <x-input-error :messages="$errors->get('hopital_id')" class="mt-2" />
+                                    </div>
+
                                     <!-- Service -->
                                     <div>
                                         <label for="service_id"
@@ -284,10 +298,12 @@
                                                 {{ old('observation_reserve') == 'installation et mise en marche' ? 'selected' : '' }}>
                                                 Sous réserve d'Installation et mise en marche</option>
                                             <option value="formation"
-                                                {{ old('observation_reserve') == 'formation' ? 'selected' : '' }}>Sous réserve de Formation
+                                                {{ old('observation_reserve') == 'formation' ? 'selected' : '' }}>Sous
+                                                réserve de Formation
                                             </option>
                                             <option value="autres"
-                                                {{ old('observation_reserve') == 'autres' ? 'selected' : '' }}>Sous réserve d'Autres
+                                                {{ old('observation_reserve') == 'autres' ? 'selected' : '' }}>Sous réserve
+                                                d'Autres
                                             </option>
                                         </select>
                                         <x-input-error :messages="$errors->get('observation_reserve')" class="mt-2" />
@@ -347,5 +363,30 @@
         }
         // Run on page load
         document.addEventListener('DOMContentLoaded', toggleReceptionOptions);
+
+        $(document).ready(function() {
+            $('#hopital_id').change(function() {
+                var hopitalId = $(this).val();
+                if (hopitalId) {
+                    $.ajax({
+                        url: '/get-services/' + hopitalId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#service_id').empty();
+                            $('#service_id').append(
+                                '<option value="">Sélectionner un service</option>');
+                            $.each(data, function(key, value) {
+                                $('#service_id').append('<option value="' + value.id +
+                                    '">' + value.nom + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#service_id').empty();
+                    $('#service_id').append('<option value="">Sélectionner un service</option>');
+                }
+            });
+        });
     </script>
 @endsection

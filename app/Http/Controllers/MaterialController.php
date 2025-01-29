@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hopital;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -30,8 +31,8 @@ class MaterialController extends Controller
 
     public function create()
     {
-        $services = Service::all();
-        $societes = Societe::all();
+        $hopitals = Hopital::all(); // Récupérer tous les hôpitaux
+        $services = collect(); // Initialiser une collection vide pour les services
         $year = date('y');
         $latestMaterial = Material::where('num_inventaire', 'LIKE', "%/$year")
             ->orderByRaw('CAST(SUBSTRING_INDEX(num_inventaire, "/", 1) AS SIGNED) DESC')
@@ -44,7 +45,17 @@ class MaterialController extends Controller
         }
         $latestMaterial = $startNumber . "/$year";
 
-        return view('pages.materiels.create', ['services' => $services, 'societes' => $societes, 'latestMaterial' => $latestMaterial]);
+        return view('pages.materiels.create', [
+            'hopitals' => $hopitals,
+            'services' => $services,
+            'societes' => Societe::all(),
+            'latestMaterial' => $latestMaterial,
+        ]);
+    }
+    public function getServices($hopital_id)
+    {
+        $services = Service::where('hopital_id', $hopital_id)->get();
+        return response()->json($services);
     }
 
     public function store(Request $request)
@@ -146,9 +157,15 @@ class MaterialController extends Controller
     public function edit($id)
     {
         $material = Material::find($id);
-        $services = Service::all();
+        $hopitals = Hopital::all(); // Récupérer tous les hôpitaux
+        $services = collect(); // Initialiser une collection vide pour les services
         $societes = Societe::all();
-        return view('pages.materiels.edit', ['material' => $material, 'services' => $services, 'societes' => $societes]);
+        return view('pages.materiels.edit', [
+            'material' => $material,
+            'hopitals' => $hopitals,
+            'services' => $services,
+            'societes' => $societes
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -310,7 +327,7 @@ class MaterialController extends Controller
 
         // Fetch the specific material by ID
         $material = Material::findOrFail($id);
-       
+
         // Create PDF content
         $pdf = Pdf::loadView('pages.pdfs.Bullteincession', compact('material'));
 

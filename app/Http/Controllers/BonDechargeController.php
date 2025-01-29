@@ -40,6 +40,7 @@ class BonDechargeController extends Controller
             'cedant_id' => 'required|exists:services,id',
             'cessionnaire' => 'required',
             'motif' => 'required',
+            'type' => 'required'
         ]);
 
         // Créer une nouvelle instance de BonDecharge
@@ -52,6 +53,7 @@ class BonDechargeController extends Controller
         $bonDecharge->cedant_id = $request->cedant_id;
         $bonDecharge->cessionnaire = $request->cessionnaire;
         $bonDecharge->motif = $request->motif;
+        $bonDecharge->type = $request->type;
 
         // Sauvegarder les données
         if ($bonDecharge->save()) {
@@ -110,6 +112,7 @@ class BonDechargeController extends Controller
             'cedant_id' => 'required|exists:services,id',
             'cessionnaire' => 'required',
             'motif' => 'required',
+            'type' => 'required'
         ]);
 
         $bonDecharge = Bon_Decharge::find($id);
@@ -121,10 +124,10 @@ class BonDechargeController extends Controller
         $bonDecharge->cedant_id = $request->cedant_id;
         $bonDecharge->cessionnaire = $request->cessionnaire;
         $bonDecharge->motif = $request->motif;
+        $bonDecharge->type = $request->type;
 
         // Sauvegarder les données
-        if($bonDecharge->save())
-        {
+        if ($bonDecharge->save()) {
             // update on service_id on material table
             Material::where('id', $bonDecharge->material_id)->update([
                 'service_id' => $bonDecharge->cessionnaire_id,
@@ -150,14 +153,14 @@ class BonDechargeController extends Controller
                     'moved_at' => now()
                 ]);
             }
-        // Créer le log
-        Log::create([
-            'action' => 'update',
-            'table_name' => 'bon_decharges',
-            'record_id' => $bonDecharge->id,
-            'performed_by' => Auth::user()->id,
-            'performed_at' => now()
-        ]);
+            // Créer le log
+            Log::create([
+                'action' => 'update',
+                'table_name' => 'bon_decharges',
+                'record_id' => $bonDecharge->id,
+                'performed_by' => Auth::user()->id,
+                'performed_at' => now()
+            ]);
         }
 
 

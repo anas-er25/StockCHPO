@@ -77,6 +77,16 @@
                                     class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 <x-input-error :messages="$errors->get('cessionnaire')" class="mt-2" />
                             </div>
+                            {{-- Type provisoire ou definitive --}}
+                            <div>
+                                <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
+                                <select name="type" id="type"
+                                    class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    <option value="provisoire">Provisoire</option>
+                                    <option value="definitive">Définitive</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('type')" class="mt-2" />
+                            </div>
                             <div>
                                 <label for="motif" class="block text-sm font-medium text-gray-700">Motif de
                                     décharge:</label>

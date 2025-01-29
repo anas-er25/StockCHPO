@@ -9,7 +9,7 @@ class Service extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom'];
+    protected $fillable = ['nom', 'hopital_id'];
 
     public function materiels()
     {
@@ -44,5 +44,10 @@ class Service extends Model
     public function repares()
     {
         return $this->hasMany(Repare::class);
+    }
+
+    public function hopital()
+    {
+        return $this->belongsTo(Hopital::class);
     }
 }

@@ -54,7 +54,7 @@ Route::group(["middleware" => "auth"], function () {
     Route::group(['controller' => SocieteMaterialController::class, 'as' => 'societiesmaterial.'], function () {
         Route::get('/society/{id}/show', 'show')->name('show');
         Route::post('/society/{societyId}/material/{materialId}/update-pv-cps', 'updatePVCPS')
-        ->name('societiesmaterial.updatePVCPS');
+            ->name('societiesmaterial.updatePVCPS');
     });
 
     /* -------------------------------------------------------------------------- */
@@ -70,6 +70,7 @@ Route::group(["middleware" => "auth"], function () {
         Route::put('/materiels/{id}', 'update')->name('update');
         Route::get('/materiels/{id}', 'show')->name('show');
         Route::delete('/materiels/{id}', 'destroy')->name('destroy');
+        Route::get('/get-services/{hopital_id}', 'getServices');
 
         // Import
         Route::post('/materiels/import', 'importExcel')->name('importExcel');
@@ -162,7 +163,6 @@ Route::group(["middleware" => "auth"], function () {
         Route::get('/materialhistory',  'historyView')->name('historyview');
         Route::get('/material', 'history')->name('history');
     });
-
 });
 
 // Route::get('/dashboard', function () {
