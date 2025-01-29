@@ -25,6 +25,22 @@
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('nom')" class="mt-2" />
                                     </div>
+                                    {{-- Hopital --}}
+                                    <div class='ml-2'>
+                                        <label for="hopital_id"
+                                            class="block text-sm font-medium text-gray-700">Hôpital</label>
+                                        <select name="hopital_id" id="hopital_id"
+                                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                            <option value="">Sélectionner un hôpital</option>
+                                            @foreach ($hopitals as $hopital)
+                                                <option value="{{ $hopital->id }}"
+                                                    {{ old('hopital_id', $service->hopital_id) == $hopital->id ? 'selected' : '' }}>
+                                                    {{ $hopital->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <x-input-error :messages="$errors->get('hopital_id')" class="mt-2" />
+                                    </div>
                                 </div>
                                 <!-- Augmentation de l'espace entre l'input et le bouton -->
                                 <div class="mt-8">

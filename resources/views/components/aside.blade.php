@@ -4,7 +4,7 @@
       <div class="scroll-sidebar" data-simplebar="">
           <div class="px-6 mt-8">
               <nav class=" w-full flex flex-col sidebar-nav">
-                  <ul id="sidebarnav" class="text-gray-600 text-sm">
+                  <ul id="sidebarnav" class="text-blue-600 text-sm">
                       {{-- <li class="text-xs font-bold pb-4">
                                         <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
                                         <span>HOME</span>
@@ -26,7 +26,7 @@
                       <li class="sidebar-item">
                           <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('materiels.index') }}">
-                              <i class="ti ti-tools text-xl"></i> <span>Matériels</span>
+                              <i class="ti ti-tools text-xl"></i> <span>Matériels réceptionnés</span>
 
                           </a>
                       </li>
@@ -34,7 +34,8 @@
                       <li class="sidebar-item">
                           <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('services.index') }}">
-                              <i class="ti ti-briefcase text-xl"></i> <span>Services</span>
+                              <i class="ti ti-briefcase text-xl"></i> <span>Département/pôles/Services
+                              <br/>/unités/bureaux</span>
                           </a>
                       </li>
                       <li class="sidebar-item">

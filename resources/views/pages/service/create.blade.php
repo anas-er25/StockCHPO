@@ -16,7 +16,7 @@
                             </div>
                             <form action="{{ route('services.store') }}" method="POST" class="mt-6">
                                 @csrf
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-4 space-beetwen-2">
                                     <div>
                                         <label for="nom" class="block text-sm font-medium text-gray-700">Nom</label>
                                         <input type="text" name="nom" id="nom" autocomplete="nom"
@@ -24,7 +24,21 @@
                                             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         <x-input-error :messages="$errors->get('nom')" class="mt-2" />
                                     </div>
+                                    {{-- Hopital --}}
+                                    <div class='ml-2'>
+                                        <label for="hopital_id"
+                                            class="block text-sm font-medium text-gray-700">Hôpital</label>
+                                        <select name="hopital_id" id="hopital_id"
+                                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                            <option value="">Sélectionner un hôpital</option>
+                                            @foreach ($hopitals as $hopital)
+                                                <option value="{{ $hopital->id }}">{{ $hopital->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <x-input-error :messages="$errors->get('hopital_id')" class="mt-2" />
+                                    </div>
                                 </div>
+
                                 <!-- Augmentation de l'espace entre l'input et le bouton -->
                                 <div class="mt-8"> <!-- Augmenté de mt-6 à mt-8 pour plus d'espace -->
                                     <button type="submit"

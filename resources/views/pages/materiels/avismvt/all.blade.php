@@ -35,7 +35,7 @@
 
                             <div class="relative overflow-x-auto mt-8">
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
-                                    <thead class="text-xs text-gray-900 uppercase bg-gray-50">
+                                    <thead class="text-xs text-blue-600 uppercase bg-gray-100">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N° d'inventaire
                                             </th>
@@ -50,19 +50,22 @@
                                     <tbody>
                                         @forelse ($avis as $avi)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $avi->material_id ? $avi->materiel->num_inventaire : 'N/A' }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $avi->qte }}</td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">{{ $avi->qte }}
+                                                </td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $avi->cedant_id ? $avi->cedant->nom : '' }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $avi->cessionnaire_id ? $avi->cessionnaire->nom : '' }}</td>
-                                                <td class="px-6 py-4 motif text-center" title="{{ $avi->updated_at }}">
+                                                <td class="px-6 py-4 motif text-center font-bold text-black"
+                                                    title="{{ $avi->updated_at }}">
                                                     {{ $avi->updated_at->format('d/m/Y') }}
                                                 </td>
-                                                <td class="px-6 py-4 motif text-center" title="{{ $avi->motif }}">
+                                                <td class="px-6 py-4 motif text-center font-bold text-black"
+                                                    title="{{ $avi->motif }}">
                                                     {{ Str::limit($avi->motif, 28) }}
                                                 </td>
                                                 <td class="px-6 py-4 flex items-center justify-center">

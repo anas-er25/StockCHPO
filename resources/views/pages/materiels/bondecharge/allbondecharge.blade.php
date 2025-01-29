@@ -32,7 +32,7 @@
 
                             <div class="relative overflow-x-auto mt-8">
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
-                                    <thead class="text-xs text-gray-900 uppercase bg-gray-50">
+                                    <thead class="text-xs text-blue-600 uppercase bg-gray-100">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N° d'inventaire
                                             </th>
@@ -50,19 +50,23 @@
                                     <tbody>
                                         @forelse ($bonDecharges as $bondecharge)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $bondecharge->material_id ? $bondecharge->materiel->num_inventaire : 'N/A' }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $bondecharge->qte }}</td>
-                                                <td class="px-6 py-4 text-center">{{ $bondecharge->num_serie }}</td>
-                                                <td class="px-6 py-4 text-center motif" title="{{ $bondecharge->motif }}">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $bondecharge->qte }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $bondecharge->num_serie }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black motif"
+                                                    title="{{ $bondecharge->motif }}">
                                                     {{ Str::limit($bondecharge->motif, 28) }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $bondecharge->cedant_id ? $bondecharge->cedant->nom : '' }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">{{ $bondecharge->cessionnaire }}</td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $bondecharge->cessionnaire }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     @if ($bondecharge->type == 'definitive')
                                                         Définitive
                                                     @elseif($bondecharge->type == 'provisoire')
@@ -71,7 +75,7 @@
                                                         Non défini
                                                     @endif
                                                 </td>
-                                                <td class="px-6 py-4 text-center motif"
+                                                <td class="px-6 py-4 text-center font-bold text-black motif"
                                                     title="{{ $bondecharge->updated_at }}">
                                                     {{ $bondecharge->updated_at->format('d/m/Y') }}
                                                 </td>

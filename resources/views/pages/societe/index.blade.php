@@ -50,7 +50,7 @@
 
                             <div class="relative overflow-x-auto mt-8">
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
-                                    <thead class="text-xs text-gray-900 uppercase bg-gray-50">
+                                    <thead class="text-xs text-blue-600 uppercase bg-gray-100">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Nom de société</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Siège Social</th>
@@ -62,14 +62,15 @@
                                     <tbody>
                                         @forelse ($societies as $societe)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
-                                                <td class="px-6 py-4 text-center">{{ $societe->nom_societe }}</td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $societe->nom_societe }}</td>
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $societe->siege_social ? $societe->siege_social : 'Non Attribué' }}
                                                 </td>
-                                                <td class="px-6 py-4 text-center">
+                                                <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $societe->telephone ? $societe->telephone : 'Non Attribué' }}</td>
-                                                <td class="px-6 py-4 text-center">
-                                                    {{$count = \DB::table('societe_materials')->where('societe_id', $societe->id)->count() ?: 0}}
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $count = \DB::table('societe_materials')->where('societe_id', $societe->id)->count() ?: 0 }}
                                                 </td>
                                                 <td class="px-6 py-4 flex items-center justify-center">
                                                     <!-- Icône de modification -->
