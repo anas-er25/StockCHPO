@@ -59,7 +59,11 @@
                                                         class="cursor-pointer mr-4">
                                                         <i class="fa-solid fa-pen text-blue-600 hover:text-blue-700"></i>
                                                     </a>
-
+                                                    <!-- Icône de view-->
+                                                    <a href="{{ route('services.show', $service->id) }}"
+                                                        class="cursor-pointer mr-4">
+                                                        <i class="fa-solid fa-eye text-blue-600 hover:text-blue-700"></i>
+                                                    </a>
                                                     <!-- Formulaire de suppression -->
                                                     <form action="{{ route('services.destroy', $service->id) }}"
                                                         method="POST" class="inline" id="delete-form-{{ $service->id }}">

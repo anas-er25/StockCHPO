@@ -36,6 +36,8 @@ Route::group(["middleware" => "auth"], function () {
         Route::post('/addservice', 'store')->name('store');
         Route::get('/services/{id}/edit', 'edit')->name('edit');
         Route::put('/services/{id}', 'update')->name('update');
+        Route::get('/services/{id}/show', 'show')->name('show');
+        Route::get('/services/sub-services/{parentId}', 'getSubServices');
         Route::delete('/services/{id}', 'destroy')->name('destroy');
     });
 
@@ -72,6 +74,7 @@ Route::group(["middleware" => "auth"], function () {
         Route::get('/materiels/{id}', 'show')->name('show');
         Route::delete('/materiels/{id}', 'destroy')->name('destroy');
         Route::get('/get-services/{hopital_id}', 'getServices');
+        Route::get('/get-sous-services/{service_id}', 'getSousServices');
 
         // Import
         Route::post('/materiels/import', 'importExcel')->name('importExcel');

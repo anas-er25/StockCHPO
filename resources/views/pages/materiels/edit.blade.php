@@ -167,6 +167,18 @@
                                         <x-input-error :messages="$errors->get('service_id')" class="mt-2" />
                                     </div>
 
+                                    <!-- Sous-service -->
+                                    <div id="sous_service_container" class="hidden">
+                                        <label for="sous_service_id"
+                                            class="block text-sm font-medium text-gray-700">Sous-service</label>
+                                        <select name="sous_service_id" id="sous_service_id"
+                                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                            <option value="">Sélectionner un sous-service</option>
+                                        </select>
+                                        <x-input-error :messages="$errors->get('sous_service_id')" class="mt-2" />
+                                    </div>
+
+
                                     <!-- Date d'affectation -->
                                     <div>
                                         <label for="date_affectation" class="block text-sm font-medium text-gray-700">Date
@@ -377,6 +389,30 @@
                 } else {
                     $('#service_id').empty();
                     $('#service_id').append('<option value="">Sélectionner un service</option>');
+                }
+            });
+
+            $('#service_id').change(function() {
+                var serviceId = $(this).val();
+                if (serviceId) {
+                    $.ajax({
+                        url: '/get-sous-services/' + serviceId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#sous_service_container').removeClass('hidden');
+                            $('#sous_service_id').empty();
+                            $('#sous_service_id').append(
+                                '<option value="">Sélectionner un sous-service</option>');
+                            $.each(data, function(key, value) {
+                                $('#sous_service_id').append('<option value="' + value
+                                    .id + '">' + value.nom + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#sous_service_container').addClass('hidden');
+                    $('#sous_service_id').empty();
                 }
             });
         });
