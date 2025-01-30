@@ -57,6 +57,11 @@ class MaterialController extends Controller
         $services = Service::where('hopital_id', $hopital_id)->get();
         return response()->json($services);
     }
+    public function getSousServices($service_id)
+    {
+        $sousServices = Service::where('parent_id', $service_id)->get();
+        return response()->json($sousServices);
+    }
 
     public function store(Request $request)
     {
@@ -73,6 +78,7 @@ class MaterialController extends Controller
             'observation' => 'required',
             'etat' => 'required',
             'service_id' => 'nullable|exists:services,id',
+            'sous_service_id' => 'nullable|exists:services,id',
             'date_inscription' => 'required|date',
             'societe_id' => 'required_without:nouvelle_societe|nullable|exists:societes,id',
             'nouvelle_societe' => 'required_without:societe_id|nullable|string|max:255',
@@ -118,12 +124,23 @@ class MaterialController extends Controller
             $material->num_serie = $request->num_serie;
             $material->date_inscription = $request->has('date_inscription') ? $request->date_inscription : now();
             $material->date_affectation = now();
-            $material->service_id = $request->service_id;
+            if ($request->service_id && $request->sous_service_id) {
+                $material->service_id = $request->sous_service_id; // Assign service_id
+            } else {
+                $material->service_id = $request->service_id; // Assign sous_service_id if provided
+            }
             $material->observation = $request->observation;
             $material->etat = $request->etat;
             $material->societe_id = $societe->id;
 
             if ($material->save()) {
+                $toServiceId = null;
+
+                if ($request->service_id && $request->sous_service_id) {
+                    $toServiceId = $request->sous_service_id; // Si les deux sont fournis, utilisez sous_service_id
+                } else {
+                    $toServiceId = $request->service_id; // Sinon, utilisez service_id
+                }
                 // Ajouter l'enregistrement dans la table d'association societe_materials
                 SocieteMaterial::create([
                     'societe_id' => $societe->id,
@@ -137,7 +154,7 @@ class MaterialController extends Controller
                 MaterialHistory::create([
                     'material_id' => $material->id,
                     'from_service_id' => null,
-                    'to_service_id' => $material->service_id,
+                    'to_service_id' => $toServiceId,
                     'moved_at' => now()
                 ]);
 
@@ -153,6 +170,7 @@ class MaterialController extends Controller
 
         return redirect(route('materiels.index'))->with('success', 'Matériels créés avec succès.');
     }
+
 
     public function edit($id)
     {
@@ -197,7 +215,11 @@ class MaterialController extends Controller
         $material->date_inscription = $request->has('date_inscription') ? $request->date_inscription : now();
 
         $material->date_affectation = now();
-        $material->service_id = $request->service_id;
+        if ($request->service_id && $request->sous_service_id) {
+            $material->service_id = $request->sous_service_id; // Assign service_id
+        } else {
+            $material->service_id = $request->service_id; // Assign sous_service_id if provided
+        }
         $material->observation = $request->observation;
         $material->etat = $request->etat;
 
@@ -223,10 +245,17 @@ class MaterialController extends Controller
 
         if ($material->save()) {
 
+            $toServiceId = null;
+
+            if ($request->service_id && $request->sous_service_id) {
+                $toServiceId = $request->sous_service_id; // Si les deux sont fournis, utilisez sous_service_id
+            } else {
+                $toServiceId = $request->service_id; // Sinon, utilisez service_id
+            }
             // Modifier l'history de material dans la table materialHistory
             MaterialHistory::where('material_id', $material->id)->update([
                 'from_service_id' => null,
-                'to_service_id' => $material->service_id,
+                'to_service_id' => $toServiceId,
                 'moved_at' => now()
             ]);
 

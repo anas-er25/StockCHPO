@@ -8,32 +8,48 @@ use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class ServiceController extends Controller
 {
     public function index()
     {
-        $services = Service::all();
+        $services = Service::whereNull('parent_id')->get();
         return view('pages.service.index', compact('services'));
     }
 
     public function create()
     {
         $hopitals = Hopital::all();
-        return view('pages.service.create', compact('hopitals'));
+        $services = Service::whereNull('parent_id')->with('hopital')->get();
+
+        return view('pages.service.create', compact('hopitals', 'services'));
+    }
+    public function getSubServices($parentId)
+    {
+        $subServices = Service::where('parent_id', $parentId)->get();
+        return response()->json($subServices);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => 'required|unique:services',
-            'hopital_id' => 'required'
+            'nom' => [
+                'required',
+                Rule::unique('services')->where(function ($query) use ($request) {
+                    return $query->where('hopital_id', $request->hopital_id)
+                        ->where('parent_id', $request->parent_id);
+                })
+            ],
+            'hopital_id' => 'required|exists:hopitals,id',
+            'parent_id' => 'nullable|exists:services,id'
         ]);
 
-        // Créer le service
+
+        // Create the service
         $service = Service::create($request->all());
 
-        // Créer le log
+        // Create the log
         Log::create([
             'action' => 'create',
             'table_name' => 'services',
@@ -50,14 +66,22 @@ class ServiceController extends Controller
     {
         $hopitals = Hopital::all();
         $service = Service::find($id);
-        return view('pages.service.edit', compact('service', 'hopitals'));
+        $services = Service::whereNull('parent_id')->get();
+        return view('pages.service.edit', compact('services', 'service', 'hopitals'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nom' => 'required|unique:services',
-            'hopital_id' => 'required'
+            'nom' => [
+                'required',
+                Rule::unique('services')->where(function ($query) use ($request) {
+                    return $query->where('hopital_id', $request->hopital_id)
+                        ->where('parent_id', $request->parent_id);
+                })
+            ],
+            'hopital_id' => 'required|exists:hopitals,id',
+            'parent_id' => 'nullable|exists:services,id'
         ]);
 
         $service = Service::find($id);
@@ -72,6 +96,19 @@ class ServiceController extends Controller
         ]);
         return redirect()->route('services.index')->with('success', 'Service modifié avec succès.');
     }
+
+    public function show($id)
+    {
+        // Trouver le service principal
+        $service = Service::findOrFail($id);
+
+        // Récupérer les sous-services (enfants) du service principal
+        $SousServices = $service->children;
+
+        // Retourner la vue avec les sous-services
+        return view('pages.service.show', compact('SousServices'));
+    }
+
 
     public function destroy($id)
     {

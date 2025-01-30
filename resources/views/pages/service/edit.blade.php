@@ -17,7 +17,7 @@
                             <form action="{{ route('services.update', $service->id) }}" method="POST" class="mt-6">
                                 @csrf
                                 @method('PUT')
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-6 gap-y-4">
                                     <div>
                                         <label for="nom" class="block text-sm font-medium text-gray-700">Nom</label>
                                         <input type="text" name="nom" id="nom" autocomplete="nom"
@@ -40,6 +40,22 @@
                                             @endforeach
                                         </select>
                                         <x-input-error :messages="$errors->get('hopital_id')" class="mt-2" />
+                                    </div>
+                                    {{-- Parent Service --}}
+                                    <div class='ml-2'>
+                                        <label for="parent_id" class="block text-sm font-medium text-gray-700">Service
+                                            Parent</label>
+                                        <select name="parent_id" id="parent_id"
+                                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                            <option value="">Sélectionner un service parent</option>
+                                            @foreach ($services as $service)
+                                                <option value="{{ $service->id }}"
+                                                    {{ old('parent_id', $service->parent) == $service->parent_id ? 'selected' : '' }}>
+                                                    {{ $service->nom }} - {{ $service->hopital->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <x-input-error :messages="$errors->get('parent_id')" class="mt-2" />
                                     </div>
                                 </div>
                                 <!-- Augmentation de l'espace entre l'input et le bouton -->
