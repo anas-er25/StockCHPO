@@ -25,6 +25,22 @@ class ServiceController extends Controller
 
         return view('pages.service.create', compact('hopitals', 'services'));
     }
+
+    public function getParentServices(Request $request)
+    {
+        $type = $request->query('type');
+        $hopitalId = $request->query('hopital_id');
+
+        // Si un type et un hôpital sont fournis, on filtre les services correspondants
+        $services = Service::where('type', $type)
+            ->where('hopital_id', $hopitalId)
+            ->with('hopital')
+            ->get();
+
+        return response()->json($services);
+    }
+
+
     public function getSubServices($parentId)
     {
         $subServices = Service::where('parent_id', $parentId)->get();
@@ -42,7 +58,8 @@ class ServiceController extends Controller
                 })
             ],
             'hopital_id' => 'required|exists:hopitals,id',
-            'parent_id' => 'nullable|exists:services,id'
+            'parent_id' => 'nullable|exists:services,id',
+            'type' => 'nullable|in:departement,pole,service,unite,bureau'
         ]);
 
 
@@ -72,20 +89,27 @@ class ServiceController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Validation des données envoyées
         $request->validate([
             'nom' => [
                 'required',
                 Rule::unique('services')->where(function ($query) use ($request) {
                     return $query->where('hopital_id', $request->hopital_id)
                         ->where('parent_id', $request->parent_id);
-                })
+                })->ignore($id)  // Ignorer l'enregistrement actuel lors de la validation unique
             ],
             'hopital_id' => 'required|exists:hopitals,id',
-            'parent_id' => 'nullable|exists:services,id'
+            'parent_id' => 'nullable|exists:services,id',
+            'type' => 'nullable|in:departement,pole,service,unite,bureau'
         ]);
 
+        // Trouver le service à mettre à jour
         $service = Service::find($id);
-        $service->update($request->all());
+
+        // Mettre à jour le service avec les données envoyées
+        // On s'assure de mettre à jour les bons champs
+        $service->update($request->only(['nom', 'hopital_id', 'parent_id', 'type']));
+
         // Créer le log
         Log::create([
             'action' => 'update',
@@ -94,8 +118,11 @@ class ServiceController extends Controller
             'performed_by' => Auth::user()->id,
             'performed_at' => now()
         ]);
+
+        // Rediriger avec un message de succès
         return redirect()->route('services.index')->with('success', 'Service modifié avec succès.');
     }
+
 
     public function show($id)
     {

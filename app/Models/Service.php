@@ -9,7 +9,7 @@ class Service extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom', 'hopital_id', 'parent_id'];
+    protected $fillable = ['nom', 'hopital_id', 'parent_id', 'type'];
 
     public function materiels()
     {

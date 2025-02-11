@@ -13,7 +13,7 @@
                                 <h2 class="text-xl font-semibold">Liste des services</h2>
                                 <a href="{{ route('services.create') }}"
                                     class="btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 px-4 py-2 rounded-md">
-                                    Ajouter un service
+                                    Ajouter
                                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20"
                                         viewBox="0 0 50 50">
                                         <path fill="white"
@@ -28,7 +28,10 @@
                                     <thead class="text-xs text-blue-600 uppercase bg-gray-100">
                                         <tr>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">
-                                                Nom du service
+                                                Type
+                                            </th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">
+                                                Nom
                                             </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">
                                                 Hôpital
@@ -44,6 +47,24 @@
                                     <tbody>
                                         @forelse ($services as $service)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
+                                                <td scope="row"
+                                                    class="px-6 py-4 text-center font-bold text-black whitespace-nowrap">
+                                                    @if ($service->type == 'departement')
+                                                        Département
+                                                    @elseif ($service->type == 'pole')
+                                                        Pôle
+                                                    @elseif ($service->type == 'service')
+                                                        Service
+                                                    @elseif ($service->type == 'unite')
+                                                        Unité
+                                                    @elseif ($service->type == 'bureau')
+                                                        Bureau
+                                                    @elseif ($service->type == 'centre')
+                                                        Centre
+                                                    @else
+                                                        {{ ucfirst($service->type) }}
+                                                    @endif
+                                                </td>
                                                 <td scope="row"
                                                     class="px-6 py-4 text-center font-bold text-black whitespace-nowrap">
                                                     {{ $service->nom }}
