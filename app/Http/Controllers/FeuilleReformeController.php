@@ -129,6 +129,16 @@ class FeuilleReformeController extends Controller
     }
 
     // Export
+    public function exportSelectedPDF(Request $request)
+    {
+        $selectedIds = json_decode($request->input('selected_ids'));
+        $materiels = FeuilleReforme::whereIn('id', $selectedIds)->get();
+
+        $pdf = PDF::loadView('pages.pdfs.export-pdfref', compact('materiels'));
+        return $pdf->download('materiels_reformes.pdf');
+    }
+
+
     public function reformePDF()
     {
         // Ensuite, vous passez la variable à la vue pour la génération du PDF

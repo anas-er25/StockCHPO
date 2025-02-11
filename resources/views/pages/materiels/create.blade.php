@@ -80,13 +80,18 @@
                                             <option value="hospitalier"
                                                 {{ old('type') == 'hospitalier' ? 'selected' : '' }}>
                                                 Hospitalier</option>
+                                            <option value="mobilier" {{ old('type') == 'mobilier' ? 'selected' : '' }}>
+                                                Mobilier</option>
                                             <option value="bureau" {{ old('type') == 'bureau' ? 'selected' : '' }}>Bureau
+                                            </option>
+                                            <option value="informatique"
+                                                {{ old('type') == 'informatique' ? 'selected' : '' }}>Informatique
                                             </option>
                                             <option value="biomédical" {{ old('type') == 'biomédical' ? 'selected' : '' }}>
                                                 Biomédical</option>
-                                            <option value="dispositif medicaux"
-                                                {{ old('type') == 'dispositif medicaux' ? 'selected' : '' }}>
-                                                Dispositif medicaux</option>
+                                            <option value="dispositifs medicaux"
+                                                {{ old('type') == 'dispositifs medicaux' ? 'selected' : '' }}>
+                                                Dispositifs medicaux</option>
                                             <option value="autres" {{ old('type') == 'autres' ? 'selected' : '' }}>
                                                 Autres</option>
                                         </select>
@@ -254,6 +259,12 @@
                                             <option value="réformé" {{ old('etat') == 'réformé' ? 'selected' : '' }}>
                                                 Réformé
                                             </option>
+                                            <option value="réparé" {{ old('etat') == 'réparé' ? 'selected' : '' }}>
+                                                Réparé
+                                            </option>
+                                            <option value="en stock" {{ old('etat') == 'en stock' ? 'selected' : '' }}>
+                                                En stock
+                                            </option>
                                         </select>
                                         <div id="receptionOptions" class="mt-2 space-y-2" style="display: none;">
                                             <div class="flex items-center mt-2">
@@ -265,11 +276,6 @@
                                                 <input type="radio" name="etat" id="définitive" value="définitive"
                                                     class="pl-3">
                                                 <label for="définitive" class="pl-3">Définitive</label>
-                                            </div>
-                                            <div class="flex items-center mt-2 ">
-                                                <input type="radio" name="etat" id="colis fermé"
-                                                    value="colis fermé" class="pl-3">
-                                                <label for="colis fermé" class="pl-3">Colis fermé</label>
                                             </div>
                                         </div>
                                         <x-input-error :messages="$errors->get('etat')" class="mt-2" />
@@ -315,6 +321,14 @@
                                             <option value="autres"
                                                 {{ old('observation_reserve') == 'autres' ? 'selected' : '' }}>Sous réserve
                                                 d'Autres
+                                            </option>
+                                            <option value="colis fermé"
+                                                {{ old('observation_reserve') == 'colis fermé' ? 'selected' : '' }}>Colis
+                                                fermé
+                                            </option>
+                                            <option value="rien à signaler"
+                                                {{ old('observation_reserve') == 'rien à signaler' ? 'selected' : '' }}>
+                                                Rien à signaler
                                             </option>
                                         </select>
                                         <x-input-error :messages="$errors->get('observation_reserve')" class="mt-2" />

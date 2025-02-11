@@ -49,7 +49,7 @@ class RepareController extends Controller
             // Changer le service_id du matériel
             Material::where('id', $request->material_id)->update([
                 'service_id' => null,
-                'etat' => 'réformé'
+                'etat' => 'réparé'
             ]);
             // Trouver le dernier enregistrement pour le matériel donné
             $lastHistory = MaterialHistory::where('material_id', $repare->material_id)
@@ -136,6 +136,15 @@ class RepareController extends Controller
     }
 
     // Export
+    public function exportSelectedPDF(Request $request)
+    {
+        $selectedIds = json_decode($request->input('selected_ids'));
+        $materiels = Repare::whereIn('id', $selectedIds)->get();
+
+        $pdf = PDF::loadView('pages.pdfs.export-pdfrep', compact('materiels'));
+        return $pdf->download('materiels_repares.pdf');
+    }
+
     public function reparePDF()
     {
         // Ensuite, vous passez la variable à la vue pour la génération du PDF

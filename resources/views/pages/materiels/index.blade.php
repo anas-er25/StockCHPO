@@ -1,8 +1,28 @@
 @extends('layouts.index')
+@section('csslink')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endsection
 @section('title', 'Liste de Matériels')
 
 @section('content')
     <main class="h-full overflow-y-auto max-w-full pt-4">
+        @if (session('swal'))
+            <script>
+                Swal.fire({
+                    title: 'Avertissement',
+                    text: "{{ session('swal') }}", // Message d'avertissement depuis la session
+                    icon: 'warning',
+                    timer: 5000, // Le message disparait après 5 secondes
+                    timerProgressBar: true, // Affiche une barre de progression
+                    showConfirmButton: false, // Masque le bouton de confirmation
+                    willClose: () => {
+                        // Action après la fermeture, si nécessaire
+                    }
+                });
+            </script>
+        @endif
+
+
         {{-- <div class="container full-container py-5 flex flex-col gap-6"> --}}
         <div class="p-5">
             <div class="grid grid-cols-1 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
@@ -12,6 +32,11 @@
                             <div class="flex justify-between items-center">
                                 <h2 class="text-xl font-semibold">Liste de matériels</h2>
                                 <div class="flex items-center gap-4">
+                                    <button onclick="toggleForm()" title="Télécharger PDF"
+                                        class="btn bg-red-500 text-white hover:bg-red-700 flex items-center gap-2 px-4 py-2 rounded-md">
+                                        Bultein de cession
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                    </button>
                                     <button onclick="exportToExcel()" title="Télécharger Excel"
                                         class="btn bg-green-500 text-white hover:bg-green-700 flex items-center gap-2 px-4 py-2 rounded-md">
                                         Exporter
@@ -44,15 +69,79 @@
                                             </path>
                                         </svg>
                                     </a>
-                                </div>
 
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+                                <div id="bulletinForm" style="display: none;">
+                                    <form action="{{ route('materiels.exportpdflist') }}" method="GET"
+                                        class="flex items-center gap-4">
+                                        @csrf
+                                        <div>
+                                            <label for="hopital_id"
+                                                class="block text-sm font-medium text-gray-700">Hôpital</label>
+                                            <select name="hopital_id" id="hopital_id"
+                                                class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                <option value="">Sélectionner un hôpital</option>
+                                                @foreach ($hopitals as $hopital)
+                                                    <option value="{{ $hopital->id }}">{{ $hopital->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <x-input-error :messages="$errors->get('hopital_id')" class="mt-2" />
+                                        </div>
+
+                                        <!-- Service -->
+                                        <div>
+                                            <label for="service_id"
+                                                class="block text-sm font-medium text-gray-700">Service</label>
+                                            <select name="service_id" id="service_id"
+                                                class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                <option value="">Sélectionner un service</option>
+                                                @foreach ($services as $service)
+                                                    <option value="{{ $service->id }}"
+                                                        {{ old('service_id') == $service->id ? 'selected' : '' }}>
+                                                        {{ $service->nom }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <x-input-error :messages="$errors->get('service_id')" class="mt-2" />
+                                        </div>
+
+                                        <!-- Date de début -->
+                                        <div>
+                                            <label for="date_debut" class="block text-sm font-medium text-gray-700">Date
+                                                de
+                                                début</label>
+                                            <input type="date" name="date_debut" id="date_debut"
+                                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                value="{{ old('date_debut') }}">
+                                        </div>
+
+                                        <!-- Date de fin -->
+                                        <div>
+                                            <label for="date_fin" class="block text-sm font-medium text-gray-700">Date
+                                                de
+                                                fin</label>
+                                            <input type="date" name="date_fin" id="date_fin"
+                                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                value="{{ old('date_fin') }}">
+                                        </div>
+
+                                        <button type="submit"
+                                            class="btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 px-4 py-2 rounded-md">
+                                            Exporter
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
 
                             <div class="relative overflow-x-auto mt-8">
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-blue-600 uppercase bg-gray-100">
                                         <tr>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° d'inventaire</th>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">N° d'inventaire
+                                            </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Date d'inscription
                                             </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Désignation</th>
@@ -83,7 +172,8 @@
                                                     {{ $material->date_inscription }}</td>
                                                 <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $material->designation }}</td>
-                                                <td class="px-6 py-4 text-center font-bold text-black">{{ $material->qte }}
+                                                <td class="px-6 py-4 text-center font-bold text-black">
+                                                    {{ $material->qte }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $material->num_serie }}</td>
@@ -102,7 +192,8 @@
                                                     {{ Str::limit($material->observation, 28) }}
                                                 </td>
                                                 <td class="px-6 py-4 text-center font-bold text-black">
-                                                    {{ $material->societe ? $material->societe->nom_societe : 'N/A' }}</td>
+                                                    {{ $material->societe ? $material->societe->nom_societe : 'N/A' }}
+                                                </td>
                                                 <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $material->societeMaterials->first() ? $material->societeMaterials->first()->numero_marche : 'N/A' }}
                                                 </td>
@@ -123,7 +214,8 @@
                                                     </a>
                                                     <!-- Formulaire de suppression -->
                                                     <form action="{{ route('materiels.destroy', $material->id) }}"
-                                                        method="POST" class="inline" id="delete-form-{{ $material->id }}">
+                                                        method="POST" class="inline"
+                                                        id="delete-form-{{ $material->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                         <div class="cursor-pointer mr-4"
@@ -232,5 +324,47 @@
                 document.getElementById('submit-btn').click();
             }
         });
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('hopital_id').addEventListener('change', function() {
+                var hopitalId = this.value;
+                console.log(hopitalId);
+
+
+                if (hopitalId) {
+                    // Créer une requête HTTP GET avec Fetch API
+                    fetch('/get-services/' + hopitalId)
+                        .then(response => response.json()) // Transforme la réponse en JSON
+                        .then(data => {
+                            var serviceSelect = document.getElementById('service_id');
+                            serviceSelect.innerHTML =
+                                '<option value="">Sélectionner un service</option>'; // Réinitialiser les options
+
+                            // Ajouter les nouvelles options en fonction des données reçues
+                            data.forEach(function(service) {
+                                var option = document.createElement('option');
+                                option.value = service.id;
+                                option.textContent = service.nom;
+                                serviceSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Erreur lors de la récupération des services:', error);
+                        });
+                } else {
+                    // Si aucun hôpital n'est sélectionné, vider la liste des services
+                    var serviceSelect = document.getElementById('service_id');
+                    serviceSelect.innerHTML = '<option value="">Sélectionner un service</option>';
+                }
+            });
+        });
+
+        function toggleForm() {
+            var form = document.getElementById('bulletinForm');
+            if (form.style.display === 'none') {
+                form.style.display = 'block'; // Affiche le formulaire
+            } else {
+                form.style.display = 'none'; // Masque le formulaire
+            }
+        }
     </script>
 @endsection

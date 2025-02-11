@@ -1,31 +1,29 @@
 <div class="loader" id="loader-myModal">
-    <div class="circle">
-        <div class="dot"></div>
-        <div class="outline"></div>
-    </div>
-    <div class="circle">
-        <div class="dot"></div>
-        <div class="outline"></div>
-    </div>
-    <div class="circle">
-        <div class="dot"></div>
-        <div class="outline"></div>
-    </div>
-    <div class="circle">
-        <div class="dot"></div>
-        <div class="outline"></div>
+    <div class="word">
+        <span class="letter b">B</span>
+        <span class="letter u">U</span>
+        <span class="letter r">R</span>
+        <span class="letter e">E</span>
+        <span class="letter a1">A</span>
+        <span class="letter u2">U</span>
+        &nbsp;
+        <span class="letter m">M</span>
+        <span class="letter a2">A</span>
+        <span class="letter t">T</span>
+        <span class="letter e2">É</span>
+        <span class="letter r2">R</span>
+        <span class="letter i">I</span>
+        <span class="letter e3">E</span>
+        <span class="letter l">L</span>
     </div>
 </div>
 
 <style>
-     /* From Uiverse.io by Li-Deheng */
+    /* Loader fullscreen styles */
     .loader {
         display: flex;
         justify-content: center;
         align-items: center;
-        --color: hsl(0, 0%, 87%);
-        --animation: 2s ease-in-out infinite;
-        /* Add fullscreen styles */
         position: fixed;
         top: 0;
         left: 0;
@@ -34,137 +32,60 @@
         background-color: rgba(255, 255, 255, 0.9);
         z-index: 9999;
     }
-    
 
-    .loader .circle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        width: 20px;
-        height: 20px;
-        border: solid 2px var(--color);
-        border-radius: 50%;
-        margin: 0 10px;
-        background-color: transparent;
-        animation: circle-keys var(--animation);
+    .word {
+        font-size: 2em;
+        font-weight: bold;
+        text-transform: uppercase;
     }
 
-    .loader .circle .dot {
-        position: absolute;
-        transform: translate(-50%, -50%);
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        background-color: var(--color);
-        animation: dot-keys var(--animation);
+    .letter {
+        display: inline-block;
+        animation: bounce 1.5s infinite, color-change 4s infinite;
     }
 
-    .loader .circle .outline {
-        position: absolute;
-        transform: translate(-50%, -50%);
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        animation: outline-keys var(--animation);
-    }
-
-    .circle:nth-child(2) {
-        animation-delay: 0.3s;
-    }
-
-    .circle:nth-child(3) {
-        animation-delay: 0.6s;
-    }
-
-    .circle:nth-child(4) {
-        animation-delay: 0.9s;
-    }
-
-    .circle:nth-child(5) {
-        animation-delay: 1.2s;
-    }
-
-    .circle:nth-child(2) .dot {
-        animation-delay: 0.3s;
-    }
-
-    .circle:nth-child(3) .dot {
-        animation-delay: 0.6s;
-    }
-
-    .circle:nth-child(4) .dot {
-        animation-delay: 0.9s;
-    }
-
-    .circle:nth-child(5) .dot {
-        animation-delay: 1.2s;
-    }
-
-    .circle:nth-child(1) .outline {
-        animation-delay: 0.9s;
-    }
-
-    .circle:nth-child(2) .outline {
-        animation-delay: 1.2s;
-    }
-
-    .circle:nth-child(3) .outline {
-        animation-delay: 1.5s;
-    }
-
-    .circle:nth-child(4) .outline {
-        animation-delay: 1.8s;
-    }
-
-    .circle:nth-child(5) .outline {
-        animation-delay: 2.1s;
-    }
-
-    @keyframes circle-keys {
-        0% {
-            transform: scale(1);
-            opacity: 1;
+    /* Bounce animation */
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
         }
-
         50% {
-            transform: scale(1.5);
-            opacity: 0.5;
-        }
-
-        100% {
-            transform: scale(1);
-            opacity: 1;
+            transform: translateY(-20px);
         }
     }
 
-    @keyframes dot-keys {
+    /* Color change animation */
+    @keyframes color-change {
         0% {
-            transform: scale(1);
+            color: #FF5733; /* Orange */
         }
-
+        25% {
+            color: #33FF57; /* Green */
+        }
         50% {
-            transform: scale(0);
+            color: #3357FF; /* Blue */
         }
-
+        75% {
+            color: #F3FF33; /* Yellow */
+        }
         100% {
-            transform: scale(1);
+            color: #FF33F3; /* Pink */
         }
     }
 
-    @keyframes outline-keys {
-        0% {
-            transform: scale(0);
-            outline: solid 20px var(--color);
-            outline-offset: 0;
-            opacity: 1;
-        }
-
-        100% {
-            transform: scale(1);
-            outline: solid 0 transparent;
-            outline-offset: 20px;
-            opacity: 0;
-        }
-    }
+    /* Animation delays for each letter */
+    .b { animation-delay: 0.1s; }
+    .u { animation-delay: 0.2s; }
+    .r { animation-delay: 0.3s; }
+    .e { animation-delay: 0.4s; }
+    .a1 { animation-delay: 0.5s; }
+    .u2 { animation-delay: 0.6s; }
+    .m { animation-delay: 0.7s; }
+    .a2 { animation-delay: 0.8s; }
+    .t { animation-delay: 0.9s; }
+    .e2 { animation-delay: 1.0s; }
+    .r2 { animation-delay: 1.1s; }
+    .i { animation-delay: 1.2s; }
+    .e3 { animation-delay: 1.3s; }
+    .l { animation-delay: 1.4s; }
 </style>

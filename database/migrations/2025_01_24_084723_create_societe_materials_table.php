@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('numero_bl', 255)->nullable();
             $table->string('PV', 255)->nullable();
             $table->string('CPS', 255)->nullable();
-            $table->enum('observation', ['conformité technique', 'installation et mise en marche', 'formation', 'autres'])->nullable();
-        
+            $table->enum('observation', ['conformité technique', 'installation et mise en marche', 'formation', 'colis fermé', 'rien à signalé', 'autres'])->nullable();
+
             $table->timestamps();
         });
     }
