@@ -16,7 +16,6 @@
 
                             <div class="mt-6">
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
                                     <!-- N° d'inventaire -->
                                     <div>
                                         <label for="num_inventaire" class="block text-sm font-medium text-gray-700">N°

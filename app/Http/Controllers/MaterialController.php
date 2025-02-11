@@ -26,7 +26,9 @@ class MaterialController extends Controller
             }
         });
         $materiels = collect($allMaterials ?? []);
-        return view('pages.materiels.index', ['materiels' => $materiels]);
+        $hopitals = Hopital::all();
+        $services = Service::all();
+        return view('pages.materiels.index', ['materiels' => $materiels, 'hopitals' => $hopitals, 'services' => $services]);
     }
 
     public function create()
@@ -34,9 +36,7 @@ class MaterialController extends Controller
         $hopitals = Hopital::all(); // Récupérer tous les hôpitaux
         $services = collect(); // Initialiser une collection vide pour les services
         $year = date('y');
-        $latestMaterial = Material::where('num_inventaire', 'LIKE', "%/$year")
-            ->orderByRaw('CAST(SUBSTRING_INDEX(num_inventaire, "/", 1) AS SIGNED) DESC')
-            ->first();
+        $latestMaterial = Material::get()->last();
         $startNumber = 1;
         if ($latestMaterial) {
             $parts = explode('/', $latestMaterial->num_inventaire);
@@ -92,14 +92,13 @@ class MaterialController extends Controller
 
         // Get latest inventory number
         $year = date('y');
-        $latestMaterial = Material::where('num_inventaire', 'LIKE', "%/$year")
-            ->orderByRaw('CAST(SUBSTRING_INDEX(num_inventaire, "/", 1) AS SIGNED) DESC')
-            ->first();
 
+        $latestMaterial = Material::get()->last();
         $startNumber = 1;
         if ($latestMaterial) {
             $parts = explode('/', $latestMaterial->num_inventaire);
-            $startNumber = intval($parts[0]) + 1;
+            $startNumber = (int)$parts[0];
+            $startNumber++;
         }
 
         // Handle society
@@ -623,4 +622,48 @@ class MaterialController extends Controller
         return redirect(route('materiels.index'))
             ->with('success', "Import terminé. $imported produits importés, $skipped produits existants ignorés.");
     }
+
+    public function export_pdflist(Request $request)
+    {
+        $hopitalId = $request->input('hopital_id');
+        $serviceId = $request->input('service_id');
+        $dateDebut = $request->input('date_debut');
+        $dateFin = $request->input('date_fin');
+
+        $query = Material::query();
+
+        // Appliquer le filtrage selon l'hôpital
+        if ($hopitalId) {
+            $query->whereHas('service', function ($q) use ($hopitalId) {
+                $q->where('hopital_id', $hopitalId);
+            });
+        }
+
+        // Appliquer le filtrage selon le service
+        if ($serviceId) {
+            $query->where('service_id', $serviceId);
+        }
+
+        // Appliquer le filtrage selon les dates
+        if ($dateDebut && $dateFin) {
+            $query->whereBetween('date_inscription', [$dateDebut, $dateFin]);
+        }
+
+        // Récupérer les matériaux qui correspondent aux filtres
+        $materiels = $query->get();
+
+        // Vérifier si la collection est vide
+        if ($materiels->isEmpty()) {
+            // Retourner une réponse avec SweetAlert
+            return redirect()->back()->with('swal', 'Aucun résultat trouvé pour les critères spécifiés.');
+        }
+
+        // Générer le PDF avec les données
+        $pdf = PDF::loadView('pages.pdfs.pdfmat', compact('materiels'));
+
+        // Télécharger le PDF
+        return $pdf->download('bulletin_de_cession.pdf');
+    }
+
+
 }

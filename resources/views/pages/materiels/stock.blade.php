@@ -35,13 +35,10 @@
                                                 <option value="">Tous les états</option>
                                                 <option value="réformé" {{ $selectedEtat == 'réformé' ? 'selected' : '' }}>
                                                     Réformé</option>
-                                                <option value="réceptionné"
-                                                    {{ $selectedEtat == 'réceptionné' ? 'selected' : '' }}>Réceptionné
-                                                </option>
-                                                <option value="affecté" {{ $selectedEtat == 'affecté' ? 'selected' : '' }}>
-                                                    Affecté</option>
-                                                <option value="en mouvement"
-                                                    {{ $selectedEtat == 'en mouvement' ? 'selected' : '' }}>En mouvement
+                                                <option value="réparé" {{ $selectedEtat == 'réparé' ? 'selected' : '' }}>
+                                                    Réparé</option>
+                                                <option value="en stock"
+                                                    {{ $selectedEtat == 'en stock' ? 'selected' : '' }}>En stock
                                                 </option>
                                                 <option value="colis fermé"
                                                     {{ $selectedEtat == 'colis fermé' ? 'selected' : '' }}>Colis fermé
@@ -117,9 +114,6 @@
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N° de série</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Marque</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Modèle</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Affectation</th>
-                                            <th scope="col" class="text-sm px-6 py-3 text-center">Date d'affectation
-                                            </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Observation</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Nom de société</th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N° de BL</th>
@@ -147,13 +141,6 @@
                                                     {{ $material->marque }}</td>
                                                 <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $material->modele }}</td>
-                                                <td class="px-6 py-4 text-center font-bold text-black">
-                                                    {{ $material->service ? $material->service->nom : 'N/A' }}
-                                                    <!-- Assuming 'service' is a relationship -->
-                                                </td>
-                                                <td class="px-6 py-4 text-center font-bold text-black">
-                                                    {{ $material->date_affectation }}
-                                                </td>
                                                 <td class="px-6 py-4 text-center font-bold text-black observation"
                                                     title="{{ $material->observation }}">
                                                     {{ Str::limit($material->observation, 28) }}

@@ -88,15 +88,22 @@
                                             <option value="hospitalier"
                                                 {{ old('type', $material->type) == 'hospitalier' ? 'selected' : '' }}>
                                                 Hospitalier</option>
+                                            <option value="mobilier"
+                                                {{ old('type', $material->type) == 'mobilier' ? 'selected' : '' }}>
+                                                Mobilier</option>
                                             <option value="bureau"
                                                 {{ old('type', $material->type) == 'bureau' ? 'selected' : '' }}>Bureau
+                                            </option>
+                                            <option value="informatique"
+                                                {{ old('type', $material->type) == 'informatique' ? 'selected' : '' }}>
+                                                Informatique
                                             </option>
                                             <option value="biomédical"
                                                 {{ old('type', $material->type) == 'biomédical' ? 'selected' : '' }}>
                                                 Biomédical</option>
-                                            <option value="dispositif medicaux"
-                                                {{ old('type', $material->type) == 'dispositif medicaux' ? 'selected' : '' }}>
-                                                Dispositif medicaux</option>
+                                            <option value="dispositifs medicaux"
+                                                {{ old('type', $material->type) == 'dispositifs medicaux' ? 'selected' : '' }}>
+                                                Dispositifs medicaux</option>
                                             <option value="autres"
                                                 {{ old('type', $material->type) == 'autres' ? 'selected' : '' }}>
                                                 Autres</option>
@@ -275,6 +282,14 @@
                                                 {{ old('etat', $material->etat) == 'réformé' ? 'selected' : '' }}>
                                                 Réformé
                                             </option>
+                                            <option value="réparé"
+                                                {{ old('etat', $material->etat) == 'réparé' ? 'selected' : '' }}>
+                                                Réparé
+                                            </option>
+                                            <option value="en stock"
+                                                {{ old('etat', $material->etat) == 'en stock' ? 'selected' : '' }}>
+                                                En stock
+                                            </option>
                                         </select>
                                         <div id="receptionOptions" class="mt-2 space-y-2" style="display: none;">
                                             <div class="flex items-center mt-2">
@@ -288,13 +303,6 @@
                                                     {{ old('etat', $material->etat) == 'définitive' ? 'checked' : '' }}
                                                     class="pl-3">
                                                 <label for="définitive" class="pl-3">Définitive</label>
-                                            </div>
-                                            <div class="flex items-center mt-2 ">
-                                                <input type="radio" name="etat" id="colis fermé"
-                                                    value="colis fermé"
-                                                    {{ old('etat', $material->etat) == 'colis fermé' ? 'checked' : '' }}
-                                                    class="pl-3">
-                                                <label for="colis fermé" class="pl-3">Colis fermé</label>
                                             </div>
                                         </div>
                                         <x-input-error :messages="$errors->get('etat')" class="mt-2" />

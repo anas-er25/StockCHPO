@@ -82,6 +82,7 @@ Route::group(["middleware" => "auth"], function () {
 
         // Export
         Route::get('/materiels/export-pdf/{id}', 'exportPDF')->name('export_pdf');
+        Route::get('/export-pdflist', 'export_pdflist')->name('exportpdflist');
         Route::get('/export-excel', 'exportexcel')->name('exportexcel');
     });
 
@@ -138,8 +139,8 @@ Route::group(["middleware" => "auth"], function () {
         Route::get('/reforme/{id}/edit', 'reformeedit')->name('reformeedit');
         Route::put('/reforme/{id}', 'reformeupdate')->name('reformeupdate');
         Route::delete('/reforme/{id}', 'reformedelete')->name('reformedestroy');
-
         // Export PDF
+        Route::post('/reforme/export-selected-pdf', 'exportSelectedPDF')->name('exportSelectedPDF');
         Route::get('/reformePDF/export-pdf', 'reformePDF')->name('reformePDF');
     });
 
@@ -156,6 +157,7 @@ Route::group(["middleware" => "auth"], function () {
         Route::delete('/repare/{id}', 'reparedelete')->name('reparedestroy');
 
         // Export PDF
+        Route::post('/repare/export-selected-pdf', 'exportSelectedPDF')->name('exportSelectedPDF');
         Route::get('/reparePDF/export-pdf', 'reparePDF')->name('reparePDF');
     });
 

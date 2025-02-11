@@ -12,6 +12,13 @@
                             <div class="flex justify-between items-center">
                                 <h2 class="text-xl font-semibold">Liste de matériels à réparer</h2>
                                 <div class="flex items-center gap-4">
+                                    <form action="{{ route('repare.exportSelectedPDF') }}" method="POST" id="export-form">
+                                        @csrf
+                                        <button type="submit"
+                                            class="btn bg-green-500 text-white hover:bg-green-700 flex items-center gap-2 px-4 py-2 rounded-md">
+                                            Exporter PDF <i class="fa-solid fa-file-pdf"></i>
+                                        </button>
+                                    </form>
                                     <a href="{{ route('repare.reparePDF') }}" title="Télécharger Canevas PDF"
                                         class="btn bg-red-500 text-white hover:bg-red-700 flex items-center gap-2 px-4 py-2 rounded-md">
                                         Canevas<i class="fa-solid fa-file-pdf"></i>
@@ -33,6 +40,9 @@
                                 <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-blue-600 uppercase bg-gray-100">
                                         <tr>
+                                            <th scope="col" class="text-sm px-6 py-3 text-center">
+                                                <input type="checkbox" id="select-all">
+                                            </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">N° d'inventaire
                                             </th>
                                             <th scope="col" class="text-sm px-6 py-3 text-center">Quantité</th>
@@ -46,6 +56,10 @@
                                     <tbody>
                                         @forelse ($reparelist as $repare)
                                             <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
+                                                <td class="px-6 py-4 text-center">
+                                                    <input type="checkbox" name="selected_ids[]" value="{{ $repare->id }}"
+                                                        class="select-item">
+                                                </td>
                                                 <td class="px-6 py-4 text-center font-bold text-black">
                                                     {{ $repare->material_id ? $repare->materiel->num_inventaire : 'N/A' }}
                                                 </td>
@@ -108,4 +122,38 @@
         </div>
         {{-- </div> --}}
     </main>
+@endsection
+@section('jslink')
+    <script>
+        // Sélectionner/désélectionner toutes les cases à cocher
+        document.getElementById('select-all').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.select-item');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+
+        document.getElementById('export-form').addEventListener('submit', function(event) {
+            const selectedIds = Array.from(document.querySelectorAll('.select-item:checked')).map(checkbox =>
+                checkbox.value);
+            if (selectedIds.length === 0) {
+                event.preventDefault();
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Aucun matériel sélectionné',
+                    text: 'Veuillez sélectionner au moins un matériel à exporter.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6',
+                });
+            } else {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selected_ids';
+                input.value = JSON.stringify(selectedIds);
+                this.appendChild(input);
+            }
+        });
+    </script>
 @endsection
