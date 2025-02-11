@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
+            $table->enum('type', ['departement', 'pole', 'service', 'unite', 'bureau', 'centre'])->nullable();
             $table->foreignId('hopital_id')->constrained()->onDelete('cascade');
             $table->foreignId('parent_id')->nullable()->constrained('services')->onDelete('cascade');
             $table->timestamps();

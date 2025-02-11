@@ -38,6 +38,7 @@ Route::group(["middleware" => "auth"], function () {
         Route::put('/services/{id}', 'update')->name('update');
         Route::get('/services/{id}/show', 'show')->name('show');
         Route::get('/services/sub-services/{parentId}', 'getSubServices');
+        Route::get('/services/parent-services', 'getParentServices');
         Route::delete('/services/{id}', 'destroy')->name('destroy');
     });
 
