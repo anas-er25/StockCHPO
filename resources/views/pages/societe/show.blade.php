@@ -195,6 +195,12 @@
                                                             <option value="autres"
                                                                 {{ $societeMaterial->observation == 'autres' ? 'selected' : '' }}>
                                                                 Sous réserve d'Autres</option>
+                                                            <option value="rien à signalé"
+                                                                {{ $societeMaterial->observation == 'rien à signalé' ? 'selected' : '' }}>
+                                                                Rien à signalé</option>
+                                                            <option value="colis fermé"
+                                                                {{ $societeMaterial->observation == 'colis fermé' ? 'selected' : '' }}>
+                                                                Colis fermé</option>
                                                         </select>
                                                     </div>
                                                 </td>

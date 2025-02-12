@@ -36,6 +36,11 @@ class Material extends Model
     {
         return $this->belongsTo(Societe::class);
     }
+    public function societes()
+    {
+        return $this->belongsToMany(Societe::class, 'societe_materials')
+            ->withPivot('PV', 'CPS', 'observation');
+    }
 
     public function feuilleReformes()
     {

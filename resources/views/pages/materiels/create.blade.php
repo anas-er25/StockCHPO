@@ -326,9 +326,9 @@
                                                 {{ old('observation_reserve') == 'colis fermé' ? 'selected' : '' }}>Colis
                                                 fermé
                                             </option>
-                                            <option value="rien à signaler"
-                                                {{ old('observation_reserve') == 'rien à signaler' ? 'selected' : '' }}>
-                                                Rien à signaler
+                                            <option value="rien à signalé"
+                                                {{ old('observation_reserve') == 'rien à signalé' ? 'selected' : '' }}>
+                                                Rien à signalé
                                             </option>
                                         </select>
                                         <x-input-error :messages="$errors->get('observation_reserve')" class="mt-2" />
