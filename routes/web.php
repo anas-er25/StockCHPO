@@ -50,6 +50,10 @@ Route::group(["middleware" => "auth"], function () {
         Route::get('/societies/{id}/edit', 'edit')->name('edit');
         Route::put('/societies/{id}', 'update')->name('update');
         Route::delete('/societies/{id}', 'destroy')->name('destroy');
+
+        // Import
+        Route::post('/societe/import', 'importSociete')->name('importExcel');
+
     });
 
     /* -------------------------------------------------------------------------- */

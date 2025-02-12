@@ -21,9 +21,19 @@ class Societe extends Model
         'observation'
     ];
 
+    // public function materials()
+    // {
+    //     return $this->hasMany(Material::class);
+    // }
+
+    // public function societeMaterials()
+    // {
+    //     return $this->hasMany(SocieteMaterial::class);
+    // }
     public function materials()
     {
-        return $this->hasMany(Material::class);
+        return $this->belongsToMany(Material::class, 'societe_materials')
+        ->withPivot('PV', 'CPS', 'observation');
     }
 
     public function societeMaterials()
