@@ -30,7 +30,7 @@
 
 </head>
 
-<body class=" bg-white">
+<body class="bg-blue-200">
     <main>
         <!--start the project-->
         <div id="main-wrapper" class=" flex">

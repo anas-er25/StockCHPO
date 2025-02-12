@@ -1,5 +1,5 @@
   <aside id="application-sidebar-brand"
-      class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full  transform hidden xl:block xl:translate-x-0 xl:end-auto xl:bottom-0 fixed top-0 with-vertical h-screen z-[999] flex-shrink-0 border-r-[1px] w-[270px] border-gray-400  bg-white left-sidebar   transition-all duration-300">
+      class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full  transform hidden xl:block xl:translate-x-0 xl:end-auto xl:bottom-0 fixed top-0 with-vertical h-screen z-[999] flex-shrink-0 border-r-[1px] w-[270px] border-gray-400  bg-teal-400 left-sidebar   transition-all duration-300">
       <x-logo />
       <div class="scroll-sidebar" data-simplebar="">
           <div class="px-6 mt-8">
@@ -35,7 +35,7 @@
                           <a class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-500"
                               href="{{ route('services.index') }}">
                               <i class="ti ti-briefcase text-xl"></i> <span>Département/pôles/Services
-                              <br/>/unités/bureaux</span>
+                                  <br />/unités/bureaux</span>
                           </a>
                       </li>
                       <li class="sidebar-item">
