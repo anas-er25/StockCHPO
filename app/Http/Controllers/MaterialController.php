@@ -657,9 +657,11 @@ class MaterialController extends Controller
             // Retourner une réponse avec SweetAlert
             return redirect()->back()->with('swal', 'Aucun résultat trouvé pour les critères spécifiés.');
         }
+        // Récupérer le nom du service sélectionné pour l'afficher dans l'en-tête
+        $service = $serviceId ? Service::find($serviceId) : null;
 
         // Générer le PDF avec les données
-        $pdf = PDF::loadView('pages.pdfs.pdfmat', compact('materiels'));
+        $pdf = PDF::loadView('pages.pdfs.pdfmat', compact('materiels', 'service'));
 
         // Télécharger le PDF
         return $pdf->download('bulletin_de_cession.pdf');
